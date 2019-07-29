@@ -17,7 +17,7 @@ ut icon = Function( {name},
 		Adds extra box to the right of the editor script box.
 */
 ut augment editor = Function({editor window, augment box, position},
-	{splitter, script, log if, log scroll, tab},
+	{splitter, script, log if, tab},
 	splitter = editor window[1];
 	if( position == "Side",
 		script = Remove From(splitter, 1);
@@ -34,12 +34,10 @@ ut augment editor = Function({editor window, augment box, position},
 		splitter << Append(tab);
 		splitter << Size( .25 );
 		Insert Into( tab, augment box );
-		log scroll = Remove From(log if, 1);
-		Insert Into( log if, Tab Page Box( "Log", log scroll ) );
 		If( ut test runner preference( "Show Embedded Log" ),
 			log if << Set( 1 );
 		);
-		Insert Into(tab, log if );
+		Insert Into(tab, Tab Page Box("Log", log if));
 	);
 	editor window
 );
