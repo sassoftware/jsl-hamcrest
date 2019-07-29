@@ -4,14 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [1.1.0]
 ### Added
- - Unit Tests for Hamcrest itself
- - UtInstanceOfMatcher
+ - Unit Tests for Hamcrest itself (#2)
+ - `UtInstanceOfMatcher` (#1)
 
 ### Changed
- - Must use factory functions for reporters rather than New Object (#3).
+ - Must use factory functions for reporters rather than `New Object` (#3).
+ - Test labels can now be anything (not just strings, #6)
 
 ### Fixed
-
+ - Log failures within `ut test` now affect return code (#6)
 
 ## [1.0.1] - Inital version available on GitHub
 ### Changed
