@@ -1,0 +1,32 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+// Base EqualToMatcher using strings
+ut test( "EqualToMatcher", "Mismatch", Expr(
+	mi = ut equal to( "EXPECTED" ) << Matches( "ACTUAL" );
+	ut assert that( Expr( mi:mismatch ), "was \!"ACTUAL\!"" );
+));
+
+ut test( "EqualToMatcher", "Describe", Expr(
+	m = ut equal to( "EXPECTED" );
+	ut assert that( Expr( m << Describe ), "equal to \!"EXPECTED\!"" );
+));
+
+ut test( "EqualToMatcher", "MatchInfoSuccess", Expr(
+	mi = ut equal to( "ACTUAL" ) << Matches( "ACTUAL" );
+    ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
+	ut assert that( Expr( mi:success ), 1 );
+));
+
+ut test( "EqualToMatcher", "MatchInfoFailure", Expr(
+	mi = ut equal to( "EXPECTED" ) << Matches( "ACTUAL" );
+    ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
+	ut assert that( Expr( mi:success ), 0 );
+));
+
+ut test( "EqualToMatcher", "MatcherFactory", Expr(
+	m = ut equal to( "EXPECTED" );
+    ut assert that( Expr( m ), ut instance of( "UtEqualToMatcher" ) );
+));
+
+// TODO: Other EqualToMatcher subclasses

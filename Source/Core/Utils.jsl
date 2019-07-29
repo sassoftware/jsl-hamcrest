@@ -28,6 +28,26 @@ ut matcher factory = Function({name},
 	);
 );
 
+/*	Function: ut with reporter
+		Temprorarily sets <ut global reporter>
+		to the given reporter and resets it back
+		to its original state, even if the 
+		expression threw an error.
+*/
+ut with reporter = Function({reporter, expression},
+    {global reporter},
+    global reporter = ut global reporter;
+    ut global reporter = reporter;
+    Try(
+        First(
+            expression,
+            ut global reporter = global reporter
+        ),
+        ut global reporter = global reporter;
+        Throw( Char( exception_msg ) );
+    );
+);
+
 /*
 	Function: ut get exception message
 	

@@ -1,0 +1,24 @@
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+ut test( "AllOfMatcher", "Describe", Expr(
+	m = ut all of( {ut typed as( "String" ), "EXPECTED"} );
+	ut assert that( Expr( m << Describe ), "\[(typed as equal to "String" and equal to "EXPECTED")]\" );
+));
+
+ut test( "AllOfMatcher", "MatchInfoSuccess", Expr(
+	mi = ut all of( {ut typed as( "String" ), "ACTUAL"} ) << Matches( "ACTUAL" );
+    ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
+	ut assert that( Expr( mi:success ), 1 );
+));
+
+ut test( "AllOfMatcher", "MatchInfoFailure", Expr(
+	mi = ut all of( {ut typed as( "String" ), "EXPECTED"} ) << Matches( "ACTUAL" );
+    ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
+	ut assert that( Expr( mi:success ), 0 );
+));
+
+ut test( "AllOfMatcher", "MatcherFactory", Expr(
+	m = ut all of( {ut typed as( "String" ), "EXPECTED"} );
+    ut assert that( Expr( m ), ut instance of( "UtAllOfMatcher" ) );
+));
