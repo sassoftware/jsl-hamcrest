@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here( 0 );
@@ -466,10 +466,15 @@ ut test = Function({test case, test name, test expr, log benchmark = ut log benc
 				ut global reporter = ut test filtering reporter;
 				
 				log contents = _utTestNS:log;
-				::ut assert that(
-					Expr( log contents ), 
-					_utTestNS:log benchmark << Get Matcher(),
-					ut test log benchmark label(_utTestNS:test case:name, _utTestNS:test name)
+				// Qualified so that the ut test log benchmark label
+				// is used without modification
+				_utTestNS:n asserts++;
+				Insert Into(_utTestNS:results,
+					::ut assert that(
+						Expr( log contents ), 
+						_utTestNS:log benchmark << Get Matcher(),
+						ut test log benchmark label(_utTestNS:test case:name, _utTestNS:test name)
+					);
 				);
 				
 				ut global reporter = ut test filtering reporter << release();

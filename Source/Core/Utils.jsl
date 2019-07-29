@@ -365,8 +365,8 @@ ut concat test label sep = "⮚";
 ut concat test label = Function({test case name, test name, label="", n asserts=.},
 	{labelList},
 	labelList = {};
-	If( test case name != "", Insert Into( labelList, test case name ) );
-	If( test name != "",Insert Into( labelList, test name ) );
+	Insert Into( labelList, test case name );
+	Insert Into( labelList, test name );
 	If( label != "",  Insert Into( labelList, label ) );
 	If( !Is Missing( n asserts ), Insert Into( labelList, Char( n asserts ) ) );
 	
