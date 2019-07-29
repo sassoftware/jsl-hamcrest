@@ -76,16 +76,16 @@ Define Class(
 	Base Class( UtEqualToMatcher ),
 	_init_ = Method({}, super:matches value = Name Expr( this:matches value ) );
 	matches value = Method({actual},
-		actualSize = Eval List( List( N Col( actual ), N Row( actual ) ) );
-		expectedSize = Eval List( List( N Col( this:value ), N Row( this:value ) ) );
+		actualSize = Dim(actual);
+		expectedSize = Dim(this:value);
 		
-		If( actualSize == expectedSize,
+		If( All(actualSize == expectedSize),
 			actual missing = Is Missing( actual );
 			expected missing = Is Missing( this:value );
 			If( // both matrices have missing data in the same places
 				All( actual missing == expected missing ) &
 				// now just compare non missing values
-				All( actual[Loc( actual missing, 0 )] == this:value[Loc( expected missing, 0 )]),
+				All( actual[Loc( !actual missing )] == this:value[Loc( !expected missing )]),
 					::ut match info success();
 			,
 				// else matrices do not match
