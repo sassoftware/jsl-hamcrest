@@ -24,7 +24,7 @@ Define Class(
 			matchInfo = this:matchers[i] << matches( Name Expr( test expr ) );
 			
 			If( !matchInfo:success,
-				mismatch = (this:matchers[i] << Describe()) || " " || matchInfo:mismatch;
+				mismatch = matchInfo:mismatch || " while matching " || (this:matchers[i] << Describe());
 				lre = matchInfo:lre;
 				Return( ::ut match info failure( mismatch, lre ) );
 			);
