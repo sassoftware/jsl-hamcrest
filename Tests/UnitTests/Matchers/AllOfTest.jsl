@@ -1,6 +1,11 @@
 ﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+ut test( "AllOfMatcher", "Mismatch", Expr(
+	mi = ut all of( {ut typed as( "String" ), "EXPECTED"} ) << Matches( "ACTUAL" );
+	ut assert that( Expr( mi:mismatch ), "\[was "ACTUAL" while matching equal to "EXPECTED"]\" );
+));
+
 ut test( "AllOfMatcher", "Describe", Expr(
 	m = ut all of( {ut typed as( "String" ), "EXPECTED"} );
 	ut assert that( Expr( m << Describe ), "\[(typed as equal to "String" and equal to "EXPECTED")]\" );
