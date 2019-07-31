@@ -503,6 +503,24 @@ ut delete symbols difference = Function({before, after, closeWindows=0},
 	::ut nullptr;
 );
 
+/*	Function: ut include jsl files recursively
+		Looks for files in a folder recursively
+		and uses the Include() function to
+		run them.
+*/
+ut include jsl files recursively = Function( {folder},
+	{files, iFile, include exprs={}},
+	files = Files In Directory( folder, "recursive" );
+	For( iFile = 1, iFile <= N Items( files ), iFile++,
+		If( Ends With( Lowercase( files[iFile] ), "jsl" ),
+			Insert Into( include exprs, Eval Expr( Include( Expr( folder || "/" || files[iFile] ) ) ) );
+		);
+	);
+    // Eval after loop to avoid name collisions 
+    // with files and iFile.
+    Eval List( include exprs );
+);
+
 // Variable: ut nullptr
 // Can be used to supress printing anything to the log when returning from a function
 ut nullptr = .;
