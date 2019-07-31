@@ -44,6 +44,7 @@ Include( "TestCase.jsl" );
 		ut assert that( Expr( Show( 5 + 5 ) ), ut log is( ut equal to ignoring whitespace( "5 + 5 = 10;" ) ) );
 		------------------------  
 */
+ut test register assertion( "ut assert that", {test expr, matcher, label=""} );
 ut assert that = Function( {test expr, matcher, label = ""},
 	// Move args to anonymous namespace to avoid collision
 	local:_utAssertThatNS = ut move to anonymous namespace( Namespace( "local" ) );
