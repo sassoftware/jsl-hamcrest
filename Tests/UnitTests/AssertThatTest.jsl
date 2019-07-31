@@ -50,3 +50,19 @@ assert rc = with noop reporter( Expr(
 ));
 ut assert that( Expr( assert rc ), 1, "label can be anything");
 
+// Variables cannot collide with ut assert that locals
+assert rc = with noop reporter( Expr(
+	matcher = 2;
+	ut assert that( Expr( matcher + 2 ), 4 );
+));
+ut assert that( Expr( assert rc ), 1, "no variable collision" );
+
+// Does not leak any namespaces
+ns count = N Items( Get Namespaces() );
+with noop reporter( Expr(
+	ut assert that( Expr( 2 + 2 ), 4 );
+));
+// Get these namespaces before assert that to avoid
+// the assert that anon namespace being included.
+after namespaces = Get Namespaces() << Get Name;
+ut assert that( Expr( after namespaces ), ut n items( ns count ), "no leaked namespaces" );
