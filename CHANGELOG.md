@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
  - Allow for unregistering custom matchers (#19)
  - Unit Tests for Addin Reporters (basic, #23)
  - `Matchers/Custom` and `Reporters/Custom` folders for installation of user-defined classes (#24)
+ - Allow user-defined assertions to be used with `ut test` (#27)
 
 ### Changed
  - Must use factory functions for reporters rather than `New Object` (#3).
