@@ -8,21 +8,8 @@ Names Default To Here( 0 );
 Include( "MatchInfo.jsl" );
 Include( "Utils.jsl" );
 
-// Matchers
-Local({files, iFile},
-	files = Files In Directory( "Matchers" );
-	For( iFile = 1, iFile <= N Items( files ), iFile++,
-		Include( "Matchers/" || files[iFile] );
-	)
-);
-
-// Reporters
-Local({files, iFile},
-	files = Files In Directory( "Reporters" );
-	For( iFile = 1, iFile <= N Items( files ), iFile++,
-		Include( "Reporters/" || files[iFile] );
-	)
-);
+ut include jsl files recursively( "Matchers" );
+ut include jsl files recursively( "Reporters" );
 
 // Section: Globals
 
