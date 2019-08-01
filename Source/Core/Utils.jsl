@@ -476,6 +476,7 @@ ut get symbol information = Function({},
 		17may18 - (juchil) Add windows and data tables.
 */
 ut delete symbols difference = Function({before, after, closeWindows=0},
+	{ns diff, cls diff, i},
 	If( ut major jmp version >= 15,
 		Namespace( "root" ) << Remove(
 			::ut difference between lists( before["root"], after["root"] )
@@ -490,9 +491,15 @@ ut delete symbols difference = Function({before, after, closeWindows=0},
 		::ut difference between lists( before["here"], after["here"] )
 	);
 	
-	Delete Namespaces( ::ut difference between lists( before["namespaces"], after["namespaces"] ) );
-	
-	Delete Classes( ::ut difference between lists( before["classes"], after["classes"] ) );
+	ns diff = ::ut difference between lists( before["namespaces"], after["namespaces"] );
+	For( i = 1, i <= N Items( ns diff ), i++,
+		Delete Namespaces( Force( 1 ), ns diff[i] );
+	);
+
+	cls diff = ::ut difference between lists( before["classes"], after["classes"] );
+	For( i = 1, i <= N Items( cls diff ), i++,
+		Delete Classes( Force( 1 ), cls diff[i] );
+	);
 	
 	If( closeWindows, 
 		::ut difference between lists( before["windows"], after["windows"] ) << Close Window();
