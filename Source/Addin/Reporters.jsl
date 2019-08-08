@@ -51,6 +51,12 @@ Define Class("UtSummaryReporter",
 	);
 );
 
+// Function: ut summary reporter
+// Factory for <UtSummaryReporter>
+ut summary reporter = Function({box},
+	New Object( "UtSummaryReporter"( box ) )
+);
+
 /* 
 	Class: UtCompositeReporter
 		---Prototype---
@@ -60,7 +66,7 @@ Define Class("UtSummaryReporter",
 		Forward all messages (unchanged) to an inner list of reporters.
 */
 Define Class("UtCompositeReporter",
-	Base Class( UtReporter ),
+	Base Class( "UtReporter" ),
 	reporters = {};
 	_init_ = Method( {reporters},
 		this:reporters = reporters
@@ -85,6 +91,12 @@ Define Class("UtCompositeReporter",
 	);
 );
 
+// Function: ut composite reporter
+// Factory for <UtCompositeReporter>
+ut composite reporter = Function({reporters},
+	New Object( "UtCompositeReporter"( reporters ) )
+);
+
 /* 
 	Class: UtWindowDispatchingReporter
 		---Prototype---
@@ -100,7 +112,7 @@ Define Class("UtCompositeReporter",
 		from each other.
 */
 Define Class("UtWindowDispatchingReporter",
-	Base Class(UtCompositeReporter),
+	Base Class( "UtCompositeReporter" ),
 	by window = [=>];
 	_init_ = Method({default reporter},
 		this:by window << Set Default Value(default reporter);
@@ -121,6 +133,12 @@ Define Class("UtWindowDispatchingReporter",
 	);
 );
 
+// Function: ut window dispatching reporter
+// Factory for <UtWindowDispatchingReporter>
+ut window dispatching reporter = Function({default reporter},
+	New Object( "UtWindowDispatchingReporter"( default reporter ) )
+);
+
 /* 
 	Class: UtRunOnlyReporter
 		---Prototype---
@@ -131,7 +149,7 @@ Define Class("UtWindowDispatchingReporter",
 		would like to ignore all other messages.
 */
 Define Class("UtRunOnlyReporter",
-	Base Class(UtReporter),
+	Base Class( "UtReporter" ),
 	add expression failure = Method( {label, payload=Empty()}, .);
 	add failure = Method( {label, test expr, description, mismatch, lre, payload=Empty()}, .);
 	add unexpected throw = Method( {label, test expr, description, exception, payload=Empty()}, .);
@@ -205,7 +223,7 @@ ut format node data = Function({node}, {data, i, str},
 		---------------
 */
 Define Class("UtDetailsTreeReporter",
-	Base Class(UtReporter),
+	Base Class( "UtReporter" ),
 	box = Empty();
 	cases = [=>];
 	_init_ = Method({box},
@@ -299,6 +317,12 @@ Define Class("UtDetailsTreeReporter",
 	);
 );
 
+// Function: ut details tree reporter
+// Factory for <UtDetailsTreeReporter>
+ut details tree reporter = Function({box},
+	New Object( "UtDetailsTreeReporter"( box ) )
+);
+
 /* 
 	Class: UtBusyReporter
 		---Prototype---
@@ -308,7 +332,7 @@ Define Class("UtDetailsTreeReporter",
 		Spin a Busy Light while the run is in progress.
 */
 Define Class("UtBusyReporter",
-	Base Class( UtRunOnlyReporter ),
+	Base Class( "UtRunOnlyReporter" ),
 	busy = Empty();
 	_init_ = Method( {busy},
 		this:busy = busy
@@ -322,6 +346,12 @@ Define Class("UtBusyReporter",
 	);
 );
 
+// Function: ut busy reporter
+// Factory for <UtBusyReporter>
+ut busy reporter = Function({busy},
+	New Object( "UtBusyReporter"( busy ) )
+);
+
 /* 
 	Class: UtTimingReporter
 		---Prototype---
@@ -331,7 +361,7 @@ Define Class("UtBusyReporter",
 		Time the run and report the result to simple Text Box.
 */
 Define Class( "UtTimingReporter",
-	Base Class( UtRunOnlyReporter ),
+	Base Class( "UtRunOnlyReporter" ),
 	start = .;
 	box = Empty();
 	_init_ = Method( {box},
@@ -346,4 +376,10 @@ Define Class( "UtTimingReporter",
 		delta = HP Time() - this:start;
 		this:box << Set Text( Eval Insert("^Char( delta )^ µs (^Format(delta*1e-6, \!"hr:m:s\!")^)") );
 	);
+);
+
+// Function: ut timing reporter
+// Factory for <UtTimingReporter>
+ut timing reporter = Function({box},
+	New Object( "UtTimingReporter"( box ) )
 );

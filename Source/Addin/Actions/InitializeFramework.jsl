@@ -21,5 +21,5 @@ If(Try((::ut global reporter << Get Name) != "UtWindowDispatchingReporter", 1),
 	Include( "../Reporters.jsl" );
 	Include( "../TestRunner.jsl" );
 	Include( "../TestRunnerPreferences.jsl" );
-	::ut global reporter = New Object(UtWindowDispatchingReporter(New Object(UtStreamingLogReporter)));
+	::ut global reporter = ut window dispatching reporter(ut streaming log reporter());
 );

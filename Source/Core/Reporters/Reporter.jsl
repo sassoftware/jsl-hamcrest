@@ -68,3 +68,9 @@ Define Class(
 	//
 	add success = Method( {label, test expr, description, payload=Empty()}, 1 );
 );
+
+// Function: ut reporter
+//   Factory for <UtReporter>.
+ut reporter = Function({},
+	New Object( "UtReporter" );
+);
