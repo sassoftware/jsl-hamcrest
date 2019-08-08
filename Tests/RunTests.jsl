@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 with noop reporter = Function( {ex},
-    ut with reporter( New Object( "UtReporter" ), Name Expr( ex ) );
+    ut with reporter( ut reporter(), Name Expr( ex ) );
 );
 
 Define Class("UtMockReporter",
@@ -32,6 +32,12 @@ Define Class("UtMockReporter",
 	add success = Method( {label, test expr, description, payload=Empty()},
 		Insert Into(this:calls, Eval Expr(add success(Expr(Name Expr(label)), Expr(Name Expr(test expr)), Expr(Name Expr(description)), Expr(Name Expr(payload)))));
 	);
+);
+
+ut mock reporter = Function({}, {obj},
+	obj = New Object("UtMockReporter");
+	obj:self = reporter;
+	obj
 );
 
 Local({files, iFile, includeExprs={}},

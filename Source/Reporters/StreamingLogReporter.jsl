@@ -11,7 +11,7 @@ Names Default To Here( 0 );
 		Output every success and failure to the log as they are received.
 */
 Define Class("UtStreamingLogReporter",
-	Base Class( UtReporter ),
+	Base Class( "UtReporter" ),
 	n assertions = 0;
 	_init_ = Method({},
 		this:n assertions = 0
@@ -40,4 +40,10 @@ Define Class("UtStreamingLogReporter",
 	on run end = Method( {},
 		.
 	);
+);
+
+// Function: ut streaming log reporter
+//   Factory for <UtFileAppendingReporter>.
+ut streaming log reporter = Function({},
+	New Object( "UtStreamingLogReporter" );
 );

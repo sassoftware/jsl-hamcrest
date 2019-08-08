@@ -11,7 +11,7 @@ Names Default To Here( 0 );
 */
 Define Class(
 	"UtFileAppendingReporter",
-	Base Class( UtReporter ),
+	Base Class( "UtReporter" ),
 	
 	filepath = "";
 	
@@ -53,4 +53,10 @@ Define Class(
 	add success = Method( {label, test expr, description, payload=Empty()},
 		1;
 	);
+);
+
+// Function: ut file appending reporter
+//   Factory for <UtFileAppendingReporter>.
+ut file appending reporter = Function({},
+	New Object( "UtFileAppendingReporter" );
 );
