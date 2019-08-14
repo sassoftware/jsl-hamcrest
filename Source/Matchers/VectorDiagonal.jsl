@@ -87,7 +87,7 @@ ut matcher factory( "ut vec diag" );
 ut vec diag = Function( {matcher},
 	{obj},
 	obj = New Object( UtVectorDiagonalMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
-	obj:this obj = obj;
+	obj:self = obj;
 );
 
 
@@ -115,5 +115,5 @@ ut matcher factory( "ut diagonal" );
 ut diagonal = Function( {},
 	{obj},
 	obj = New Object( UtDiagonalMatcher() );
-	obj:this obj = obj;
+	obj:self = obj;
 );
