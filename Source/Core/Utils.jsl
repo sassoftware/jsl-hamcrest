@@ -28,6 +28,25 @@ ut matcher factory = Function({name},
 	);
 );
 
+/*	Function: ut unregister matcher factory
+		Removes a matcher factory name from
+		<ut matcher factories>. 
+		
+		This should be used when creating your 
+		own matcher outside of the Hamcrest
+		package. Unregistering a matcher 
+		removes it from consideration in
+		<UtExpressionCompositeMatcher>.
+*/
+ut unregister matcher factory = Function( {name},
+	{pos},
+	pos = Contains( ut matcher factories, As Name( name ) );
+	If( pos,
+		Remove From( ut matcher factories, pos );
+	);
+);
+
+
 /*	Function: ut with reporter
 		Temprorarily sets <ut global reporter>
 		to the given reporter and resets it back

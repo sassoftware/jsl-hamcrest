@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
  - Unit Tests for Hamcrest itself (#2)
  - `UtInstanceOfMatcher` (#1)
+ - Allow for unregistering custom matchers (#19)
 
 ### Changed
  - Must use factory functions for reporters rather than `New Object` (#3).
