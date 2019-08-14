@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
  - `UtInstanceOfMatcher` (#1)
  - Allow for unregistering custom matchers (#19)
  - Unit Tests for Addin Reporters (basic, #23)
+ - `Matchers/Custom` and `Reporters/Custom` folders for installation of user-defined classes (#24)
 
 ### Changed
  - Must use factory functions for reporters rather than `New Object` (#3).
