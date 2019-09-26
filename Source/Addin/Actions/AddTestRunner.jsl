@@ -1,0 +1,24 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here(0);
+
+Include("InitializeFramework.jsl");
+
+If(!ut meets hamcrest requirements(), Stop());
+
+Local({window, gui, reporter, is script, position},
+	window = Current Window();
+	If(
+	Try((window << Window Class Name) != "Script", 1),
+		New Window("Error", <<Modal, Text Box("Can only add Test Runner to a script"));
+	,
+	Try((::ut global reporter:by window << Contains Item(window)), 0),
+		New Window("Error", <<Modal, Text Box("Current script window already has a Test Runner"))
+	,
+		position = ut test runner preference( "GUI Location" );
+		{gui, reporter} = ut make reporter gui( position );
+		ut augment editor(window, gui, position);
+		::ut global reporter << register reporter(window, reporter);
+	);
+);

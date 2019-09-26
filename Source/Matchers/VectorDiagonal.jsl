@@ -1,0 +1,119 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtVectorDiagonalMatcher
+		---Prototype---
+		class UtVectorDiagonalMatcher inherits UtTypedMatcher
+		---------------
+*/
+Define Class(
+	"UtVectorDiagonalMatcher",
+	Base Class( UtTypedMatcher ),
+	allowable types = {Matrix};
+	inner = Empty();
+	_init_ = Method( {inner},
+		this:inner = inner;
+	);
+	typed matches = Method( {actual},
+		If( N Col( actual ) == NRow( actual ),
+			this:inner << Matches( Vec Diag( actual ) );
+		,
+			ut match info failure( Eval Insert( "was non-square ^N Row( actual )^x^N Col( actual )^ matrix" ) );
+		);
+	);
+	describe = Method( {},
+		"vector diagonal " || (this:inner << Describe());
+	);
+);
+
+/*
+	Class: UtDiagonalMatcher
+		---Prototype---
+		class UtDiagonalMatcher inherits UtTypedMatcher
+		---------------
+*/
+Define Class(
+	"UtDiagonalMatcher",
+	Base Class( UtTypedMatcher ),
+	allowable types = {Matrix};
+	typed matches = Method( {actual},
+		If( N Col( actual ) == NRow( actual ),
+			actual zero diag = actual;
+			diag mask = Index( 1, Length( actual zero diag ), NCol( actual zero diag ) + 1 );
+			actual zero diag[diag mask] = 0;
+			If( !Any( actual zero diag ),
+				ut match info success(),
+				ut match info failure( Eval Insert( "non-zero off-diagonal(s) in ^actual^" ) )
+			)
+		,
+			ut match info failure( Eval Insert( "was non-square ^N Row( actual )^x^N Col( actual )^ matrix" ) )
+		)
+	);
+	describe = Method( {},
+		"a diagonal matrix"
+	);
+);
+
+// Section: Globals
+
+/* 
+	Function: ut vec diag
+		---Prototype---
+		ut vec diag( UtMatcher matcher )
+		---------------
+		Compare using Vec Diag() transformation for a given matrix. 
+		
+		Does not assert that the matrix is a diagonal matrix. See
+		<ut diagonal> for this.
+		
+		Factory function for <UtVectorDiagonalMatcher>.
+	
+	Arguments:
+		matcher - any object
+	
+	Examples:
+		-----------JSL-----------
+		m = [1 0 0, 0 2 0, 0 0 3];
+		ut assert that( Expr( m ), ut vec diag( [1, 2, 3] ) );
+		
+		m = [1 0 0, 0 1 0, 0 0 1];
+		ut assert that( Expr( m ), ut vec diag( ut every item( 1 ) ) );
+		-------------------------
+*/
+ut matcher factory( "ut vec diag" );
+ut vec diag = Function( {matcher},
+	{obj},
+	obj = New Object( UtVectorDiagonalMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
+	obj:this obj = obj;
+);
+
+
+/* 
+	Function: ut diagonal
+		---Prototype---
+		ut diagonal()
+		---------------
+		Used to assert that a given matrix is diagonal, 
+		meaning it is a square matrix where all off-diagonal
+		elements are zero.
+		
+		Note: Asserts nothing about the diagonal. For example,
+		a square all zero matrix is still considered diagonal.
+		
+		Factory function for <UtDiagonalMatcher>.
+	
+	Examples:
+		-----------JSL-----------
+		m = [1 0 0, 0 2 0, 0 0 3];
+		ut assert that( Expr( m ), ut diagonal() );
+		-------------------------
+*/
+ut matcher factory( "ut diagonal" );
+ut diagonal = Function( {},
+	{obj},
+	obj = New Object( UtDiagonalMatcher() );
+	obj:this obj = obj;
+);

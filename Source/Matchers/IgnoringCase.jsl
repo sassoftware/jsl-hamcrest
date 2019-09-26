@@ -1,0 +1,64 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtIgnoringCaseMatcher
+		---Prototype---
+		class UtAllOfMatcher inherits UtMatcher
+		---------------
+		
+		Operates only on string values (not on matchers). 
+*/
+Define Class(
+	"UtIgnoringCaseMatcher",
+	Base Class( UtMatcher ),
+	value = "";
+	_init_ = Method( {value},
+		this:value = Lowercase( value )
+	);
+	matches = Method( {test expr},
+		actual = Lowercase( test expr );
+		If( this:value ==  actual,
+			::ut match info success(), 
+			
+			mismatch = "was " || ut get show string( actual );
+			
+			::ut match info failure( mismatch );
+		);
+	);
+	describe = Method( {},
+		"equal to ignoring case " || ut get show string( this:value )
+	);
+);
+
+// Section: Globals
+
+/*
+	Function: ut equal to ignoring case
+		---Prototype---
+		ut equal to ignoring case( string value )
+		---------------
+		Compares actual value ingoring the case. This matcher requires
+		the expected to be a string (and not a matcher). 
+		
+		To use an inner matcher, instead use <ut as lowercase> or 
+		<ut as uppercase> and use an expected string
+		that matches the chosen matcher.
+		
+		Factory function for <UtIgnoringCaseMatcher>.
+
+	Arguments:
+		value - should be a string
+
+	Examples:
+		> ut assert that( Expr( "st" || "ring"), ut equal to ignoring case( "STRING" ) )
+*/
+ut matcher factory( "ut equal to ignoring case" );
+ut equal to ignoring case = Function( {val},
+	If( Is String( val ),
+		New Object( UtIgnoringCaseMatcher( val ) ),
+		Throw( "ut equal to ignoring case() requires a string as the argument" )
+	);
+);

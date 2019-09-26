@@ -1,0 +1,131 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtContainsMatcher
+		---Prototype---
+		class UtContainsMatcher inherits UtMatcher
+		---------------
+		
+		Operates only on string or list values (not on matchers). 
+*/
+Define Class(
+	"UtContainsMatcher",
+	Base Class( UtMatcher ),
+	value = "";
+	
+	matches = Method( {test expr},
+		actual = test expr;
+		
+		If( 
+			Is String( Name Expr( actual ) ) & !Is String( Name Expr( this:value ) ),
+				mismatch = "was " || ut get show string( Name Expr( actual ) ) || " and type mismatch";
+				::ut match info failure( mismatch );
+		,
+			!(Is String( Name Expr( actual ) ) | Is List( Name Expr( actual ) ) ),
+				mismatch = "was " || ut get show string( Name Expr( actual ) ) || " and invalid type";
+				::ut match info failure( mismatch );
+		,
+			Contains( Name Expr( actual ), Name Expr( this:value ) ),
+				::ut match info success();
+		,
+			// else
+				mismatch = "was " || ut get show string( Name Expr( actual ) );
+			
+				::ut match info failure( mismatch );
+		);
+	);
+	describe = Method( {},
+		"contains " || ut get show string( Name Expr( this:value ) )
+	);
+);
+
+// Class: UtContainsItemMatcher
+//
+// Operates only on list values (not on matchers). 
+Define Class(
+	"UtContainsItemMatcher",
+	Base Class( UtMatcher ),
+	inner = Empty();
+	_init_ = Method( {inner},
+		this:inner = inner;
+	);
+	matches = Method( {test expr},
+		actual = test expr;
+		
+		If(
+			Is List( Name Expr( actual ) ),
+			
+				For( i = 1, i <= N Items( actual ), i++,
+					match info = this:inner << Matches( Insert( Expr( Expr() ), actual[i] ) );
+					
+					If( match info:success,
+						Return( ::ut match info success() );
+					);
+				);
+				mismatch = "was " || ut get show string( Name Expr( actual ) );
+				::ut match info failure( mismatch );
+		,
+			// else
+				mismatch = Eval Insert( "was ^ut get show string( actual )^ and invalid type (^Type( Name Expr( actual ) )^)" );
+				::ut match info failure( mismatch );
+		);
+	);
+	describe = Method( {},
+		"contains " || this:inner:describe();
+	);
+);
+
+// Section: Globals
+
+/* 
+	Function: ut contains
+		---Prototype---
+		ut contains( object value )
+		---------------
+		Uses built-in Contains() function to check if the actual
+		value contains the expected value.
+		
+		Factory function for <UtContainsMatcher>.
+
+	Arguments:
+		value - should be string if actual is string, otherwise can be any object (not matchers)
+
+	Examples:
+		> ut assert that( Expr( {1, 2, 3} ), ut contains( 3 ) );
+		> ut assert that( Expr( "Test" || "string" ), ut contains( "string" ) );
+*/
+ut matcher factory( "ut contains" );
+ut contains = Function( {val},
+	{obj},
+	If( !ut is a matcher( Name Expr( val ) ), 
+		obj = New Object( UtContainsMatcher() );
+		obj:value = Name Expr( val );
+		obj;
+	,
+		Throw( "ut contains() does not allow for inner matchers. Use ut contains item() for inner matchers for lists." )
+	);
+);
+
+/* 
+	Function: ut contains item
+		---Prototype---
+		ut contains item( UtMatcher matcher )
+		---------------
+		Checks if the actual value contains the expected value.
+		Expected value can be an inner matcher if the actual result is a list.
+		
+		Factory function for <UtContainsMatcher>.
+
+	Arguments:
+		matcher - any object
+
+	Examples:
+		> ut assert that( Expr( {a( 1 ), b( 2 ), c( 3 )} ), ut contains item( Expr( b( ut wild() ) ) ) );
+*/
+ut matcher factory( "ut contains item" );
+ut contains item = Function( {matcher},
+	New Object( UtContainsItemMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
+);

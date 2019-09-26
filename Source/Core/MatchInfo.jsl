@@ -1,0 +1,68 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+// Class: UtMatchInfo
+//
+// Class to contain information about a matcher's comparison results.
+// Exists to avoid needing to evaluate a test expression multiple
+// times. The results includes a success boolean, mismatch description, 
+// and an LRE value.
+Define Class(
+	"UtMatchInfo",
+	// Variable: success
+	// Did the matcher evaluate correctly?
+	success = Empty();
+	
+	// Variable: mismatch
+	// String representing the mismatch
+	mismatch = Empty();
+	
+	// Variable: lre
+	// Logarithm of Relative Error (LRE) value for the matcher.
+	// (Can be number or matrix)
+	lre = Empty();
+	
+	// Constructor: _init_
+	//
+	// Constructor for <UtMatchInfo>
+	//
+	// Parameters:
+	//    success - did the matcher evaluate to an expected value?
+	//    mismatch - description of the the mismatch
+	//    lre - LRE value
+	//
+	_init_ = Method( {success, mismatch, lre = Empty()},
+		this:success = success;
+		this:mismatch = mismatch;
+		this:lre = lre;
+	);
+	// Method: _show_
+	// Returns string representation of the MatchInfo object. Used for debugging purposes
+	_show_ = Method( {},
+		Concat( 
+			"MatchInfo[success( ",
+			Char( success ),
+			" ), mismatch( \!"",
+			Char( mismatch ),
+			"\!" ), lre(",
+			If( !Is Empty( lre ), " " || Char( lre ) || " ", "" ),
+			")]"
+		)
+	)
+);
+
+// Function: ut match info success
+//
+//   Factory function for creating a successful <UtMatchInfo>
+ut match info success = Function( {},
+	New Object( UtMatchInfo( 1, "" ) )
+);
+
+// Function: ut match info failure
+//
+//   Factory function for creating a failing <UtMatchInfo>
+ut match info failure = Function( {mismatch, lre = Empty()},
+	New Object( UtMatchInfo( 0, mismatch, lre ) )
+);

@@ -1,0 +1,57 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtStringPatternMatcher
+		---Prototype---
+		class UtStringPatternMatcher inherits UtMatcher
+		---------------
+		Checks if a value is missing.
+*/
+Define Class(
+	"UtStringPatternMatcher",
+	Base Class( UtMatcher ),
+	pattern = "";
+	_init_ = Method( {pattern},
+		this:pattern = pattern;
+	);
+	matches = Method( {test expr},
+		actual = test expr;
+		result = Regex( Name Expr( actual ), this:pattern );
+		If( !ut is numeric missing( result ),
+			::ut match info success(),
+			mismatch = ut get show string( actual ) || " did not contain pattern " || ut get show string( this:pattern );
+			::ut match info failure( mismatch );
+		);
+	);
+	describe = Method( {},
+		"contains pattern " || ut get show string( this:pattern );
+	);
+);
+
+// Section: Globals
+
+/* 
+	Function: ut contains pattern
+		---Prototype---
+		ut contains pattern( string pattern )
+		---------------
+		Checks for a regex pattern within the evaluated actual expression.
+		
+		Factory function for <UtStringPatternMatcher>.
+	
+	Arguments:
+		pattern - string pattern actual should match
+	
+	Example:
+		> ut assert that( Expr( "str" || "ing" ), ut contains pattern( "str.*g" ) );
+*/
+ut matcher factory( "ut contains pattern" );
+ut contains pattern = Function( {val},
+	If( Is String( Name Expr( val ) ),
+		New Object( UtStringPatternMatcher( val ) ),
+		Throw( "ut contains pattern() requires a string as the pattern argument" )
+	);
+);

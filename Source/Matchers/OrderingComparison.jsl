@@ -1,0 +1,118 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtOrderingComparisonMatcher
+		---Prototype---
+		class UtAllOfMatcher inherits UtMatcher
+		---------------
+		Operates only on values (not on matchers). Treats missing values
+		as normal JSL.
+*/
+Define Class(
+	"UtOrderingComparisonMatcher",
+	Base Class( UtMatcher ),
+	value = 0;
+	comparison function = .;
+	comparison description = "";
+	_init_ = Method( {value, comparison function name, comparison description},
+		this:value = value;
+		this:comparison function = Parse( comparison function name );
+		
+		this:comparison description = comparison description;
+	);
+	matches = Method( {test expr},
+		actual = Eval( test expr );
+		success = this:comparison function( actual, this:value );
+		If( 
+			Is Missing( success ),
+				mismatch = "was " || Char( actual );
+				::ut match info failure( mismatch );
+		,
+			success == 1,
+				::ut match info success();
+		,
+				mismatch = "was " || Char( actual );
+				::ut match info failure( mismatch );
+		);
+	);
+	describe = Method( {},
+		comparison description || " " || Char( this:value )
+	);
+);
+
+// Section: Globals
+
+/*
+	Function: ut less than
+		---Prototype---
+		ut less than( object value )
+		---------------
+		Factory function for <UtOrderingComparisonMatcher>.
+
+	Arguments:
+		value - assumed to NOT be a matcher
+
+	Example:
+		> ut assert that( Expr( 5 + 5 ), ut less than( 11 ) );
+*/
+ut matcher factory( "ut less than" );
+ut less than = Function( {val},
+	New Object( UtOrderingComparisonMatcher( val, "Less", "less than" ) )
+);
+
+/*
+	Function: ut less than or equal to
+		---Prototype---
+		ut less than or equal to( object value )
+		---------------
+		Factory function for <UtOrderingComparisonMatcher>.
+
+	Arguments:
+		value - assumed to NOT be a matcher
+
+	Example:
+		> ut assert that( Expr( 5 + 5 ), ut less than or equal to( 10 ) );
+*/
+ut matcher factory( "ut less than or equal to" );
+ut less than or equal to = Function( {val},
+	New Object( UtOrderingComparisonMatcher( val, "Less or Equal", "less than or equal to" ) )
+);
+
+/*
+	Function: ut greater than
+		---Prototype---
+		ut greater than( object value )
+		---------------
+		Factory function for <UtOrderingComparisonMatcher>.
+
+	Arguments:
+		value - assumed to NOT be a matcher
+
+	Example:
+		> ut assert that( Expr( 5 + 5 ), ut greater than( 9 ) );
+*/
+ut matcher factory( "ut greater than" );
+ut greater than = Function( {val},
+	New Object( UtOrderingComparisonMatcher( val, "Greater", "greater than" ) )
+);
+
+/*
+	Function: ut greater than or equal to
+		---Prototype---
+		ut greater than or equal to( object value )
+		---------------
+		Factory function for <UtOrderingComparisonMatcher>.
+
+	Arguments:
+		value - assumed to NOT be a matcher
+
+	Example:
+		> ut assert that( Expr( 5 + 5 ), ut greater than or equal to( 10 ) );
+*/
+ut matcher factory( "ut greater than or equal to" );
+ut greater than or equal to = Function( {val},
+	New Object( UtOrderingComparisonMatcher( val, "Greater or Equal", "greater than or equal to" ) )
+);

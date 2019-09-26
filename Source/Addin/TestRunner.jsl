@@ -1,0 +1,152 @@
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here(0);
+
+ut runner home = Get Default Directory();
+
+ut icon = Function( {name},
+	Eval Insert( "^ut runner home^Icons/^name^.png" )
+);
+
+/* 
+	Function: ut augment editor
+		---Prototype---
+		augment editor( Window editor_window, Box augment_box )
+		---------------
+		Adds extra box to the right of the editor script box.
+*/
+ut augment editor = Function({editor window, augment box, position},
+	{splitter, script, log if, log scroll, tab},
+	splitter = editor window[1];
+	if( position == "Side",
+		script = Remove From(splitter, 1);
+		splitter << Prepend(
+			H Splitter Box(
+				script,
+				augment box,
+				<<Size(0.2)
+			)
+		);
+	,
+		log if = Remove From(splitter, 2);
+		tab = Tab Box();
+		splitter << Append(tab);
+		splitter << Size( .25 );
+		Insert Into( tab, augment box );
+		log scroll = Remove From(log if, 1);
+		Insert Into( log if, Tab Page Box( "Log", log scroll ) );
+		If( ut test runner preference( "Show Embedded Log" ),
+			log if << Set( 1 );
+		);
+		Insert Into(tab, log if );
+	);
+	editor window
+);
+
+/* 
+	Function: ut make reporter gui
+	
+		Creates the box, sets up internal scripts, and attaches reporters.
+*/
+ut make reporter gui = Function({position},
+	{help, clear, run, busy, busy container, summary, details, mini log scroll, mini log, timing, subbox, box, reporters},
+	help = Mouse Box( Icon Box( ut icon("help-24px") ) );
+	clear = Mouse Box( Icon Box( ut icon("clear-24px") ) );
+	run = Mouse Box( Icon Box( ut icon("play-24px") ) );
+	busy = Busy Light( <<Automatic( 0 ), <<Disable, <<Size(24, 24), <<Padding({5, 0, 5, 0}) );
+	busy container = Mouse Box( busy, <<Set Default Cursor( "Arrow" ) );
+	summary = Text Box();
+	details = Tree Box( {}, <<Set Max Size( 1000, 1000 ), <<Set Min Size( 200, 300 ), <<Set Auto Stretching( 1, 1 ) );
+	If( ut test runner preference( "Use Markup" ),
+		mini log scroll = Scroll Box(Size(250, 400), 
+			mini log = Text Box("", <<Markup, <<Set Wrap(1000), <<Padding( {5,5,5,5} ) ), <<Background Color("white"), <<Set Max Size( 1000, 1000 ), <<Set Min Size( 200, 300 ), <<Set Auto Stretching( 1, 1 ) );
+	,
+		mini log scroll = mini log = Script Box("", "text");
+		mini log << Read Only( 1 );
+	);
+	timing = Text Box();
+	
+	subbox = If( position == "Side",
+		V List Box(
+			H List Box( Align( "Center" ), clear, run, help, busy container, summary ),
+			V Splitter Box(
+				details,
+				mini log scroll
+			),
+			H List Box(	timing )
+		),
+		H List Box(
+			V List Box(
+				H list Box( Align("bottom"), busy container, summary ), 
+				H Splitter Box(
+					H List Box(
+						V List Box( clear, run, help ),
+						V List Box( 
+							details, 
+							timing 
+						)
+					),
+					mini log scroll,
+					<<Size( .75 )
+				)
+			)
+		)
+	);
+	{help, clear, run} 	<<Set Mark Enable( 1 )
+						<<Set Default Cursor( "Finger" )
+						<<Margin( {3, 1, 3, 1} )
+						<<Padding( {2, 2, 2, 2} );
+	box = Tab Page Box( "Test Runner",
+		<<Icon( ut icon( "runner-32px" ) ),
+		<<Closeable(), 
+		<<SetClose( 
+			Function({this},
+				{win, tab, splitter, log if, log tab page, log},
+				win = Current Window();
+				If( (ut global reporter << get reporter( win )):position == "Bottom",
+					tab = this << Parent;
+					splitter = tab << Parent;
+					log if = Remove From( tab, 2 );
+					log tab page = Remove From( log if, 1 );
+					log = Remove from( log tab page, 1 );
+					Insert Into( log if, log );
+					Remove From( splitter, 2 );
+					Insert Into( splitter, log if );
+					
+				);
+				ut global reporter << unregister reporter( win );
+			)
+		),
+		subbox
+	);
+	run << Set Mark(Function({this},
+		::ut global reporter << on run start;
+		Current Window()[Script Box(1)] << Run;
+		::ut global reporter << on run end;
+	));
+	Eval(Eval Expr(clear << Set Mark(Function({this},
+		Expr(summary) << Set Text("");
+		Expr(timing) << Set Text("");
+		Expr(details) << Set Roots({});
+	))));
+	Eval(Eval Expr(details << Set Node Select Script(
+		Function({tb, node}, {str},
+			If(Is Empty(node),
+				Expr(mini log) << Set Text(""),
+				Expr(mini log) << Set Text(ut format node data(node))
+			)
+		);
+	)));
+	help << Set Mark(Function({this},
+		Include("$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\OpenDocumentation.jsl")
+	));
+	reporters = {};
+	Insert Into(reporters, New Object(UtSummaryReporter(summary)));
+	Insert Into(reporters, New Object(UtBusyReporter(busy)));
+	Insert Into(reporters, New Object(UtTimingReporter(timing)));
+	Insert Into(reporters, New Object(UtDetailsTreeReporter(details)));
+	reporter = New Object( UtCompositeReporter(reporters) );
+	reporter:position = position;
+	Eval List({box, reporter})
+);

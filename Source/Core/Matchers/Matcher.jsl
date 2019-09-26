@@ -1,0 +1,50 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/* 
+	Class: UtMatcher
+		---Prototype---
+		class UtMatcher
+		---------------
+		Base class for all matchers. If a function requires a matcher as 
+		an argument, it can be either an explicit matcher or a literal
+		value. The literal value will be converted to an equal to matcher.
+		
+		Once a matcher is constructed, it is able to give a description of
+		itself, determine if it is satisified by a value, and, if not, give
+		an informative description of why it is not satisfied. This provides
+		a base class for all matchers. This isn't necessary but it is useful
+		to describe the contract that all matchers must follow. Matchers
+		should not be stateful (past the state given during construction). 
+*/
+Define Class(
+	"UtMatcher",
+	// Function: matches
+	//
+	// Is the matcher satisfied by the given argument?
+	//
+	// Returns:
+	//    1 if test expr did match, 0 otherwise
+	//
+	// Parameters:
+	//    test expr - an expression to be matched
+	//
+	matches = Method( {test expr},
+		ut match info failure( "mismatch NOT YET IMPLEMENTED" )
+	);
+	
+	// Function: describe
+	//
+	// A description of the matcher. This description will likely be
+	// embedded into a larger description so sentence fragments are
+	// best. Look at other matchers or try different uses of your
+	// own matcher to ensure the phrasing is natural.
+	//
+	// Returns:
+	//    String describing the matcher's criteria
+	describe = Method( {},
+		"describe() NOT YET IMPLEMENTED"
+	);
+);

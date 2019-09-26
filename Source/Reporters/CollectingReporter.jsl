@@ -1,0 +1,119 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtCollectingReporter
+		---Prototype---
+		class UtCollectingReporter inherits UtReporter
+		---------------
+		Collect information about successes and failures in lists.
+		Then issue a report on demand.
+*/
+Define Class(
+	"UtCollectingReporter",
+	Base Class( UtReporter ),
+	// Variable: successes
+	successes = {};
+	
+	// Variable: failures
+	failures = {};
+	
+	// Variable: unexpected throws
+	unexpected throws = {};
+
+	// Function: add expression failure
+	add expression failure = Method( {label, payload=Empty()},
+		add failure( label, "test expr", "is an expression", "was not an expression", Empty(), Name Expr( payload ) );
+	);
+
+	// Function: add failure
+	add failure = Method( {label, test expr, description, mismatch, lre, payload=Empty()},
+		record = Eval List( {label, Name Expr( test expr ), description, mismatch, lre,  Name Expr( payload )} );
+		Insert Into( this:failures, Eval List( {record} ) );
+		0;
+	);
+	
+	// Function: add unexpected throw
+	add unexpected throw = Method( {label, test expr, description, exception, payload=Empty()},
+		record = Eval List( {label, Name Expr( test expr ), description, exception, Name Expr( payload )} );
+		Insert Into( this:unexpected throws, Eval List( {record} ) );
+		0;
+	);
+	
+	// Function: add success
+	add success = Method( {label, test expr, description, payload=Empty()},
+		record = Eval List( {label, Name Expr( test expr ), description, Name Expr( payload )} );
+		Insert Into( this:successes, Eval List( {record} ) );
+		1;
+	);
+	
+	// Function: N successes
+	N successes = Method( {},
+		Length( this:successes )
+	);
+	
+	// Function: N failures
+	N failures = Method( {},
+		Length( this:failures )
+	);
+	
+	// Function: N unexpected throws
+	N unexpected throws = Method( {},
+		Length( this:unexpected throws )
+	);
+	
+	// Function: N total failures
+	//
+	// Combination of failures and unexpected throws
+	N total failures = Method( {},
+		Length( this:failures ) + Length( this:unexpected throws )
+	);
+	
+	// Function: show report
+	//
+	// Dump a report to the log detailing all the successes and
+	// failures that have been collected up to this point.
+	show report = Method( {},
+		num successes = Length( this:successes );
+		num failures = Length( this:failures );
+		num unexpected throws = Length( this:unexpected throws );
+		Write( "\!n\!n=============== Report ===============" );
+		Write( "\!nsuccesses         : " || Char( num successes ) );
+		Write( "\!nfailures          : " || Char( num failures ) );
+		Write( "\!nunexpected throws : " || Char( num unexpected throws ) );
+		Write( "\!n------------- Successes --------------" );
+		For( i = 1, i <= num successes, i++,
+			char test expr = If( Is Expr( Name Expr( this:successes[i][2] ) ),
+				Char( Name Expr( this:successes[i][2] ) ),
+				Char( this:successes[i][2] )
+			) || " ";
+			Write( "\!n  Label: " || this:successes[i][1] || "\!n" );
+			Write( "  Expected: " || char test expr || this:successes[i][3] || "\!n" );
+		);
+		Write( "\!n-------------- Failures --------------" );
+		For( i = 1, i <= num failures, i++,
+			char test expr = If( Is Expr( Name Expr( this:failures[i][2] ) ),
+				Char( Name Expr( this:failures[i][2] ) ),
+				Char( this:failures[i][2] )
+			) || " ";
+			Write( "\!n  Label: " || this:failures[i][1] || "\!n" );
+			Write( "  Expected: " || char test expr || this:failures[i][3] || "\!n" );
+			Write( "  But: " || this:failures[i][4] || "\!n" );
+		);
+		Write( "\!n--------- Unexpected Throws ----------" );
+		For( i = 1, i <= num unexpected throws, i++,
+			char test expr = If( Is Expr( Name Expr( this:unexpected throws[i][2] ) ),
+				Char( Name Expr( this:unexpected throws[i][2] ) ),
+				Char( this:unexpected throws[i][2] )
+			) || " ";
+			Write( "\!n  Label: " || this:unexpected throws[i][1] || "\!n" );
+			Write( "  Expected: " || char test expr || this:unexpected throws[i][3] || "\!n" );
+			If( Is Empty( this:unexpected throws[i][4] ),
+				Write( "  But: " || "unexpectedly threw nothing\!n" ),
+				Write( "  But: " || "unexpectedly threw \!"" || this:unexpected throws[i][4] || "\!"\!n" )
+			);
+		);
+	);
+);

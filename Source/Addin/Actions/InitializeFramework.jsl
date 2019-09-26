@@ -1,0 +1,25 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here(0);
+
+ut meets hamcrest requirements = Function({}, {version, major, minor},
+	version = Words(JMP Version(), ".");
+	major = Num(version[1]);
+	minor = Num(version[2]);
+	If(major < 14 | (major == 14 & minor < 1), 0, 1)
+);
+
+If(!ut meets hamcrest requirements(),
+	New Window("Error", <<Modal, Text Box("JSL Hamcrest requires at least JMP 14.1"));
+	Stop();
+);
+
+// If reporter does not exist or is the wrong type, reset the framework
+If(Try((::ut global reporter << Get Name) != "UtWindowDispatchingReporter", 1),
+	Include( "../../All.jsl" );
+	Include( "../Reporters.jsl" );
+	Include( "../TestRunner.jsl" );
+	Include( "../TestRunnerPreferences.jsl" );
+	::ut global reporter = New Object(UtWindowDispatchingReporter(New Object(UtStreamingLogReporter)));
+);
