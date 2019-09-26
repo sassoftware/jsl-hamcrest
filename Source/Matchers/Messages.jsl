@@ -1,0 +1,135 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtMessageMatcher
+		---Prototype---
+		class UtMessageMatcher inherits UtMatcher
+		---------------
+		
+		Matches using an inner matcher after sending a desired message
+		to the resulting object.
+*/
+Define Class("UtMessageMatcher", 
+	Base Class( UtMatcher ),
+	inner = Empty();
+	description = "";
+	message = "";
+	_init_ = Method( {inner, description, message},
+		this:inner = inner;
+		this:description = description;
+		this:message = message;
+	);
+	matches = Method( {test expr},
+		actual obj = test expr;
+		if( ut object supports message( Name Expr( actual obj ), this:message ),
+			Eval( Eval Expr( this:inner << Matches( Send( actual obj, Expr( this:message ) ) ) ) );
+		,
+			ut match info failure( ut detailed type( Name Expr( actual obj ) ) || " does not support <<" || this:message )
+		);
+	);
+	describe = Method( {},
+		this:description || " " || inner:describe();
+	);
+);
+
+// Section: Globals
+
+/* 
+	Function: ut title
+		---Prototype---
+		ut title( UtMatcher matcher )
+		---------------
+		Compare inner matcher to the result of sending the Get Title message to the result.
+		
+		Factory function for <UtMessageMatcher>.
+
+	Arguments:
+		matcher - any object
+
+	Examples:
+		---JSL---
+		pb = Panel Box( "hello, world" );
+		ut assert that( Expr( pb ), ut title( "hello, world" ) );
+		---------
+*/
+ut matcher factory( "ut title" );
+ut title = Function( {matcher},
+	New Object( UtMessageMatcher( ut ensure matcher( Name Expr( matcher ) ), "title", "Get Title" ) );
+);
+
+/* 
+	Function: ut text
+		---Prototype---
+		ut text( UtMatcher matcher )
+		---------------
+		Compare inner matcher to the result of sending the Get Text message to the result.
+		
+		Factory function for <UtMessageMatcher>.
+
+	Arguments:
+		matcher - any object
+
+	Examples:
+		---JSL---
+		tb = Text Box( "hello, world" );
+		ut assert that( Expr( tb ), ut text( "hello, world" ) );
+		---------
+*/
+ut matcher factory( "ut text" );
+ut text = Function( {matcher},
+	New Object( UtMessageMatcher( ut ensure matcher( Name Expr( matcher ) ), "text", "Get Text" ) );
+);
+
+/* 
+	Function: ut class name
+		---Prototype---
+		ut class name( UtMatcher matcher )
+		---------------
+		Compare inner matcher to the result of sending the Class Name message to the result.
+		
+		Factory function for <UtMessageMatcher>.
+
+	Arguments:
+		matcher - any object
+
+	Examples:
+		---JSL---
+		pb = Panel Box( "hello, world" );
+		ut assert that( Expr( pb ), ut class name( "PanelBox" ) );
+		---------
+*/
+ut matcher factory( "ut class name" );
+ut class name = Function( {matcher},
+	New Object( UtMessageMatcher( ut ensure matcher( Name Expr( matcher ) ), "class name", "Class Name" ) );
+);
+
+/* 
+	Function: ut name
+		---Prototype---
+		ut name( UtMatcher matcher )
+		---------------
+		Compare inner matcher to the result of sending the Get Name message to the result.
+		
+		Factory function for <UtMessageMatcher>.
+		
+		See <ut host table name> for info on converting data table names to host versions.
+
+	Arguments:
+		matcher - any object
+
+	Examples:
+		---JSL---
+		dt = Open( "$SAMPLE_DATA\Big Class.jmp" );
+		ut assert that( Expr( dt ), ut name( ut host table name( "Big Class" ) ) );
+		
+		ns = New Namespace( "Foo" );
+		ut assert that( Expr( ns ), ut name( "Foo" ) );
+		---------
+*/
+ut matcher factory( "ut name" );
+ut name = Function( {matcher},
+	New Object( UtMessageMatcher( ut ensure matcher( Name Expr( matcher ) ), "name", "Get Name" ) );
+);

@@ -1,0 +1,49 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtNoThrowMatcher
+		---Prototype---
+		class UtNoThrowMatcher inherits UtMatcher
+		---------------
+		Matches if the expression under test does not throw.
+*/
+Define Class(
+	"UtNoThrow Matcher",
+	Base Class( UtMatcher ),
+	matches = Method( {test expr},
+		Try( 
+			test expr;
+			::ut match info success();
+		,
+			mismatch = "threw \!"" || ut extract thrown string( exception_msg ) || "\!"";
+			::ut match info failure( mismatch );
+		);
+	);
+	describe = Method( {}, "does not throw" );
+);
+
+// Section: Globals
+
+/*
+	Function: ut no throw
+		---Prototype---
+		ut no throw()
+		---------------
+		
+		Returns success if evaluated test expr does not throw. This is often 
+		unnecessary since an unexpected throw is treated as an failure. However, 
+		this can be useful if you specifically want to test that there is no 
+		throw and don't care about the result.
+
+		Factory function for <UtNoThrowMatcher>. 
+
+	Example:
+		> ut assert that( Expr( 5 + 5 ) ), ut no throw() );
+*/
+ut matcher factory( "ut no throw" );
+ut no throw = Function( {},
+	New Object( UtNoThrowMatcher() )
+);

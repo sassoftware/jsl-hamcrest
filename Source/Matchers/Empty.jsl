@@ -1,0 +1,48 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtEmptyMatcher
+		---Prototype---
+		class UtEmptyMatcher inherits UtMatcher
+		---------------
+		
+		Checks if a value is empty.
+*/
+Define Class(
+	"UtEmptyMatcher",
+	Base Class( UtMatcher ),
+	matches = Method( {test expr},
+		actual = test expr;
+		If( Is Empty( Name Expr( actual ) ),
+			::ut match info success(),
+			mismatch = Char( Name Expr( actual ) ) || " was not empty()";
+			::ut match info failure( mismatch );
+		);
+	);
+	describe = Method( {},
+		"empty()"
+	);
+);
+
+// Section: Globals
+
+/* 
+	Function: ut empty
+		---Prototype---
+		ut empty()
+		---------------
+		Uses the built-in Empty() function to determine if something
+		is empty.
+		
+		Factory function for <UtEmptyMatcher>.
+
+	Example:
+		> ut assert that( Expr( Empty() ), ut empty() );
+*/
+ut matcher factory( "ut empty" );
+ut empty = Function( {},
+	New Object( UtEmptyMatcher() );
+);

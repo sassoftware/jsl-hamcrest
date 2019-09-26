@@ -1,0 +1,56 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtFileAppendingReporter
+		---Prototype---
+		class UtFileAppendingReporter inherits UtReporter
+		---------------
+*/
+Define Class(
+	"UtFileAppendingReporter",
+	Base Class( UtReporter ),
+	
+	filepath = "";
+	
+	_init_ = Method({filepath},
+		this:filepath = filepath;
+		Save Text File( filepath, "" );
+	);
+
+	// Function: add expression failure
+	add expression failure = Method( {label, payload=Empty()},
+		add failure( label, "test expr", "is an expression", "was not an expression", Empty(), Name Expr( payload ) );
+	);
+
+	// Function: add failure
+	add failure = Method( {label, test expr, description, mismatch, lre, payload=Empty()},
+		shortDescription = If( Length( description ) > 40,
+			Left( description, 30 ) || " ...",
+			description
+		);
+		
+		failure = "";
+		failure ||= Eval Insert( "\!NFAILURE: ^Name Expr(test expr)^ ^shortDescription^ (^label^) " );
+		failure ||= Eval Insert( "\!N         Actual: ^mismatch^\!N       Expected: ^description^" );
+		
+		If( !IsEmpty( LRE ),
+			failure ||= Eval Insert( "\!N            LRE: ^LRE^" );
+		);
+		
+		Save Text File( filepath, failure, Mode( "Append" ) );
+		0;
+	);
+	
+	// Function: add unexpected throw
+	add unexpected throw = Method( {label, test expr, description, exception, payload=Empty()},
+		add failure( label, Name Expr( test expr ), description, "threw \!"" || exception || "\!"", empty(), Name Expr( payload ) );
+	);
+	
+	// Function: add success
+	add success = Method( {label, test expr, description, payload=Empty()},
+		1;
+	);
+);

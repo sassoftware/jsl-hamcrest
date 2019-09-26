@@ -1,0 +1,155 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtParseMatcher
+		---Prototype---
+		class UtParseMatcher inherits UtMatcher
+		---------------
+		
+		Operates only on matchers. 
+*/
+Define Class(
+	"UtParseMatcher",
+	Base Class( UtMatcher ),
+	inner = Empty();
+	_init_ = Method( {inner},
+		this:inner = inner;
+	);
+	matches = Method( {test expr},
+		actual = test expr;
+		log = Trim( Log Capture( parsed = Parse( Name Expr( actual ) ) ) );
+		
+		If( log == "",
+			this:inner << Matches( Insert( Expr( Expr() ), Name Expr( parsed ) ) ),
+			ut match info failure( Eval Insert( "\[threw parse error "^log^"]\" ) )
+		);
+	);
+	describe = Method( {},
+		"parsed " || (this:inner << Describe)
+	);
+);
+
+/*
+	Class: UtParseErrorMatcher
+		---Prototype---
+		class UtParseErrorMatcher inherits UtMatcher
+		---------------
+		
+		Operates only on matchers. 
+*/
+Define Class(
+	"UtParseErrorMatcher",
+	Base Class( UtMatcher ),
+	inner = Empty();
+	_init_ = Method( {inner},
+		this:inner = inner;
+	);
+	matches = Method( {test expr},
+		actual = test expr;
+		log = Trim( Log Capture( parsed = Parse( Name Expr( actual ) ) ) );
+		If( log != "",
+			this:inner << Matches( log );
+		,
+			ut match info failure( Eval Insert( "did not throw and parsed was ^Name Expr( parsed )^" ) );
+		);
+	);
+	describe = Method( {},
+		"parse throws " || (this:inner << Describe)
+	);
+);
+
+/*
+	Class: UtNoParseErrorMatcher
+		---Prototype---
+		class UtNoParseErrorMatcher inherits UtMatcher
+		---------------
+		
+		Operates only on matchers. 
+*/
+Define Class(
+	"UtNoParseErrorMatcher",
+	Base Class( UtMatcher ),
+	
+	matches = Method( {test expr},
+		actual = test expr;
+		log = Trim( Log Capture( Parse( Name Expr( actual ) ) ) );
+		
+		If( log == "",
+			ut match info success(),
+			ut match info failure( Eval Insert( "\[threw parse error "^log^"]\" ) )
+		);
+	);
+	describe = Method( {},
+		"parse does not throw"
+	);
+);
+
+
+// Section: Globals
+
+/* 
+	Function: ut parsed
+		---Prototype---
+		ut parsed( UtMatcher matcher )
+		---------------
+		Compare an expression to a parsed string.
+		
+		Factory function for <UtParseMatcher>.
+
+	Arguments:
+		matcher - any object
+
+	Examples:
+		---JSL---
+		ut assert that( ut as expr( "x+4" ), ut parsed( Expr( x + 4 ) ) );
+		---------
+*/
+ut matcher factory( "ut parsed" );
+ut parsed = Function( {matcher},
+	New Object( UtParseMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
+);
+
+/* 
+	Function: ut parse error
+		---Prototype---
+		ut parse error( UtMatcher matcher )
+		---------------
+		Checks that a given string throws an error when parsed.
+		
+		Factory function for <UtParseErrorMatcher>.
+
+	Arguments:
+		matcher - any object
+
+	Examples:
+		---JSL---
+		ut assert that( ut as expr( "x == ." ), ut parse error( ut starts with( "Comparisons with missing must be done with the isMissing() function" ) ) );
+		---------
+*/
+ut matcher factory( "ut parse error" );
+ut parse error = Function( {matcher},
+	New Object( UtParseErrorMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
+);
+
+
+/* 
+	Function: ut no parse error
+		---Prototype---
+		ut no parse error( UtMatcher matcher )
+		---------------
+		Checks that a given string parses successfully.
+		
+		Factory function for <UtNoParseErrorMatcher>.
+
+	Examples:
+		---JSL---
+		ut assert that( ut as expr( "x = 5;" ), ut no parse error() );
+		---------
+*/
+ut matcher factory( "ut no parse error" );
+ut no parse error = Function( {},
+	New Object( UtNoParseErrorMatcher() );
+);

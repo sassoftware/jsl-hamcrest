@@ -1,0 +1,54 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtElapsedTimeMatcher
+		---Prototype---
+		class UtElapsedTimeMatcher inherits UtMatcher
+		---------------
+		
+		Matches the total time (in seconds) that the test expression takes to evaluate.
+*/
+Define Class(
+	"UtElapsedTimeMatcher",
+	Base Class( Ut Matcher ),
+	inner = Empty();
+	_init_ = Method( {inner},
+		this:inner = inner;
+	);
+	matches = Method( {test expr},
+		start = hp time();
+		test expr;
+		end = hp time();
+		this:inner:matches( (end - start) / 1000000 );
+	);
+	describe = Method( {},
+		"elapsed time " || this:inner:describe() || " seconds"
+	);
+);
+
+// Section: Globals
+
+/* 
+	Function: ut elapsed time
+		---Prototype---
+		ut elapsed time( UtMatcher matcher )
+		---------------
+		Captures the amount of time it takes for the test expression
+		to evaluate. Accurate up to the microsecond, but compares in
+		seconds.
+
+		Factory function for <UtElapsedTimeMatcher>.
+
+	Arguments:
+		matcher - any object
+
+	Example:
+		> ut assert that( Expr( Wait( 2 ) ), ut elapsed time( ut greater than or equal to( 2 ) ) );
+*/
+ut matcher factory( "ut elapsed time" );
+ut elapsed time = Function( {matcher},
+	New Object( UtElapsedTimeMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+);

@@ -1,0 +1,52 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtSortedMatcher
+		---Prototype---
+		class UtSortedMatcher inherits UtMatcher
+		---------------
+		Matches on the sorted version of the returned list.
+*/
+Define Class("UtSortedMatcher", Base Class(Ut Matcher),
+	inner = Empty();
+	_init_ = Method( {inner},
+		this:inner = inner;
+	);
+	matches = Method( {test expr},
+		actual = test expr;
+		If( Is List( Name Expr( actual ) ),
+			match info = this:inner << Matches( Sort List( actual ) );
+			If( !match info:success,
+				match info:mismatch = Eval Insert( "^actual^ sorted ^match info:mismatch^" );
+			);
+			match info;
+		,
+			ut match info failure( Eval Insert( "^ut get show string( Name Expr( actual ) )^ is not a list" ) )
+		);
+	);
+	describe = Method( {},
+		"sorted " || inner:describe();
+	);
+);
+
+// Section: Globals
+
+/* 
+	Function: ut sorted
+		---Prototype---
+		ut sorted( UtMatcher matcher )
+		---------------
+	
+	Factory function for <UtSortedMatcher>.
+
+	Example:
+		> ut assert that( Expr( {3,2,1} ), ut sorted( {1,2,3} ) );
+*/
+
+ut matcher factory( "ut sorted" );
+ut sorted = Function( {matcher},
+	New Object( UtSortedMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
+);

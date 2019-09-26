@@ -1,0 +1,56 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtNotMatcher
+		---Prototype---
+		class UtNotMatcher inherits UtMatcher
+		---------------
+		Negates a contained matcher. 
+*/
+Define Class(
+	"UtNotMatcher",
+	Base Class( UtMatcher ),
+	inner = 0;
+	
+	_init_ = Method( {inner},
+		this:inner = inner
+	);
+	matches = Method( {test expr},
+		obj = this:inner:matches( Name Expr( test expr ) );
+		obj:success = !obj:success;
+		If( !obj:success,
+			// obj does not have all info we need, so we just use the 
+			// inner description for now...
+			obj:mismatch = "was " || this:inner:describe()
+		);
+		obj;
+	);
+	describe = Method( {},
+		"not " || this:inner:describe()
+	);
+);
+
+// Section: Globals
+
+/*
+	Function: ut not
+		---Prototype---
+		ut not( UtMatcher matcher )
+		---------------
+		Negates the given inner matcher.
+
+		Factory function for <UtNotMatcher>.
+
+	Arguments:
+		matcher - any object
+
+	Example:
+		> ut assert that( Expr( 5 + 5 ), ut not( ut equal to( 11 ) ) );
+*/
+ut matcher factory( "ut not" );
+ut not = Function( {matcher},
+	New Object( UtNotMatcher( ut ensure matcher( Name Expr( matcher ) )) );
+);

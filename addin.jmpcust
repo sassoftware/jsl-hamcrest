@@ -1,0 +1,64 @@
+<!-- JMP Add-In Builder created --><jm:menu_and_toolbar_customizations xmlns:jm="http://www.jmp.com/ns/menu" version="3">
+  <jm:insert_in_main_menu>
+    <jm:insert_in_menu>
+      <jm:name>Add-Ins</jm:name>
+      <jm:insert_after>
+        <jm:name></jm:name>
+        <jm:menu>
+          <jm:name>JSL HAMCREST</jm:name>
+          <jm:caption>JSL Hamcrest</jm:caption>
+          <jm:command>
+            <jm:name>TEST RUNNER</jm:name>
+            <jm:caption>Test Runner</jm:caption>
+            <jm:action type="path">$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\AddTestRunner.jsl</jm:action>
+            <jm:tip>Add Hamcrest Test Runner to current script editor window</jm:tip>
+            <jm:icon type="path">$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Icons\runner-32px.png</jm:icon>
+          </jm:command>
+          <jm:command>
+            <jm:name>RUN TESTS</jm:name>
+            <jm:caption>Run Tests</jm:caption>
+            <jm:action type="path">$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\RunTests.jsl</jm:action>
+            <jm:tip>Run tests for the current window</jm:tip>
+            <jm:accel>F5</jm:accel>
+            <jm:icon type="none"></jm:icon>
+          </jm:command>
+          <jm:command>
+            <jm:name>INITIALIZE</jm:name>
+            <jm:caption>Initialize</jm:caption>
+            <jm:action type="path">$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\InitializeFramework.jsl</jm:action>
+            <jm:tip>Define global functions needed for Hamcrest (without starting Test Runner)</jm:tip>
+            <jm:icon type="none"></jm:icon>
+          </jm:command>
+          <jm:command>
+            <jm:name>PREFERENCES</jm:name>
+            <jm:caption>Preferences</jm:caption>
+            <jm:action type="path">$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\OpenTestRunnerPreferences.jsl</jm:action>
+            <jm:tip>Modify Hamcrest preferences</jm:tip>
+            <jm:icon type="none"></jm:icon>
+          </jm:command>
+          <jm:command>
+            <jm:name>HELP</jm:name>
+            <jm:caption>Help</jm:caption>
+            <jm:action type="path">$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\OpenDocumentation.jsl</jm:action>
+            <jm:tip>Open Hamcrest documentation</jm:tip>
+            <jm:icon type="none"></jm:icon>
+          </jm:command>
+        </jm:menu>
+      </jm:insert_after>
+    </jm:insert_in_menu>
+  </jm:insert_in_main_menu>
+  <jm:insert_in_toolbar>
+    <jm:name>SCRIPT EDITOR</jm:name>
+    <jm:insert_after>
+      <jm:name>DEBUG SCRIPT</jm:name>
+      <jm:separator/>
+      <jm:command>
+        <jm:name>TEST RUNNER</jm:name>
+        <jm:caption>Test Runner</jm:caption>
+        <jm:action type="path">$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\AddTestRunner.jsl</jm:action>
+        <jm:icon type="path">$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Icons\runner-32px.png</jm:icon>
+        <jm:accel>Ctrl+F5</jm:accel>
+      </jm:command>
+    </jm:insert_after>
+  </jm:insert_in_toolbar>
+</jm:menu_and_toolbar_customizations>
