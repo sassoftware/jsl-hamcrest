@@ -168,7 +168,7 @@ ut test case = Function({name},
 		Forwards only non-successful events to an inner reporter.
 */
 Define Class("UtSuccessFilteringReporter",
-	Base Class( UtReporter ),
+	Base Class( "UtReporter" ),
 	inner = Empty();
 	_init_ = Method( {inner},
 		this:inner = inner
@@ -200,7 +200,7 @@ Define Class("UtSuccessFilteringReporter",
 */
 Define Class(
 	"UtBufferingReporter",
-	Base Class( UtReporter ),
+	Base Class( "UtReporter" ),
 	buffer = {};
 	inner = Empty();
 	_init_ = Method( {inner},
@@ -280,9 +280,9 @@ ut test log benchmark label = Function({case name, test name},
 );
 
 // Variable: ut test buffering reporter
-ut test buffering reporter = New Object(UtBufferingReporter(Empty()));
+ut test buffering reporter = New Object("UtBufferingReporter"(Empty()));
 // Variable: ut test filtering reporter
-ut test filtering reporter = New Object(UtSuccessFilteringReporter(Empty()));
+ut test filtering reporter = New Object("UtSuccessFilteringReporter"(Empty()));
 
 /* 
 	Function: ut test

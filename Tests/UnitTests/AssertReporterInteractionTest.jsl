@@ -3,7 +3,7 @@
 
 Assertion = ut test case("Assertion")
 	<<Setup(Expr(
-		reporter = New Object(Ut Mock Reporter);
+		reporter = ut mock reporter();
 	))
 	<<Teardown(Expr(
 		reporter << Verify Expectations;
