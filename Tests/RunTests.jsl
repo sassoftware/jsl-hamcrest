@@ -40,13 +40,6 @@ ut mock reporter = Function({}, {obj},
 	obj
 );
 
-Local({files, iFile, includeExprs={}},
-	files = Files In Directory( "UnitTests", "recursive" );
-	For( iFile = 1, iFile <= N Items( files ), iFile++,
-		Insert Into( includeExprs, Eval Expr( Include( Expr( "UnitTests/" || files[iFile] ) ) ) );
-	);
-    // Eval after loop to avoid name collisions 
-    // with files and iFile.
-    Eval List( includeExprs );
-    ut nullptr; // To prevent echo to log
-);
+ut include jsl files recursively( "UnitTests" );
+
+ut nullptr; // To prevent echo to log
