@@ -1,0 +1,61 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*	Class: UtInstanceOfMatcher
+		---Prototype---
+		class UtInstanceOfMatcher inherits UtTypedMatcher
+		---------------
+*/
+Define Class(
+	"UtInstanceOfMatcher",
+	Base Class( "UtTypedMatcher" ),
+	value = Empty();
+	allowable types = {Class};
+	_init_ = Method( {value},
+		this:value = value;
+	);
+	typed matches = Method( {actual},
+		actual class name = actual << Get Name;
+		If( As Name( actual class name ) == As Name( this:value ),
+			ut match info success(),
+			ut match info failure( Eval Insert( "was class of type ^actual class name^" ) )
+		);
+	);
+	describe = Method( {},
+		Eval Insert( "instance of ^this:value^" );
+	);
+);
+
+/*	Function: ut instance of
+		---Prototype---
+		ut instance of( class object )
+		---------------
+		Factory function for <UtInstanceOfMatcher>.
+		
+		Checks if actual value is a class object of a specific
+		type. 
+		
+		Note: this matcher does not check base class names. 
+		You may need to use duck typing and create your own 
+		matcher for this purpose.
+
+	Arguments:
+		value - string of class name
+
+	Examples:
+		---JSL---
+		Define Class("Foo");
+		ut assert that( Expr( New Object( "Foo" ) ), ut instance of( "Foo" ) );
+		---------
+*/
+ut matcher factory( "ut instance of" );
+ut instance of = Function({val},
+	{obj},
+	If( !Is String( Name Expr( val ) ),
+		Throw( "argument to ut instance of() must be a string" ),
+		obj = New Object( UtInstanceOfMatcher( val ) );
+		obj:this obj = obj;
+	);
+);

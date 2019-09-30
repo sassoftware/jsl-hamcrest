@@ -25,6 +25,7 @@ Section: Matcher Global Function Index
 		- <ut elapsed time>
 		- <ut skip>
 		- <ut skip failing>
+		- <ut instance of>
 
 	Group: Host
 		
