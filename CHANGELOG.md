@@ -10,10 +10,12 @@ All notable changes to this project will be documented in this file.
 ### Changed
  - Must use factory functions for reporters rather than `New Object` (#3).
  - Test labels can now be anything (not just strings, #6)
+ - Embedded Log is now off by default (for GUI, #18)
 
 ### Fixed
  - Log failures within `ut test` now affect return code (#6)
  - Namespaces and Classes are now properly cleaned up after `ut test` (#7)
+ - Locals in `ut assert that` are now less likely to collide with user variables (#8)
 
 ## [1.0.1] - Inital version available on GitHub
 ### Changed
