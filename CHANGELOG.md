@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
  - Embedded Log is now off by default (for GUI, #18)
  - Reworded `ut all of` mismatch to be less confusing (#21)
  - `StreamingLogReporter` now gives a better error message when expecting an expression (#22)
+ - `ut global reporter` will no longer be overwritten if `Core.jsl` is included multiple times (#26)
 
 ### Fixed
  - Log failures within `ut test` now affect return code (#6)
