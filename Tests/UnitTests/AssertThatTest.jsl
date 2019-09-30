@@ -43,3 +43,10 @@ assert rc = with noop reporter( Expr(
 	ut assert that( Expr( 2 + 2 ), 4, "hello" );
 ));
 ut assert that( Expr( assert rc ), 1, "accepts optional label");
+
+// Label can be anything
+assert rc = with noop reporter( Expr(
+	ut assert that( Expr( 2 + 2 ), 4, Expr(a name) );
+));
+ut assert that( Expr( assert rc ), 1, "label can be anything");
+

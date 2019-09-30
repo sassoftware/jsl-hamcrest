@@ -1,0 +1,34 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+// TODO: 
+// - use ut test case(): setup/teardown
+// - multiple assertions (worst is returned)
+// - labels send to reporter correctly (empty labels)
+
+// SUCCESS
+test case rc = with noop reporter( Expr(
+	ut test( "TestCase", "Success", Expr(
+		ut assert that( Expr( 0 + 1 ), 1 );
+	));
+));
+ut assert that( Expr( test case rc ), 1 );
+
+// FAILURE
+test case rc = with noop reporter( Expr(
+	ut test( "TestCase", "Failure", Expr(
+		ut assert that( Expr( 0 + 1 ), 0 );
+	));
+));
+ut assert that( Expr( test case rc ), 0 );
+
+// LOG FAILURE
+test case rc = with noop reporter( Expr(
+	ut test( "TestCase", "Failure", 
+		Expr(
+			Print( "Hello, world." );
+		), 
+		ut log bench( 1 )
+	);
+));
+ut assert that( Expr( test case rc ), 0 );
