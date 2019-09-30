@@ -142,11 +142,11 @@ ut make reporter gui = Function({position},
 		Include("$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\OpenDocumentation.jsl")
 	));
 	reporters = {};
-	Insert Into(reporters, New Object(UtSummaryReporter(summary)));
-	Insert Into(reporters, New Object(UtBusyReporter(busy)));
-	Insert Into(reporters, New Object(UtTimingReporter(timing)));
-	Insert Into(reporters, New Object(UtDetailsTreeReporter(details)));
-	reporter = New Object( UtCompositeReporter(reporters) );
+	Insert Into(reporters, ut summary reporter(summary));
+	Insert Into(reporters, ut busy reporter(busy));
+	Insert Into(reporters, ut timing reporter(timing));
+	Insert Into(reporters, ut details tree reporter(details));
+	reporter = ut composite reporter(reporters);
 	reporter:position = position;
 	Eval List({box, reporter})
 );

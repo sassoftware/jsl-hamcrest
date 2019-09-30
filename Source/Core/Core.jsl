@@ -211,4 +211,4 @@ ut global lre = Function( {actual, expected},
 //
 // Redefine ut global reporter to customize how assert successes
 // and failures are reported when using ut assert that. 
-ut global reporter = New Object( Ut Reporter );
+ut global reporter = ut reporter();

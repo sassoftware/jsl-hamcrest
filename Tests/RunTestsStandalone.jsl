@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 Include( "../Source/All.jsl" );
-ut with reporter( New Object( UtStreamingLogReporter() ), Expr( 
+Include( "../Source/Addin/Reporters.jsl" );
+Include( "../Source/Addin/TestRunner.jsl" );
+Include( "../Source/Addin/TestRunnerPreferences.jsl" );
+ut with reporter( ut streaming log reporter(), Expr( 
 	Include( "RunTests.jsl" )
 ));
