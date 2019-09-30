@@ -4,7 +4,7 @@
 TypedMatcher = ut test case( "TypedMatcher" )
                     <<Setup(Expr(
                         m = New Object( "UtTypedMatcher" );
-                        m:this obj = m;
+                        m:self = m;
                     ));
 
 ut test( TypedMatcher, "ShouldThrowOnTypedMatches", Expr(

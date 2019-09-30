@@ -26,9 +26,9 @@ Define Class(
 	//    > allowable types = {Matrix, Number, Integer};
 	allowable types = {};
 	
-	// Variable: this obj
+	// Variable: self
 	//    Must be injected after class construction. Needed to reference base class methods.
-	this obj = Empty();
+	self = Empty();
 	
 	// Method: matches
 	//    Evaluates the given test expression and returns a <UtMatchInfo> failure when
@@ -36,8 +36,8 @@ Define Class(
 	//    method, which should be defined by the subclass.
 	matches = Method( {test expr},
 		actual = test expr;
-		If( Contains( this obj:allowable types, As Name( Type( Name Expr( actual ) ) ) ),
-			this obj << typed matches( Name Expr( actual ) );
+		If( Contains( self:allowable types, As Name( Type( Name Expr( actual ) ) ) ),
+			self << typed matches( Name Expr( actual ) );
 		,
 			mismatch = Eval Insert( "was ^ut get show string( Name Expr( actual ) )^ and type mismatch (Actual=^Type( Name Expr( actual ) )^, Expected=^this:format allowable types()^)" ); 
 			ut match info failure( mismatch );
@@ -53,9 +53,9 @@ Define Class(
 	//    Format allowable types member variable to be separated  {Type 1, Type 2} to "Type 1 or Type 2".
 	format allowable types = Method( {},
 		str = "";
-		n = N Items( this obj:allowable types );
+		n = N Items( self:allowable types );
 		For( i = 1, i <= n, i++,
-			str ||= Char( this obj:allowable types[i] );
+			str ||= Char( self:allowable types[i] );
 			If( i < n,
 				str ||= " or ";
 			)

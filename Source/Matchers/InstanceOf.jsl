@@ -56,6 +56,6 @@ ut instance of = Function({val},
 	If( !Is String( Name Expr( val ) ),
 		Throw( "argument to ut instance of() must be a string" ),
 		obj = New Object( UtInstanceOfMatcher( val ) );
-		obj:this obj = obj;
+		obj:self = obj;
 	);
 );

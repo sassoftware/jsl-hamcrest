@@ -11,9 +11,9 @@ Names Default To Here( 0 );
 		Holds information about a Test Case.
 */
 Define Class( "UtTestCaseFixture",
-	// Variable: this obj
+	// Variable: self
 	// Self reference.
-	this obj = Empty();
+	self = Empty();
 	// Variable: name
 	// Name of the test case
 	name = "";
@@ -48,7 +48,7 @@ Define Class( "UtTestCaseFixture",
 	Setup = Method( {setup expr},
 		If( !Is Expr( Name Expr( setup expr ) ), Throw( "ERROR: Setup must be an expression." ) );
 		this:setup expr = Name Expr( setup expr );
-		this:this obj;
+		this:self;
 	);
 
 	// Method: Get Setup
@@ -68,7 +68,7 @@ Define Class( "UtTestCaseFixture",
 	Teardown = Method( {teardown expr},
 		If( !Is Expr( Name Expr( teardown expr ) ), Throw( "ERROR: Teardown must be an expression." ) );
 		this:teardown expr = Name Expr( teardown expr ); 
-		this:this obj;
+		this:self;
 	);
 
 	// Method: Get Teardown
@@ -153,7 +153,7 @@ ut test case = Function({name},
 	obj = New Object( UtTestCaseFixture( name ) );
 	
 	// Set a reference to itself.
-	obj:this obj = local:obj;
+	obj:self = local:obj;
 	
 	// return the object
 	obj
