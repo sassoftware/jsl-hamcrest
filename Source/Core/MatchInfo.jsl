@@ -38,6 +38,13 @@ Define Class(
 		this:mismatch = mismatch;
 		this:lre = lre;
 	);
+	// Method: is success
+	//     Getter for success member variable.
+	is success = Method( {}, this:success );
+	// Method: get mismatch
+	get mismatch = Method( {}, this:mismatch );
+	// Method: get lre
+	get lre = Method( {}, this:lre );
 	// Method: _show_
 	// Returns string representation of the MatchInfo object. Used for debugging purposes
 	_show_ = Method( {},
