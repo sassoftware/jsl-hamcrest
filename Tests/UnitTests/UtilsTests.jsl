@@ -103,3 +103,13 @@ ut test( "Utils", "DifferenceBetweenLists", Expr(
     );
 ));
 
+ut test( "Utils", "DeleteSymbolsDifferenceDeletesNamespaces", Expr(
+    ns = .; // preserve symbol
+    before = ut get symbol information();
+    ns = New Namespace();
+    after = ut get symbol information(); 
+    ut assert that( Expr( after["namespaces"] ), ut contains( ns << Get Name ) );
+    ut delete symbols difference( before, after );
+    after delete = ut get symbol information();
+    ut assert that( Expr( after delete["namespaces"] ), ut not( ut contains( ns << Get Name ) ) );
+));
