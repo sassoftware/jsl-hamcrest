@@ -17,7 +17,7 @@ Define Class("UtStreamingLogReporter",
 		this:n assertions = 0
 	);
 	add expression failure = Method( {label, payload=Empty()},
-		add failure( label, "test expr", "is an expression", "was not an expression", Empty(), payload );
+		add failure( label, "test expr", "first argument to assertion is an expression", "was not an expression", Empty(), payload );
 	);
 	add failure = Method( {label, test expr, description, mismatch, lre, payload=Empty()},
 		n assertions++;
