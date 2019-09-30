@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
  - Log failures within `ut test` now affect return code (#6)
+ - Namespaces and Classes are now properly cleaned up after `ut test` (#7)
 
 ## [1.0.1] - Inital version available on GitHub
 ### Changed
