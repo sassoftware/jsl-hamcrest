@@ -119,4 +119,6 @@ ut assert that = Function( {test expr, matcher, label = ""},
 //
 // Redefine ut global reporter to customize how assert successes
 // and failures are reported when using ut assert that. 
-ut global reporter = ut reporter();
+If( Is Empty( ut global reporter ),
+	ut global reporter = ut reporter();
+);
