@@ -19,7 +19,7 @@ ut load test runner preferences = Function( {},
 			Hamcrest Test Runner Preferences(
 				GUI Location( "Bottom" ),
 				Use Markup( 0 ),
-				Show Embedded Log( 1 )
+				Show Embedded Log( 0 )
 			)
 		)
 	);
