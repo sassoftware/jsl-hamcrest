@@ -1,0 +1,13 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+ut test( "Reporter", "Success", Expr(
+    baseReporter = New Object( "UtReporter" );
+
+    ut assert that( Expr( baseReporter:add success(,,,) ), 1 );
+));
+
+ut test( "Reporter", "Failure", Expr(
+    baseReporter = New Object( "UtReporter" );
+    ut assert that( Expr( baseReporter:add failure(,,,,,) ), 0 )
+));

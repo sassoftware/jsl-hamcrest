@@ -1,0 +1,45 @@
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+// NOTE: We are using ut assert that to test itself, which is not ideal.
+//       We refrain from using ut test() here to isolate potential
+//       issues to ut assert that() itself.
+
+// TODO
+// - mocked reporter
+
+// Success returns 1
+assert rc = with noop reporter( Expr(
+	ut assert that( Expr( 2 + 2 ), 4 );
+));
+ut assert that( Expr( assert rc ), 1, "success is 1" );
+
+// Failure returns 0
+assert rc = with noop reporter( Expr(
+	ut assert that( Expr( 2 + 2 ), 5 );
+));
+ut assert that( Expr( assert rc ), 0, "failure is 0" );
+
+// Unexpected throw returns 0
+assert rc = with noop reporter( Expr(
+	ut assert that( Expr( Sin("a") ), "never checked" );
+));
+ut assert that( Expr( assert rc ), 0, "unexpected throw is 0" );
+
+// Expression failure returns 0
+assert rc = with noop reporter( Expr(
+	ut assert that( 2 + 2, 4 );
+));
+ut assert that( Expr( assert rc ), 0, "expression failure is 0" );
+
+// Requires two arguments
+assert throws? = with noop reporter( Expr(
+	Try( ut assert that( 2 + 2 ); 0, 1 )
+));
+ut assert that( Expr( assert throws? ), 1, "requires two arguments");
+
+// Accepts optional label
+assert rc = with noop reporter( Expr(
+	ut assert that( Expr( 2 + 2 ), 4, "hello" );
+));
+ut assert that( Expr( assert rc ), 1, "accepts optional label");

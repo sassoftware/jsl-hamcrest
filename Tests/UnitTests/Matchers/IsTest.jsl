@@ -1,0 +1,29 @@
+// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+ut test( "IsMatcher", "Mismatch", Expr(
+	mi = ut is( "EXPECTED" ) << Matches( "ACTUAL" );
+	ut assert that( Expr( mi:mismatch ), "was \!"ACTUAL\!"" );
+));
+
+ut test( "IsMatcher", "Describe", Expr(
+	m = ut is( "EXPECTED" );
+	ut assert that( Expr( m << Describe ), "equal to \!"EXPECTED\!"" );
+));
+
+ut test( "IsMatcher", "MatchInfoSuccess", Expr(
+	mi = ut is( "ACTUAL" ) << Matches( "ACTUAL" );
+    ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
+	ut assert that( Expr( mi:success ), 1 );
+));
+
+ut test( "IsMatcher", "MatchInfoFailure", Expr(
+	mi = ut is( "EXPECTED" ) << Matches( "ACTUAL" );
+    ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
+	ut assert that( Expr( mi:success ), 0 );
+));
+
+ut test( "IsMatcher", "MatcherFactory", Expr(
+	m = ut is( "EXPECTED" );
+    ut assert that( Expr( m ), ut instance of( "UtIsMatcher" ) );
+));
