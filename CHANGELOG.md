@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
  - Test labels can now be anything (not just strings, #6)
  - Embedded Log is now off by default (for GUI, #18)
  - Reworded `ut all of` mismatch to be less confusing (#21)
+ - `StreamingLogReporter` now gives a better error message when expecting an expression (#22)
 
 ### Fixed
  - Log failures within `ut test` now affect return code (#6)
