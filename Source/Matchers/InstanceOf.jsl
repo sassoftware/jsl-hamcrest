@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here( 0 );
@@ -27,6 +27,8 @@ Define Class(
 		Eval Insert( "instance of ^this:value^" );
 	);
 );
+
+// Section: Globals
 
 /*	Function: ut instance of
 		---Prototype---
