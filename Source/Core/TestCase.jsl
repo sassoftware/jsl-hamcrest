@@ -363,18 +363,11 @@ ut test = Function({test case, test name, test expr, log benchmark = ut log benc
 	_utTestNS:n asserts = 0;
 	_utTestNS:results = {};
 	
-	local:ut assert that = Function( {test expr, expected, label=""},
-		_utTestNS:n asserts++;
-		Insert Into( _utTestNS:results, 
-			::ut assert that(
-				Name Expr( test expr ),
-				Name Expr( expected ),
-				ut concat test label( 
-					_utTestNS:test case:name, 
-					_utTestNS:test name,
-					label,
-					_utTestNS:n asserts
-				)
+	For( _utTestNS:iAssertion = 1, _utTestNS:iAssertion <= N Items( ut test registered assertions ), _utTestNS:iAssertion++,
+		Eval( 
+			ut test assertion decorator( 
+				ut test registered assertions[_utTestNS:iAssertion][1], 
+				ut test registered assertions[_utTestNS:iAssertion][2]
 			)
 		);
 	);
@@ -529,6 +522,83 @@ ut log bench off = ut log bench(0);
 ut log bench no capture = ut log bench(-1);
 // Variable: ut log bench on
 ut log bench on = ut log bench(1);
+
+// Variable: ut test registered assertions
+ut test registered assertions = {};
+
+/*	Function: ut test register assertion
+		Register a function to be handled within <ut test>.
+
+		Allows <ut test> to decorate registered assertions. All 
+		arguments will be passed verbatim except for a label 
+		argument, which will be transformed by <ut test> using
+		<ut concat test label> with the test case name, test 
+		name, and number of assertions.
+
+		The given args will be the signature of the decorator
+		function. This should match the signature of your
+		original assertion function. Variable names are not
+		important except for label. However, defaults are 
+		important and should match. 
+
+		Your assertion function must return a boolean 1 or 0
+		and should send results to <ut global reporter>.
+
+		The end result of a registered assertion function is
+		the ability to run your assertion inside of a test.
+		It will have an augmented label and the assertion 
+		result will affect the result of the entire test.
+
+	Example:
+		---JSL---
+		my assertion = Function( {truth, label=""}, 
+			do stuff; 
+			ut global reporter:add xxx(...); 
+			Random Integer( 0, 1 )
+		);
+		ut test register assertion( "my assertion", {truth, label=""} );
+		---------
+*/
+ut test register assertion = Function( {function name, args},
+	Insert Into( ut test registered assertions, Eval List( {Eval List( {function name, args} )} ) );
+);
+
+/*	Function: ut test assertion decorator
+		Builds a local assignment of an assertion
+		function for decorating within <ut test>.
+*/
+ut test assertion decorator = Function( {function name, args},
+	{inner call, i, arg},
+	
+	inner call = Parse( "::" || function name );
+	
+	For( i = 1, i <= N Items( args ), i++,
+		arg = If( Head( args[i] ) == Expr( Assign ), Arg( args[i], 1 ), args[i] );
+		
+		If( Name Expr( arg ) == Expr( label ),
+			Insert Into( inner call,
+				Expr(
+					ut concat test label(
+						_utTestNS:test case << Get Test Case Name(), 
+						_utTestNS:test name,
+						Name Expr( label ),
+						_utTestNS:n asserts
+					)
+				)
+			),
+			Insert Into( inner call, Eval Expr( Name Expr( Expr( Name Expr( arg ) ) ) ) )
+		);
+	);
+	Eval Expr(
+		As Scoped( local, Expr( function name ) ) = Function( Expr( args ),
+			_utTestNS:n asserts++;
+			Insert Into( _utTestNS:results, 
+				Expr( Name Expr( inner call ) );
+			);
+			_utTestNS:results[N Items( _utTestNS:results )];
+		)
+	)
+);
 
 /*	Function: ut expand test
 		Accepts same arguments as <ut test>, but returns you an expression with 
