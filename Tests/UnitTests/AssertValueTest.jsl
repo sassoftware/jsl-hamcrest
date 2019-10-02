@@ -1,0 +1,19 @@
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+ut test("AssertValue", "GlobalAssignmentAccess", Expr(
+	Delete Symbols( "g" );
+	f = Function( {}, g = 5; );
+	
+	// ut assert that fails due to assignment to unqualified g within 
+	// the call to f() which gets evaluated within a matcher, causing 
+	// issues with normal symbol resolution rules.
+	// ut assert that( Expr( f() ), 5 );
+	
+	// But this works:
+	ut assert value( f(), 5 );
+));
+
+ut test("AssertValue", "PreventsExpressionDoubleEval", Expr(
+	ut assert value( Expr( 5 + 5 ), Expr( 5 + 5 ) );
+));
