@@ -36,7 +36,7 @@ Define Class("UtMockReporter",
 
 ut mock reporter = Function({}, {obj},
 	obj = New Object("UtMockReporter");
-	obj:self = reporter;
+	obj:self = obj;
 	obj
 );
 
