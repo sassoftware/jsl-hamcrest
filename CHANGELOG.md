@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
  - Unit Tests for Addin Reporters (basic, #23)
  - `Matchers/Custom` and `Reporters/Custom` folders for installation of user-defined classes (#24)
  - Allow user-defined assertions to be used with `ut test` (#27)
+ - `UtTypedMatcher` now supports `Scriptable` as an allowable type (#42)
+ - Added `ut enabled` matcher (#40 #42)
 
 ### Changed
  - Must use factory functions for reporters rather than `New Object` (#3).
@@ -18,6 +20,9 @@ All notable changes to this project will be documented in this file.
  - Reworded `ut all of` mismatch to be less confusing (#21)
  - `StreamingLogReporter` now gives a better error message when expecting an expression (#22)
  - `ut global reporter` will no longer be overwritten if `Core.jsl` is included multiple times (#26)
+ - `UtMessageMatcher` mismatch message has been improved (#42)
+ - `UtMessageMatcher` will now always send a message if the object is scriptable instead of attempting to
+    detect messages that are allowed. If a message is not supported by an object, it will return missing. (#42)
 
 ### Fixed
  - Log failures within `ut test` now affect return code (#6)
