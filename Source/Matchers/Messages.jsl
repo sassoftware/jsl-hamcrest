@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here( 0 );
@@ -13,22 +13,22 @@ Names Default To Here( 0 );
 		to the resulting object.
 */
 Define Class("UtMessageMatcher", 
-	Base Class( UtMatcher ),
+	Base Class( "UtTypedMatcher" ),
 	inner = Empty();
 	description = "";
 	message = "";
+	allowable types = {Scriptable};
 	_init_ = Method( {inner, description, message},
 		this:inner = inner;
 		this:description = description;
 		this:message = message;
 	);
-	matches = Method( {test expr},
-		actual obj = test expr;
-		if( ut object supports message( Name Expr( actual obj ), this:message ),
-			Eval( Eval Expr( this:inner << Matches( Send( actual obj, Expr( this:message ) ) ) ) );
-		,
-			ut match info failure( ut detailed type( Name Expr( actual obj ) ) || " does not support <<" || this:message )
+	typed matches = Method( {actual},
+		match info = Eval( Eval Expr( this:inner << Matches( Send( actual, Expr( this:message ) ) ) ) );
+		If( !match info:success,
+			match info:mismatch = Eval Insert( "^ut detailed type( actual )^ << ^this:message^ ^match info:mismatch^" );
 		);
+		match info;
 	);
 	describe = Method( {},
 		this:description || " " || inner:describe();
@@ -36,6 +36,25 @@ Define Class("UtMessageMatcher",
 );
 
 // Section: Globals
+
+/*	Function: ut message
+		---Prototype---
+		ut message( UtMatcher matcher, description, message );
+		---------------
+		General message matcher factory. Mostly used in other factory functions,
+		but can be used in tests if needed.
+		
+		Factory function for <UtMessageMatcher>.
+
+	Arguments:
+		matcher - any object
+*/
+ut matcher factory( "ut message" );
+ut message = Function( {matcher, description, message},
+	{obj},
+	obj = New Object( UtMessageMatcher( ut ensure matcher( Name Expr( matcher ) ), description, message ) );
+	obj:self = obj;
+);
 
 /* 
 	Function: ut title
@@ -57,7 +76,7 @@ Define Class("UtMessageMatcher",
 */
 ut matcher factory( "ut title" );
 ut title = Function( {matcher},
-	New Object( UtMessageMatcher( ut ensure matcher( Name Expr( matcher ) ), "title", "Get Title" ) );
+	ut message( Name Expr( matcher ), "title", "Get Title" );
 );
 
 /* 
@@ -80,7 +99,33 @@ ut title = Function( {matcher},
 */
 ut matcher factory( "ut text" );
 ut text = Function( {matcher},
-	New Object( UtMessageMatcher( ut ensure matcher( Name Expr( matcher ) ), "text", "Get Text" ) );
+	ut message( Name Expr( matcher ), "text", "Get Text" );
+);
+
+/* 	Function: ut enabled
+		---Prototype---
+		ut enabled( UtMatcher matcher )
+		---------------
+		Compare inner matcher to the result of sending the Get Enabled message to the result.
+		
+		NOTE: This message checks the enabled state set by the Enabled message and not the Enable message.
+		
+		Factory function for <UtMessageMatcher>.
+
+	Arguments:
+		matcher - any object
+
+	Examples:
+		---JSL---
+		tb = Text Box( "hello, world" );
+		ut assert that( Expr( tb ), ut enabled( 1 ) );
+		tb << Enabled( 0 );
+		ut assert that( Expr( tb ), ut enabled( 0 ) );
+		---------
+*/
+ut matcher factory( "ut enabled" );
+ut enabled = Function( {matcher},
+	ut message( Name Expr( matcher ), "enabled", "Get Enabled" );
 );
 
 /* 
@@ -103,7 +148,7 @@ ut text = Function( {matcher},
 */
 ut matcher factory( "ut class name" );
 ut class name = Function( {matcher},
-	New Object( UtMessageMatcher( ut ensure matcher( Name Expr( matcher ) ), "class name", "Class Name" ) );
+	ut message( Name Expr( matcher ), "class name", "Class Name" );
 );
 
 /* 
@@ -131,5 +176,5 @@ ut class name = Function( {matcher},
 */
 ut matcher factory( "ut name" );
 ut name = Function( {matcher},
-	New Object( UtMessageMatcher( ut ensure matcher( Name Expr( matcher ) ), "name", "Get Name" ) );
+	ut message( Name Expr( matcher ), "name", "Get Name" );
 );
