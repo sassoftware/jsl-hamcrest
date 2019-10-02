@@ -11,7 +11,8 @@ All notable changes to this project will be documented in this file.
  - `Matchers/Custom` and `Reporters/Custom` folders for installation of user-defined classes (#24)
  - Allow user-defined assertions to be used with `ut test` (#27)
  - `UtTypedMatcher` now supports `Scriptable` as an allowable type (#42)
- - Added `ut enabled` matcher (#40 #42)
+ - `ut enabled` matcher (#40 #42)
+ - `ut assert value` to make assertions while evaluating at call site rather than in matcher (#46)
 
 ### Changed
  - Must use factory functions for reporters rather than `New Object` (#3).

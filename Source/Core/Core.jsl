@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 // Hamcrest for JSL (see hamcrest.org)
@@ -114,6 +114,33 @@ ut assert that = Function( {test expr, matcher, label = ""},
 		Delete Namespaces( Force( 1 ), _utAssertThatNS );
 	);
 	
+);
+
+/*	Function: ut assert value
+		Assertion function that allows evaluation of test values
+		to take place at call site rather than within the matchers.
+		This means that the <ut throws> and <ut no throw> matchers
+		should not be used with ut assert value.
+		
+		This function is helpful when you are not worried about 
+		error catching and want to reduce the risk of name 
+		resolution issues due to being evaluated within a matcher.
+		
+		It is recommended to only use ut assert value within 
+		a <ut test> body so that errors are caught and you do 
+		not experience errors that prevent other tests from 
+		being run.
+		
+		ut assert value created to address issue #46
+	
+	Arguments:
+		val - an already evaluated value that will be used within 
+		      a matcher literally
+		matcher - matcher object
+		label - label for this assertion
+*/
+ut assert value = Function( {val, matcher, label=""},
+	ut assert that( ut expr literal( Name Expr( val ) ), Name Expr( matcher ), Name Expr( label ) );
 );
 
 // Constant: ut global reporter
