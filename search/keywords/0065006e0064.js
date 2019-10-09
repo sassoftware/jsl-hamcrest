@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("end",["Function"],[["ends",,[[,"ut ends with",,,0,"File:Matchers/Partial.jsl:ut_ends_with"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("sum",["Function"],[["summary",,[[,"UtSummaryReporter:ut summary reporter",,,0,"File:Addin/Reporters.jsl:UtSummaryReporter.ut_summary_reporter","JSLClass:UtSummaryReporter:ut_summary_reporter"]]]]);

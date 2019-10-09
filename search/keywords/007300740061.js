@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("sta",["Function"],[["starts",,[[,"ut starts with",,,0,"File:Matchers/Partial.jsl:ut_starts_with"]]]]);

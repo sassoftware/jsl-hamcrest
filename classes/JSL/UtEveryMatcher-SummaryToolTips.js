@@ -1,0 +1,1 @@
+NDSummary.OnToolTipsLoaded("JSLClass:UtEveryMatcher",{270:"<div class=\"NDToolTip TClass LJSL\"><div class=\"NDClassPrototype\" id=\"NDClassPrototype270\"><div class=\"CPEntry TClass Current\"><div class=\"CPName\">UtEveryMatcher</div></div></div></div>"});

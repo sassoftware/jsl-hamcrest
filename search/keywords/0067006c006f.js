@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("glo",["Section","Function","Constant"],[["Global",,[[,"Matcher Global Function Index",,,0,"File:Matchers-Index.txt:Matcher_Global_Function_Index"],[,"ut global lre",,,1,"File:Core/Utils.jsl:ut_global_lre"],[,"ut global reporter",,,2,"File:Core/Core.jsl:ut_global_reporter"]]],["Globals",,[[,,,,0,"File:Addin/Reporters.jsl:Globals"]]]]);

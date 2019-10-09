@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("whi",["Function"],[["whitespace",,[[,"ut equal to ignoring whitespace",,,0,"File:Matchers/IgnoringWhitespace.jsl:ut_equal_to_ignoring_whitespace"],[,"ut ignoring whitespace",,,0,"File:Matchers/IgnoringWhitespace.jsl:ut_ignoring_whitespace"]]]]);

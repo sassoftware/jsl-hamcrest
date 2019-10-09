@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("sym",["Function"],[["symbol",,[[,"ut get symbol information",,,0,"File:Core/Utils.jsl:ut_get_symbol_information"]]],["symbols",,[[,"ut delete symbols difference",,,0,"File:Core/Utils.jsl:ut_delete_symbols_difference"]]]]);

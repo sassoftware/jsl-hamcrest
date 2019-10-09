@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("col",["Function"],[["collecting",,[[,"UtCollectingReporter:ut collecting reporter",,,0,"File:Reporters/CollectingReporter.jsl:UtCollectingReporter.ut_collecting_reporter","JSLClass:UtCollectingReporter:ut_collecting_reporter"]]],["cols",,[[,"ut n cols",,,0,"File:Matchers/Size.jsl:ut_n_cols"]]]]);

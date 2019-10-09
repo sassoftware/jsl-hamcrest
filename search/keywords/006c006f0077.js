@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("low",["Function"],[["lowercase",,[[,"ut as lowercase",,,0,"File:Matchers/Case.jsl:ut_as_lowercase"]]]]);

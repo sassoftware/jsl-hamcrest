@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("dif",["Function"],[["difference",,[[,"ut delete symbols difference",,,0,"File:Core/Utils.jsl:ut_delete_symbols_difference"],[,"ut difference between lists",,,0,"File:Core/Utils.jsl:ut_difference_between_lists"]]]]);

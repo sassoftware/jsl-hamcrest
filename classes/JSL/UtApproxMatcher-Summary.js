@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("JSLClass:UtApproxMatcher","UtApproxMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtApproxMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[300,0,0,"UtApproxMatcher"],[301,0,0,"UtApproxMatcher"]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("as",["Function"],[["as",,[[,"ut as char",,,0,"File:Matchers/AsChar.jsl:ut_as_char"],[,"ut as expr",,,0,"File:Core/Utils.jsl:ut_as_expr"],[,"ut as lowercase",,,0,"File:Matchers/Case.jsl:ut_as_lowercase"],[,"ut as uppercase",,,0,"File:Matchers/Case.jsl:ut_as_uppercase"],[,"ut typed as",,,0,"File:Matchers/TypedAs.jsl:ut_typed_as"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("hos",["Function"],[["host",,[[,"ut host specific",,,0,"File:Matchers/Host.jsl:ut_host_specific"],[,"ut host table name",,,0,"File:Matchers/Host.jsl:ut_host_table_name"],[,"ut host table name str",,,0,"File:Core/Utils.jsl:ut_host_table_name_str"]]]]);

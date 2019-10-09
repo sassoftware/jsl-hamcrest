@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("det",["Function"],[["detailed",,[[,"ut detailed type",,,0,"File:Core/Utils.jsl:ut_detailed_type"]]],["details",,[[,"UtDetailsTreeReporter:ut details tree reporter",,,0,"File:Addin/Reporters.jsl:UtDetailsTreeReporter.ut_details_tree_reporter","JSLClass:UtDetailsTreeReporter:ut_details_tree_reporter"]]]]);

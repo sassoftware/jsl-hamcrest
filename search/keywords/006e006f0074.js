@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("not",["Function"],[["not",,[[,"ut not",,,0,"File:Matchers/Not.jsl:ut_not"]]]]);

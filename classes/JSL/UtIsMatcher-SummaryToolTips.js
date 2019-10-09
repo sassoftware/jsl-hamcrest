@@ -1,0 +1,1 @@
+NDSummary.OnToolTipsLoaded("JSLClass:UtIsMatcher",{16:"<div class=\"NDToolTip TClass LJSL\"><div class=\"NDClassPrototype\" id=\"NDClassPrototype16\"><div class=\"CPEntry TClass Current\"><div class=\"CPName\">UtIsMatcher</div></div></div><div class=\"TTSummary\">A NoOp forwarding matcher. Just exists to make assertions read more naturally.</div></div>"});

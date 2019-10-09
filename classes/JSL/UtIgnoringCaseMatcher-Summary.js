@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("JSLClass:UtIgnoringCaseMatcher","UtIgnoringCaseMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtIgnoringCaseMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[251,0,0,"UtIgnoringCaseMatcher"]]);

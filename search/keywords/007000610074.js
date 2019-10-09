@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("pat",["Variable","Function"],[["path",,[[,"ut test runner preferences path",,,0,"File:Addin/TestRunnerPreferences.jsl:ut_test_runner_preferences_path"]]],["pattern",,[[,"ut contains pattern",,,1,"File:Matchers/StringPattern.jsl:ut_contains_pattern"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("buf",["Variable"],[["buffering",,[[,"UtBufferingReporter:ut test buffering reporter",,,0,"File:Core/TestCase.jsl:UtBufferingReporter.ut_test_buffering_reporter","JSLClass:UtBufferingReporter:ut_test_buffering_reporter"]]]]);

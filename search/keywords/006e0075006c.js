@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("nul",["Variable"],[["nullptr",,[[,"ut nullptr",,,0,"File:Core/Utils.jsl:ut_nullptr"]]]]);

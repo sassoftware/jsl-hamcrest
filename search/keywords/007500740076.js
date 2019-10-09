@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("utv",["Class"],[["UtVectorDiagonalMatcher",,[[,,,,0,"File:Matchers/VectorDiagonal.jsl:UtVectorDiagonalMatcher","JSLClass:UtVectorDiagonalMatcher"]]]]);

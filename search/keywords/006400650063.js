@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("dec",["Function"],[["decorator",,[[,"UtBufferingReporter:ut test assertion decorator",,,0,"File:Core/TestCase.jsl:UtBufferingReporter.ut_test_assertion_decorator","JSLClass:UtBufferingReporter:ut_test_assertion_decorator"]]]]);

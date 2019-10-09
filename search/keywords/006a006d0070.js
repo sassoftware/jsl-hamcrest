@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("jmp",["Variable"],[["jmp",,[[,"ut major jmp version",,,0,"File:Core/Utils.jsl:ut_major_jmp_version"]]]]);

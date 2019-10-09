@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("File:Matchers/Sorted.jsl","Sorted.jsl");NDSummary.OnSummaryLoaded("File:Matchers/Sorted.jsl",[["JSL","JSL"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"],["Sections","Section"]],[[201,0,0,"UtSortedMatcher","UtSortedMatcher"],[202,0,3,"Globals","Globals"],[203,0,2,"Functions","Functions"],[204,0,1,"ut sorted","ut_sorted"]]);

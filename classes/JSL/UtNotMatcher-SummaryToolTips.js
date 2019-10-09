@@ -1,0 +1,1 @@
+NDSummary.OnToolTipsLoaded("JSLClass:UtNotMatcher",{242:"<div class=\"NDToolTip TClass LJSL\"><div class=\"NDClassPrototype\" id=\"NDClassPrototype242\"><div class=\"CPEntry TClass Current\"><div class=\"CPName\">UtNotMatcher</div></div></div><div class=\"TTSummary\">Negates a contained matcher.</div></div>"});
