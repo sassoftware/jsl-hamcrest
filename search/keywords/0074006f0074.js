@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("tot",["Function"],[["total",,[[,"UtCollectingReporter:N total failures",,,0,"File:Reporters/CollectingReporter.jsl:UtCollectingReporter.N_total_failures","JSLClass:UtCollectingReporter:N_total_failures"]]]]);

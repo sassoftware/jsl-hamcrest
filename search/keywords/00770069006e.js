@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("win",["Function"],[["window",,[[,"UtWindowDispatchingReporter:ut window dispatching reporter",,,0,"File:Addin/Reporters.jsl:UtWindowDispatchingReporter.ut_window_dispatching_reporter","JSLClass:UtWindowDispatchingReporter:ut_window_dispatching_reporter"]]],["windows",,[[,"ut on windows",,,0,"File:Matchers/Host.jsl:ut_on_windows"]]]]);

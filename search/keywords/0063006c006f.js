@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("clo",["Function"],[["close",,[[,"ut close to",,,0,"File:Matchers/Close.jsl:ut_close_to"]]]]);

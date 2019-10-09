@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("File:Matchers/Every.jsl","Every.jsl");NDSummary.OnSummaryLoaded("File:Matchers/Every.jsl",[["JSL","JSL"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"],["Sections","Section"]],[[270,0,0,"UtEveryMatcher","UtEveryMatcher"],[271,0,3,"Globals","Globals"],[272,0,2,"Functions","Functions"],[273,0,1,"ut every item","ut_every_item"]]);

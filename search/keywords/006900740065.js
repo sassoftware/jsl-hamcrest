@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("ite",["Function"],[["item",,[[,"ut contains item",,,0,"File:Matchers/Contains.jsl:ut_contains_item"],[,"ut every item",,,0,"File:Matchers/Every.jsl:ut_every_item"]]],["items",,[[,"ut n items",,,0,"File:Matchers/Size.jsl:ut_n_items"]]]]);

@@ -1,0 +1,1 @@
+NDSummary.OnToolTipsLoaded("JSLClass:UtEqualToListMatcher",{42:"<div class=\"NDToolTip TClass LJSL\"><div class=\"NDClassPrototype\" id=\"NDClassPrototype42\"><div class=\"CPEntry TClass Current\"><div class=\"CPName\">UtEqualToListMatcher</div></div></div><div class=\"TTSummary\">Operates only on lists.</div></div>"});

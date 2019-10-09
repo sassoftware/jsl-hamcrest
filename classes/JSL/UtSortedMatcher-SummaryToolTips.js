@@ -1,0 +1,1 @@
+NDSummary.OnToolTipsLoaded("JSLClass:UtSortedMatcher",{201:"<div class=\"NDToolTip TClass LJSL\"><div class=\"NDClassPrototype\" id=\"NDClassPrototype201\"><div class=\"CPEntry TClass Current\"><div class=\"CPName\">UtSortedMatcher</div></div></div><div class=\"TTSummary\">Matches on the sorted version of the returned list.</div></div>"});

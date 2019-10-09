@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("is",["Function"],[["is",,[[,"ut is",,,0,"File:Core/Matchers/Is.jsl:ut_is"],[,"ut is a matcher",,,0,"File:Core/Utils.jsl:ut_is_a_matcher"],[,"ut is comparable",,,0,"File:Core/Utils.jsl:ut_is_comparable"],[,"ut is numeric missing",,,0,"File:Core/Utils.jsl:ut_is_numeric_missing"],[,"ut log is",,,0,"File:Matchers/Log.jsl:ut_log_is"]]]]);

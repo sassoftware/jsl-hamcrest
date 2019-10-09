@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("File:Core/Matchers/Matcher.jsl","Matcher.jsl");NDSummary.OnSummaryLoaded("File:Core/Matchers/Matcher.jsl",[["JSL","JSL"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"]],[[35,0,0,"UtMatcher","UtMatcher"],[36,0,2,"Functions","UtMatcher.Functions"],[37,0,1,"matches","UtMatcher.matches"],[38,0,1,"describe","UtMatcher.describe"]]);

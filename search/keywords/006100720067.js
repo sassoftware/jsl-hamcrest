@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("arg",["Function"],[["arg",,[[,"ut throws invalid arg",,,0,"File:Matchers/Throws.jsl:ut_throws_invalid_arg"]]],["args",,[[,"ut throws too many args",,,0,"File:Matchers/Throws.jsl:ut_throws_too_many_args"]]]]);

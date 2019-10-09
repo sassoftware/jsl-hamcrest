@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("sho",["Function"],[["show",,[[,"ut get show string",,,0,"File:Core/Utils.jsl:ut_get_show_string"]]]]);

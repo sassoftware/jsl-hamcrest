@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("fac",["Variable","Function"],[["factories",,[[,"ut matcher factories",,,0,"File:Core/Utils.jsl:ut_matcher_factories"]]],["factory",,[[,"ut matcher factory",,,1,"File:Core/Utils.jsl:ut_matcher_factory"],[,"ut unregister matcher factory",,,1,"File:Core/Utils.jsl:ut_unregister_matcher_factory"]]]]);

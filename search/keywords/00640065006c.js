@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("del",["Function"],[["delete",,[[,"ut delete symbols difference",,,0,"File:Core/Utils.jsl:ut_delete_symbols_difference"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("lre",["Function"],[["lre",,[[,"ut global lre",,,0,"File:Core/Utils.jsl:ut_global_lre"],[,"ut min lre",,,0,"File:Matchers/Approx.jsl:ut_min_lre"],[,"UtMatchInfo:get lre",,,0,"File:Core/MatchInfo.jsl:UtMatchInfo.get_lre","JSLClass:UtMatchInfo:get_lre"]]]]);

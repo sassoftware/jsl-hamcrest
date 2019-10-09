@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("out",["Function"],[["output",,[[,"ut log output",,,0,"File:Matchers/Log.jsl:ut_log_output"]]]]);

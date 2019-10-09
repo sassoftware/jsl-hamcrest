@@ -1,0 +1,1 @@
+NDSummary.OnToolTipsLoaded("JSLClass:UtMinLREMatcher",{302:"<div class=\"NDToolTip TClass LJSL\"><div class=\"NDClassPrototype\" id=\"NDClassPrototype302\"><div class=\"CPEntry TClass Current\"><div class=\"CPName\">UtMinLREMatcher</div></div></div></div>"});

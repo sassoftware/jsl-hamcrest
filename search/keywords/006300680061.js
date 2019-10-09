@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("cha",["Function"],[["char",,[[,"ut as char",,,0,"File:Matchers/AsChar.jsl:ut_as_char"]]]]);

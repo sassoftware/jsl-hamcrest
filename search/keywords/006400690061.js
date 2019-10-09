@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("dia",["Function"],[["diag",,[[,"ut vec diag",,,0,"File:Matchers/VectorDiagonal.jsl:ut_vec_diag"]]],["diagonal",,[[,"ut diagonal",,,0,"File:Matchers/VectorDiagonal.jsl:ut_diagonal"]]]]);
