@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here( 0 );
@@ -45,5 +45,5 @@ Define Class(
 */
 ut matcher factory( "ut as char" );
 ut as char = Function( {matcher},
-	New Object( UtAsCharMatcher( ut ensure matcher( matcher ) ) );
+	New Object( UtAsCharMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
 );

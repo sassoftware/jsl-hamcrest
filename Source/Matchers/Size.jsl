@@ -55,7 +55,7 @@ Define Class(
 */
 ut matcher factory( "ut length" );
 ut length = Function( {matcher},
-	New Object( UtSizeMatcher( ut ensure matcher( matcher ), "Length", "length" ) )
+	New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "Length", "length" ) )
 );
 
 /* 
@@ -75,7 +75,7 @@ ut length = Function( {matcher},
 */
 ut matcher factory( "ut n items" );
 ut n items = Function( {matcher},
-	New Object( UtSizeMatcher( ut ensure matcher( matcher ), "N Items", "n items" ) )
+	New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Items", "n items" ) )
 );
 
 /* 
@@ -96,7 +96,7 @@ ut n items = Function( {matcher},
 */
 ut matcher factory( "ut n cols" );
 ut n cols = Function( {matcher},
-	New Object( UtSizeMatcher( ut ensure matcher( matcher ), "N Cols", "n cols" ) )
+	New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Cols", "n cols" ) )
 );
 
 /* 
@@ -117,5 +117,5 @@ ut n cols = Function( {matcher},
 */
 ut matcher factory( "ut n rows" );
 ut n rows = Function( {matcher},
-	New Object( UtSizeMatcher( ut ensure matcher( matcher ), "N Rows", "n rows" ) )
+	New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Rows", "n rows" ) )
 );
