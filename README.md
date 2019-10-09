@@ -1,4 +1,4 @@
-# JSL Hamcrest
+# JSL-Hamcrest
 
 Implementation of Hamcrest (hamcrest.org) for JSL. Write expressive tests with 
 informative failure messages. Make tests more self-contained and reduce 
@@ -19,6 +19,10 @@ the behavior of your JSL. These tools are full-featured and can be specialized f
 your needs. In fact, JMP development even uses them to test JMP itself.The 
 presentation will cover this framework and its use in testing an example JSL 
 application, from individual functions to the automation of GUI interactions.
+
+## Documentation
+
+Check out our [documentation](https://sassoftware.github.io/jsl-hamcrest/#File:Matchers-Index.txt) website for detailed information about using JSL-Hamcrest.
 
 ## Getting Started
 
