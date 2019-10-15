@@ -226,6 +226,31 @@ Define Class(
 	);
 );
 
+/* 
+	Class: UtEqualToDataTableMatcher
+		---Prototype---
+		class UtEqualToDataTableMatcher inherits UtEqualToMatcher
+		---------------
+		
+		Operates only on datatables. See <UtEqualToMatcher>.
+*/
+Define Class(
+	"UtEqualToDataTableMatcher",
+	Base Class( UtEqualToMatcher ),
+	_init_ = Method({}, super:matches value = Name Expr( this:matches value ) );
+	matches value = Method({actual},
+		obj = actual << Compare Data Tables( compare With( this:value ) );
+		
+		If( !(obj << Are Data Different),
+			::ut match info success();
+		,
+			mismatch = "was " || Char( actual );
+			LRE = ::ut global lre( actual, this:value );
+			::ut match info failure( mismatch, LRE );
+		);
+	);
+);
+
 /* 	
 	Class: UtExpressionCompositeMatcher
 		---Prototype---
@@ -552,6 +577,9 @@ ut equal to = Function( {val},
 	,
 		"Namespace",
 			New Object( UtEqualToNamespaceMatcher() )
+	, 
+		"Table", 
+			New Object( UtEqualToDataTableMatcher() )
 	,
 		// default
 			New Object( UtEqualToMatcher() );
