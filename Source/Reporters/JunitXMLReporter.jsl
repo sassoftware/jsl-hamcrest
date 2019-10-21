@@ -1,0 +1,247 @@
+﻿/*
+	Class: UtJunitXMLReporter
+		---Prototype---
+		class UtJunitXMLReporter inherits UtReporter
+		---------------
+		Collect failure information about test cases.
+		Then issue a report in JUnitXML format on demand.
+		
+		Example of JunitXML format:
+		
+		<?xml version="1.0" encoding="UTF-8" ?> 
+		   <testsuites id="20140612_170519" name="New_configuration (14/06/12 17:05:19)" tests="225" failures="1262" time="0.001">
+			  <testsuite id="codereview.cobol.analysisProvider" name="COBOL Code Review" tests="45" failures="17" time="0.001">
+				 <testcase id="codereview.cobol.rules.ProgramIdRule" name="Use a program name that matches the source file name" time="0.001">
+					<failure message="PROGRAM.cbl:2 Use a program name that matches the source file name" type="WARNING">
+		WARNING: Use a program name that matches the source file name
+		Category: COBOL Code Review – Naming Conventions
+		File: /project/PROGRAM.cbl
+		Line: 2
+			  </failure>
+			</testcase>
+		  </testsuite>
+		</testsuites>
+*/
+
+Define Class(
+	"UtJunitXMLReporter",
+	Base Class( UtCollectingReporter ),
+
+/*	Function: generate_xml_tag
+        ---Prototype---
+        generate_xml_tag(<tag>, <content>, <properties>)
+        ---------------
+        takes in a tag as a string and content, puts the content into the tag in xml format
+      
+    Arguments:
+		tag: string: string that the tag should be
+		content: string: content that goes inside the string
+		properties: associative array: associative array with properties as keys and the values
+
+    Example:
+        This is an example
+        ---JSL---
+		test = generate_xml_tag("test", "content", ["prop"=>1]);
+
+		Expected Return:
+		<test prop="1">
+		  content
+		</test>
+        ---------
+*/
+	generate_xml_tag = Method({tag, content, properties},
+		xml_tag = "<" || tag;
+		props = properties << get keys;
+		vals = properties << get values;
+		For(i=1, i<=N Items(props), i++,
+			name = props[i];
+			If(Type(name) != "String",
+				Throw("property argument has a non string key found type:" || Type(name));
+			);
+			xml_tag ||= " " || name || "=\!"" || Char(vals[i]) || "\!"";
+		);
+		xml_tag ||= ">" || "\!n";
+		
+		If(content != "",
+			// replace all newline with doublespace then newline
+			Substitute Into(content, "\!n", "\!n  ");
+			xml_tag ||= "  " || content || "\!n";
+		);
+
+		xml_tag ||= "</" || tag || ">\!n";
+		Return(xml_tag);
+	);
+
+
+/*	Function: show_xml_report
+        ---Prototype---
+        show_xml_report(<xml_results>)
+        ---------------
+        takes a hash which should have test suites as keys, returns the JunitXML format
+      
+    Arguments:
+		xml_result: Associative Array: associative array where keys should be the test suites.
+		Values will be associative arrays with test cases as keys.
+		The values of those associative arrays will be failure messages with "failure" as the key.
+
+    Example:
+        This is an example
+        ---JSL---
+		xml_results = ["Example Tests" => 
+					    ["Test1" => 
+						  ["failure" =>
+							"Expected: add_nums(1, 1) equal to 3
+							But: was 2"
+						  ]
+						]
+					  ];
+		show_xml_report(xml_results);			
+
+		Expected Return:
+		<testsuites failures="1" id="20191011_175324" tests="1">
+			<testsuite failures="1" name="Example Tests" tests="1">
+				<testcase name="Test1">
+					<failure type="failure">
+						Expected: add_nums(1, 1) equal to 3
+						But: was 2
+					</failure>
+				</testcase>
+			</testsuite>
+		</testsuites>
+        ---------
+*/
+	show_xml_report = Method({xml_results},
+		start_line = "<?xml version=\!"1.0\!" encoding=\!"UTF-8\!" ?>\!n";
+		
+		content = "";
+		test_suites = xml_results << get keys;
+		test_cases_set = xml_results << get values;
+		For(i=1, i<=NItems(test_suites), i++,
+		
+
+			test_cases = test_cases_set[i];
+			test_case_names = test_cases << get keys;
+			test_case_info = test_cases << get values;
+			test_case_xml = "";
+			For(k=1, k<=NItems(test_case_names), k++,
+
+				info_types = test_case_info[k] << get keys;
+				
+				test_case_content = "";
+				For(l=1, l<=NItems(test_case_info[k]), l++,
+					info_type = info_types[l];
+					props = Associative Array();
+					props["type"] = info_type;
+					failure_content = this:generate_xml_tag("failure", test_case_info[k][info_type], props);
+
+					test_case_content ||= failure_content;
+
+				);
+				props = Associative Array();
+				props["name"] = test_case_names[k];
+				test_case_xml ||= this:generate_xml_tag("testcase", trim(test_case_content), props);
+				
+			);
+			num_tests = NItems(test_case_names);
+			props = Associative Array();
+			props["name"] = test_suites[i];
+			props["tests"] = Char(num_tests);
+
+			// find test results that are non empty
+			num_successes = Nitems(loc(test_case_info, [=>]));
+			props["failures"] = Char(num_tests-num_successes);
+			test_suite_tag = this:generate_xml_tag("testsuite", trim(test_case_xml), props);
+			content ||= test_suite_tag;
+		);
+		
+		props = Associative Array();
+		date = today();
+		props["id"] = format(date, "yyyymmdd" ) || "_" || Char(Hour(date)) || Char(Minute(date)) || Char(Second(date));
+		props["tests"] = Char(Nitems(this:successes) + NItems(this:failures) + NItems(this:unexpected throws));
+		props["failures"] = Char(NItems(this:failures) + NItems(this:unexpected throws));
+
+		xml_result = start_line || this:generate_xml_tag("testsuites", trim(content), props);;
+		Return(xml_result);
+	);
+	
+	// Function: show report
+	//
+	// Dump a report to the log detailing all the successes and
+	// failures for each test in JunitXML format shown in the comments at the top.
+	show report = Method( {},
+		num successes = Length( this:successes );
+		num failures = Length( this:failures );
+		num unexpected throws = Length( this:unexpected throws );
+
+		hash_results = Associative Array();
+
+		For( i = 1, i <= num successes, i++,
+			char test expr = If( Is Expr( Name Expr( this:successes[i][2] ) ),
+				Char( Name Expr( this:successes[i][2] ) ),
+				Char( this:successes[i][2] )
+			) || " ";
+			tmp_label = this:successes[i][1];
+			list_tmp_label = words(tmp_label, "⮚");
+			curr_suite = Trim(list_tmp_label[1]);
+			curr_test = Trim(list_tmp_label[2]) || "_" || Trim(list_tmp_label[3]);
+			// empty for a success
+			success_hash = Associative Array();
+			If(Contains(hash_results << get keys, curr_suite),
+				hash_results[curr_suite][curr_test] = Associative Array();
+				,
+				hash_results[curr_suite] = Associative Array(Eval List({curr_test}), Eval List({success_hash}));
+			);
+		);
+
+		// associative array of the test results
+		// test suite => test case => successes, failures, throws
+		
+		For( i = 1, i <= num failures, i++,
+			char test expr = If( Is Expr( Name Expr( this:failures[i][2] ) ),
+				Char( Name Expr( this:failures[i][2] ) ),
+				Char( this:failures[i][2] )
+			) || " ";
+			tmp_label = this:failures[i][1];
+			list_tmp_label = words(tmp_label, "⮚");
+			curr_suite = Trim(list_tmp_label[1]);
+			curr_test = Trim(list_tmp_label[2]) || "_" || Trim(list_tmp_label[3]);
+			fail_msg = "Expected: " || char test expr || this:failures[i][3] || "\!n";
+			fail_msg ||= "But: " || this:failures[i][4] || "\!n" ;
+			fail_msg = Trim(fail_msg);
+			fail_hash = Associative Array(Eval List({"failure"}), Eval List({fail_msg}));
+			If(Contains(hash_results << get keys, curr_suite),
+				hash_results[curr_suite][curr_test] = Associative Array(Eval List({"failure"}), Eval List({fail_msg}));
+				,
+				hash_results[curr_suite] = Associative Array(Eval List({curr_test}), Eval List({fail_hash}));
+				
+			);
+		);
+		//Write( "\!n--------- Unexpected Throws ----------" );
+		For( i = 1, i <= num unexpected throws, i++,
+			char test expr = If( Is Expr( Name Expr( this:unexpected throws[i][2] ) ),
+				Char( Name Expr( this:unexpected throws[i][2] ) ),
+				Char( this:unexpected throws[i][2] )
+			) || " ";
+			tmp_label = this:failures[i][1];
+			list_tmp_label = words(tmp_label, "⮚");
+			curr_suite = Trim(list_tmp_label[1]);
+			curr_test = Trim(list_tmp_label[2]) || "_" || Trim(list_tmp_label[3]);
+			throw_msg = "  Expected: " || char test expr || this:unexpected throws[i][3] || "\!n";
+			If( Is Empty( this:unexpected throws[i][4] ),
+				throw_msg ||= "But: " || "unexpectedly threw nothing\!n",
+				throw_msg ||= "But: " || "unexpectedly threw \!"" || this:unexpected throws[i][4] || "\!"\!n";
+			);
+			throw_msg = Trim(throw_msg);
+			throw_hash = Associative Array(Eval List({"failure"}), Eval List({throw_msg}));
+			If(Contains(hash_results << get keys, curr_suite),
+				hash_results[curr_suite][curr_test] = Associative Array(Eval List({"failure"}), Eval List({throw_msg}));
+				,
+				hash_results[curr_suite] = Associative Array(Eval List({curr_test}), Eval List({throw_hash}));
+				
+			);
+
+		);
+			
+		Write(this:show_xml_report(hash_results));
+	);
+);
