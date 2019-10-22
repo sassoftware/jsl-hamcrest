@@ -83,3 +83,88 @@ ut test(JunitXMLReporters, "Counts are correct at root", Expr(
 	ut assert that( Expr(n root tests(report)), 8 );
 	ut assert that( Expr(n root failures(report)), 4 );
 ));
+
+// Unit test cases for JunitXMLReporter
+
+// 1.0 JunitXMLReporter one simple passing
+// 2.0 JunitXMLReporter one simple failing
+
+// uncomment to reinitialize and reinclude source file
+//init_framework = convert file path("$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\InitializeFramework.jsl");
+//include(init_framework);
+//include("../../../Source/Reporters/JunitXMLReporter.jsl");
+
+// 1.0 JunitXMLReporter one simple passing
+
+ut test( "Simple Pass", "JunitXMLReporter one simple passing", Expr(
+	reporter  = New Object(UtJunitXMLReporter);
+	reporter << add success("Simple Pass ⮚ One plus one equals two ⮚ 1", 1 + 1, "equal to 2", Empty());
+	ut assert that(Expr(reporter << successes), ut equal to ({{"Simple Pass ⮚ One plus one equals two ⮚ 1", 2, "equal to 2", Empty()}}));
+
+	// Example test that would produce the success shown above
+	// ut test ("Simple Pass", "One plus one equals two", Expr(
+	//   ut assert that(Expr(1+1), ut equal to (2));
+	// ));
+	
+	report_text = Log Capture(reporter << show report);
+	
+	pattern = 
+	"\[<\?xml version="1.0" encoding="UTF-8" \?>
+	<testsuites failures="0" id="\d+_\d+" tests="1">
+	  <testsuite failures="0" name="Simple Pass" tests="1">
+		<testcase name="One plus one equals two_1">
+		</testcase>
+	  </testsuite>
+	</testsuites>
+	]\";
+	
+	//replace tabs and carriage returns used for easier readability
+	pattern = Substitute(pattern, "\!r", ".+");
+	pattern = Substitute(pattern, "\!t", "");
+
+	match = Regex Match(report_text, pattern);
+	
+	ut assert that(Expr(Nitems(match)), ut equal to(1));
+	
+	ut assert that(Expr(match[1]), ut equal to(report_text));
+));
+
+// 2.0 JunitXMLReporter one simple failing
+
+ut test( "Simple Fail", "JunitXMLReporter one simple failing", Expr(
+	reporter  = New Object(UtJunitXMLReporter);
+	reporter << add failure("Simple Fail ⮚ One plus one equals one ⮚ 1", 1 + 1, "equal to 1", "was 2", 0, Empty());
+	ut assert that(Expr(reporter << failures), ut equal to ({{"Simple Fail ⮚ One plus one equals one ⮚ 1", 2, "equal to 1", "was 2", 0, Empty()}}));
+	
+	// Example test that would produce the failure shown above
+	// ut test ("Simple Fail", "One plus one equals one", Expr(
+	//   ut assert that(Expr(1+1), ut equal to (1));
+	// ));
+
+	report_text = Log Capture(reporter << show report);
+	
+	pattern = 
+	"\[<\?xml version="1.0" encoding="UTF-8" \?>
+	<testsuites failures="1" id="\d+_\d+" tests="1">
+	  <testsuite failures="1" name="Simple Fail" tests="1">
+		<testcase name="One plus one equals one_1">
+		  <failure type="failure">
+			Expected: 2 equal to 1
+			But: was 2
+		  </failure>
+		</testcase>
+	  </testsuite>
+	</testsuites>
+	]\";
+	
+	//replace tabs and carriage returns used for easier readability
+	pattern = Substitute(pattern, "\!r", ".+");
+	pattern = Substitute(pattern, "\!t", "");
+
+	match = Regex Match(report_text, pattern);
+	
+	ut assert that(Expr(Nitems(match)), ut equal to(1));
+	
+	ut assert that(Expr(match[1]), ut equal to(report_text));
+));
+
