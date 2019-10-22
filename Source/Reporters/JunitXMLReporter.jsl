@@ -27,7 +27,7 @@ Define Class(
 	"UtJunitXMLReporter",
 	Base Class( UtCollectingReporter ),
 
-/*	Function: generate_xml_tag
+/*  Method: generate_xml_tag
         ---Prototype---
         generate_xml_tag(<tag>, <content>, <properties>)
         ---------------
@@ -73,7 +73,7 @@ Define Class(
 	);
 
 
-/*	Function: show_xml_report
+/*	Method: show_xml_report
         ---Prototype---
         show_xml_report(<xml_results>)
         ---------------
@@ -164,7 +164,7 @@ Define Class(
 		Return(xml_result);
 	);
 	
-	// Function: get report
+	// Method: get report
 	//
 	// Get a report detailing all the successes and
 	// failures for each test in JunitXML format shown in the comments at the top.
@@ -216,7 +216,7 @@ Define Class(
 				
 			);
 		);
-		//Write( "\!n--------- Unexpected Throws ----------" );
+
 		For( i = 1, i <= num unexpected throws, i++,
 			char test expr = If( Is Expr( Name Expr( this:unexpected throws[i][2] ) ),
 				Char( Name Expr( this:unexpected throws[i][2] ) ),
@@ -245,7 +245,7 @@ Define Class(
 		this:show_xml_report(hash_results);
 	);
 	
-	// Function: show report
+	// Method: show report
 	//
 	// Dump a report to the log detailing all the successes and
 	// failures for each test in JunitXML format shown in the comments at the top.
