@@ -181,7 +181,7 @@ Define Class(
 				Char( this:successes[i][2] )
 			) || " ";
 			tmp_label = this:successes[i][1];
-			list_tmp_label = words(tmp_label, "⮚");
+			list_tmp_label = words(tmp_label, ut concat test label sep);
 			curr_suite = Trim(list_tmp_label[1]);
 			curr_test = Trim(list_tmp_label[2]) || "_" || Trim(list_tmp_label[3]);
 			// empty for a success
@@ -202,7 +202,7 @@ Define Class(
 				Char( this:failures[i][2] )
 			) || " ";
 			tmp_label = this:failures[i][1];
-			list_tmp_label = words(tmp_label, "⮚");
+			list_tmp_label = words(tmp_label, ut concat test label sep);
 			curr_suite = Trim(list_tmp_label[1]);
 			curr_test = Trim(list_tmp_label[2]) || "_" || Trim(list_tmp_label[3]);
 			fail_msg = "Expected: " || char test expr || this:failures[i][3] || "\!n";
@@ -223,7 +223,7 @@ Define Class(
 				Char( this:unexpected throws[i][2] )
 			) || " ";
 			tmp_label = this:failures[i][1];
-			list_tmp_label = words(tmp_label, "⮚");
+			list_tmp_label = words(tmp_label, ut concat test label sep);
 			curr_suite = Trim(list_tmp_label[1]);
 			curr_test = Trim(list_tmp_label[2]) || "_" || Trim(list_tmp_label[3]);
 			throw_msg = "  Expected: " || char test expr || this:unexpected throws[i][3] || "\!n";
