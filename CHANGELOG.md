@@ -2,6 +2,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.2.0]
+
+### Added
+ - `ut valid xml` matcher (#56)
+ - `UtJunitXMLReporter` (#56)
+
+### Changed
+
+### Fixed
+
 ## [1.1.0]
 ### Added
  - Unit Tests for Hamcrest itself (#2)
