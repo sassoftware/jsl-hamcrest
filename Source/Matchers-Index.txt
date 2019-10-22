@@ -45,6 +45,7 @@ Section: Matcher Global Function Index
 		- <ut as uppercase>
 		- <ut as char>
 		- <ut contains pattern>
+		- <ut valid xml>
 
 	Group: Log
 		

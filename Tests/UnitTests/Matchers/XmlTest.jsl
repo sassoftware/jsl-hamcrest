@@ -1,0 +1,33 @@
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+ValidXmlMatcher = ut test case("ValidXmlMatcher")
+	<< Setup(Expr(
+		m = ut valid xml();
+	));
+
+ut test( ValidXmlMatcher, "SimpleXmlIsValid", Expr(
+	mi = m << Matches("<foo></foo>");
+	ut assert that( Expr( mi:success ), 1 );
+));
+
+ut test( ValidXmlMatcher, "Describe", Expr(
+	ut assert that( Expr(m << Describe), "valid xml" );
+));
+
+ut test( ValidXmlMatcher, "ClosingWithoutOpeningIsDetected", Expr(
+	mi = m << Matches("<foo></bar>");
+	ut assert that( Expr( mi:success ), 0);
+	ut assert that( Expr( mi:mismatch ), ut ignoring whitespace("was invalid with Invalid XML: Non-matching end tag encountered."));
+));
+
+ut test( ValidXmlMatcher, "MalformedAttributeIsDetected", Expr(
+	mi = m << Matches("<foo a></foo>");
+	ut assert that( Expr( mi:success ), 0);
+	ut assert that( Expr( mi:mismatch ), ut ignoring whitespace("was invalid with Invalid XML: Missing \!"=\!"."));
+));
+
+ut test( ValidXmlMatcher, "XmlCanHaveAttributes", Expr(
+	mi = m << Matches("<foo a=\!"b\!"></foo>");
+	ut assert that( Expr( mi:success ), 1);
+));

@@ -1,0 +1,85 @@
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0 
+
+n root tests = Function({xml}, {out = .},
+	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Num(Xml Attr("tests")))));
+	local:out
+);
+
+n root failures = Function({xml}, {out = .},
+	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Num(Xml Attr("failures")))));
+	local:out
+);
+
+JunitXMLReporters = ut test case("JunitXMLReporters")
+	<< Setup(Expr(
+		reporter = New Object("UtJunitXMLReporter");
+		with junit reporter = Function({ex},
+			ut with reporter( reporter, Name Expr( ex ) );	
+		);
+		outer assert value = Function({value, matcher, label=""},
+			// Circumvent the decorated `ut assert that` from our own 'JunitXMLReporters' case.
+			// This allows us to write assertions that are reported as outside of any test.
+			::ut assert that(ut as expr(Name Expr(value)), matcher, label);
+		);
+		report = Expr(reporter << get report);
+	));
+
+ut test(JunitXMLReporters, "Factory return correct type", Expr(
+	ut assert that( Expr(reporter), ut instance of("UtJunitXMLReporter") );
+));
+
+ut test(JunitXMLReporters, "No assertions gives valid xml", Expr(
+	ut assert that( Expr(report), ut all of({ut valid xml(), ut not("")}) );
+));
+
+ut test(JunitXMLReporters, "Single passing assertion gives valid xml", Expr(
+	with junit reporter(Expr(
+		outer assert value(1, 1);
+	));
+	ut assert that( Expr(report), ut valid xml() );
+));
+
+ut test(JunitXMLReporters, "Test case gives valid xml", Expr(
+	with junit reporter(Expr(
+		ut test("A", "a", Expr(
+			ut assert value(1, 0);
+		));
+	));
+	ut assert that( Expr(report), ut valid xml() );
+));
+
+ut test(JunitXMLReporters, "Quotes in label gives valid xml", Expr(
+	with junit reporter(Expr(
+		outer assert value(1, 0, "quotes may cause \!"trouble\!" if not escaped");
+	));
+	ut assert that( Expr(report), ut valid xml() );
+));
+
+ut test(JunitXMLReporters, "Angle brackets in failure gives valid xml", Expr(
+	with junit reporter(Expr(
+		outer assert value("brackets", "brackets may cause <<trouble>> if not escaped");
+	));
+	ut assert that( Expr(report), ut valid xml() );
+));
+
+ut test(JunitXMLReporters, "Counts are correct at root", Expr(
+	with junit reporter(Expr(
+		outer assert value(1, 1);
+		outer assert value(2, 0);
+		ut test("A", "a", Expr(
+			ut assert value(3, 3);
+			ut assert value(4, 0);
+		));
+		ut test("A", "1", Expr(
+			ut assert value(5, 5);
+			ut assert value(6, 0);
+		));
+		ut test("B", "b", Expr(
+			ut assert value(7, 7);
+			ut assert value(8, 0);
+		));
+	));
+	ut assert that( Expr(n root tests(report)), 8 );
+	ut assert that( Expr(n root failures(report)), 4 );
+));

@@ -164,11 +164,11 @@ Define Class(
 		Return(xml_result);
 	);
 	
-	// Function: show report
+	// Function: get report
 	//
-	// Dump a report to the log detailing all the successes and
+	// Get a report detailing all the successes and
 	// failures for each test in JunitXML format shown in the comments at the top.
-	show report = Method( {},
+	get report = Method( {},
 		num successes = Length( this:successes );
 		num failures = Length( this:failures );
 		num unexpected throws = Length( this:unexpected throws );
@@ -242,6 +242,14 @@ Define Class(
 
 		);
 			
-		Write(this:show_xml_report(hash_results));
+		this:show_xml_report(hash_results);
+	);
+	
+	// Function: show report
+	//
+	// Dump a report to the log detailing all the successes and
+	// failures for each test in JunitXML format shown in the comments at the top.
+	show report = Method({},
+		Write(this:get report());
 	);
 );
