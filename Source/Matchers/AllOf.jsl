@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here( 0 );
@@ -56,7 +56,23 @@ Define Class(
 	Note:
 		This matcher will give the test expression (unevaluated) to each matcher in the given list.
 */
-ut matcher factory( "ut all of" );
-ut all of = Function( {matchers},
-	New Object( UtAllOfMatcher( ut ensure matcher list( matchers ) ) );
+	
+ut matcher factory(
+  // Function name
+	"ut all of", 
+  // Function declaration
+	Expr(Function( {matchers},
+		New Object( UtAllOfMatcher( ut ensure matcher list( matchers ) ) );
+	)),
+  // Prototype
+	"ut all of( matchers )", 
+  // Description
+	"Matches the test expression with every matcher given in the list.\!n\!nThis matcher will give the test expression (unevaluated) to each matcher in the given list.", 
+	// Examples
+  { 
+    {
+      "Simple", 
+      ut assert that( Expr( 5 + 5 ), ut all of( { ut equal to( 10 ), ut typed as( "Number" ) } ) );
+    }
+  }
 );

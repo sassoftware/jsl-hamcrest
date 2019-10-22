@@ -86,9 +86,14 @@ ut host specific = Function( {matcher1, matcher2},
 	Examples:
 		> ut assert that( Expr( Get Default Directory() ), ut on windows( ut starts with( "/C:/" ) ) );
 */
-ut matcher factory( "ut on windows" );
-ut on windows = Function( {matcher},
-	New Object( UtHostMatcher( ut ensure matcher( Name Expr( matcher ) ), "Windows" ) );
+ut matcher factory( 
+  "ut on windows",
+  Expr(Function( {matcher},
+    New Object( UtHostMatcher( ut ensure matcher( Name Expr( matcher ) ), "Windows" ) );
+  )),
+  "ut on windows( matcher )",
+  "Only runs the test if on a Windows host. Returns a success if running on a Mac.",
+  {{"Simple", ut assert that( Expr( Get Default Directory() ), ut on windows( ut starts with( "/C:/" ) ) ); }}
 );
 
 /* 
@@ -106,9 +111,14 @@ ut on windows = Function( {matcher},
 	Examples:
 		> ut assert that( Expr( Get Default Directory() ), ut on mac( ut not( ut starts with( "/C:/" ) ) ) );
 */
-ut matcher factory( "ut on mac" );
-ut on mac = Function( {matcher},
-	New Object( UtHostMatcher( ut ensure matcher( Name Expr( matcher ) ), "Mac" ) );
+ut matcher factory( 
+  "ut on mac",
+  Expr(Function( {matcher},
+    New Object( UtHostMatcher( ut ensure matcher( Name Expr( matcher ) ), "Mac" ) );
+  )),
+  "ut on mac( matcher )",
+  "Only runs the test if on a Mac host. Returns a success if running on a Windows.",
+  {{"Simple", ut assert that( Expr( Get Default Directory() ), ut on mac( ut not( ut starts with( "/C:/" ) ) ) ); }}
 );
 
 /* 
@@ -129,11 +139,20 @@ ut on mac = Function( {matcher},
 		ut assert that( Expr( dt << Get Name ), ut host table name( "Big Class" ) );
 		---------
 */
-ut matcher factory( "ut host table name" );
-ut host table name = Function( {name},
-	If( Is String( name ),
-		ut equal to( ut host table name str( name ) );
-	,
-		Throw( "ut host table name() matcher requires a string as the argument (a Windows table name--without '.jmp')" )
-	);
+ut matcher factory( 
+  "ut host table name",
+  Expr(Function( {name},
+    If( Is String( name ),
+      ut equal to( ut host table name str( name ) );
+    ,
+      Throw( "ut host table name() matcher requires a string as the argument (a Windows table name--without '.jmp')" )
+    );
+  )),
+  "ut host table name( name )",
+  "Returns an equal to matcher that converts a string to a host specific table name string.",
+  {{
+    "Simple",
+    dt = Open( "$SAMPLE_DATA\Big Class.jmp" );
+		ut assert that( Expr( dt << Get Name ), ut host table name( "Big Class" ) );
+  }}
 );

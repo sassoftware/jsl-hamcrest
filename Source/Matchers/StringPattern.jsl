@@ -48,10 +48,15 @@ Define Class(
 	Example:
 		> ut assert that( Expr( "str" || "ing" ), ut contains pattern( "str.*g" ) );
 */
-ut matcher factory( "ut contains pattern" );
-ut contains pattern = Function( {val},
-	If( Is String( Name Expr( val ) ),
-		New Object( UtStringPatternMatcher( val ) ),
-		Throw( "ut contains pattern() requires a string as the pattern argument" )
-	);
+ut matcher factory( 
+  "ut contains pattern",
+  Expr(Function( {val},
+    If( Is String( Name Expr( val ) ),
+      New Object( UtStringPatternMatcher( val ) ),
+      Throw( "ut contains pattern() requires a string as the pattern argument" )
+    );
+  )),
+  "ut contains patern( value )",
+  "Checks for a regex pattern within the evaluated actual expression.",
+  {{"Simple", ut assert that( Expr( "str" || "ing" ), ut contains pattern( "str.*g" ) ); }}
 );

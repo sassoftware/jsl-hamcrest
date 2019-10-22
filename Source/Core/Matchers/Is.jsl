@@ -42,10 +42,13 @@ Define Class(
 		matcher - any object
 
 	Examples:
-
 		> ut assert that( Expr( 5 + 5 ), ut is( ut equal to( 10 ) ) );
 */
-ut matcher factory( "ut is" );
-ut is = Function( {matcher},
-	New Object( UtIsMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+ut matcher factory( "ut is",
+  Expr(Function( {matcher},
+    New Object( UtIsMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+  )),
+  "ut is( matcher )",
+  "\[A forwarding matcher to help when an "is" would help the assertion read more naturally.]\",
+  {{"Simple", ut assert that( Expr( 5 + 5 ), ut is( ut equal to( 10 ) ) ); }}
 );

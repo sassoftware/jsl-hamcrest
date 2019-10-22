@@ -49,12 +49,21 @@ Define Class(
 		> ut assert that( Expr( "  test " || " test   " ), ut equal to ignoring whitespace( "test    test" ) );
 		> ut assert that( Expr( Show( 5 + 5 ) ), ut log is( ut equal to ignoring whitespace( "5 + 5 = 10;" ) ) );
 */
-ut matcher factory( "ut equal to ignoring whitespace" );
-ut equal to ignoring whitespace = Function( {val},
-	If( Is String( name expr( val ) ),
-		New Object( UtIgnoringWhitespaceMatcher( ut equal to( Collapse Whitespace( val ) ) ) ),
-		Throw( "ut equal to ignoring whitespace() requires a string as the argument" )
-	);
+ut matcher factory( 
+  "ut equal to ignoring whitespace",
+  Expr(Function( {val},
+    If( Is String( name expr( val ) ),
+      New Object( UtIgnoringWhitespaceMatcher( ut equal to( Collapse Whitespace( val ) ) ) ),
+      Throw( "ut equal to ignoring whitespace() requires a string as the argument" )
+    );
+  )),
+  "ut equal to ignoring whitespace( value )",
+  "Collapses the whitespace of the actual expression. Expected value should be a string, and whitespace will be automatically be collapsed on the expected value, in addition to the actual. To use an inner matcher, see <ut ignoring whitespace>.",
+  {{
+    "Simple",
+    ut assert that( Expr( "  test " || " test   " ), ut equal to ignoring whitespace( "test    test" ) );
+		ut assert that( Expr( Show( 5 + 5 ) ), ut log is( ut equal to ignoring whitespace( "5 + 5 = 10;" ) ) );
+  }}
 );
 
 /*
@@ -76,7 +85,17 @@ ut equal to ignoring whitespace = Function( {val},
 		> ut assert that( Expr( "  test " || " test   " ), ut ignoring whitespace( ut starts with( "test t" ) ) );
 		> ut assert that( Expr( Show( 5 + 5 ) ), ut log is( ut ignoring whitespace( "5 + 5 = 10;" ) ) );
 */
-ut matcher factory( "ut ignoring whitespace" );
-ut ignoring whitespace = Function( {matcher},
-	New Object( UtIgnoringWhitespaceMatcher( ut ensure matcher( matcher ) ) );
+ut matcher factory( 
+  "ut ignoring whitespace",
+  Expr(Function( {matcher},
+    New Object( UtIgnoringWhitespaceMatcher( ut ensure matcher( matcher ) ) );
+  )),
+  "ut ignoring whitespace( matcher )",
+  "Collapses the whitespace of the actual expression only. Expected string should have whitespace already collapsed.",
+  {{
+    "Simple",
+    ut assert that( Expr( "  test " || " test   " ), ut ignoring whitespace( "test test" ) );
+		ut assert that( Expr( "  test " || " test   " ), ut ignoring whitespace( ut starts with( "test t" ) ) );
+		ut assert that( Expr( Show( 5 + 5 ) ), ut log is( ut ignoring whitespace( "5 + 5 = 10;" ) ) );
+  }}
 );

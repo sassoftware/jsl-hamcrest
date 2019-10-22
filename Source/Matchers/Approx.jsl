@@ -193,26 +193,35 @@ Define Class(
 		ut assert that( Expr( 0 + 0 ), ut approx( 0.1, {Zero Epsilon( .2 )} ) );
 		---------
 */
-ut matcher factory( "ut approx" );
-ut approx = Function( {val, options={Zero Epsilon( 1e-12 ), Relative Epsilon( 1e-9 )}},
-	{ze, re},
-	If( 
-		!Is Number( Name Expr( val ) ) & !Is Matrix( Name Expr( val ) ),
-			Throw("First argument for ut approx() must be a number or matrix." );
-	,
-		!Is List( options ), 
-			Throw("Second argument for ut approx() must be a list." );
-	);
-	ze = Try( options["Zero Epsilon"], 1e-12 );
-	re = Try( options["Relative Epsilon"], 1e-9 );
-	
-	If( Is Matrix( val ) & Is Matrix( re ),
-		If( !(N Col( val ) == N Col( re ) & N Row( val ) == N Row( re ) ),
-			Throw( "When the expected value and Relative Epsilon are both matrices, they must be the same size." )
-		);
-	);
-	
-	New Object( UtApproxMatcher( val, ze, re ) );
+ut matcher factory( "ut approx",
+  Expr(Function( {val, options={Zero Epsilon( 1e-12 ), Relative Epsilon( 1e-9 )}},
+    {ze, re},
+    If( 
+      !Is Number( Name Expr( val ) ) & !Is Matrix( Name Expr( val ) ),
+        Throw("First argument for ut approx() must be a number or matrix." );
+    ,
+      !Is List( options ), 
+        Throw("Second argument for ut approx() must be a list." );
+    );
+    ze = Try( options["Zero Epsilon"], 1e-12 );
+    re = Try( options["Relative Epsilon"], 1e-9 );
+    
+    If( Is Matrix( val ) & Is Matrix( re ),
+      If( !(N Col( val ) == N Col( re ) & N Row( val ) == N Row( re ) ),
+        Throw( "When the expected value and Relative Epsilon are both matrices, they must be the same size." )
+      );
+    );
+    
+    New Object( UtApproxMatcher( val, ze, re ) );
+  )),
+  "ut approx( value, <options> )",
+  "Returns a success if the relative difference between expected and actual is within the relative epsilon for non-zero values and within zero epsilon if the expected or actual value is 0. Works only on numbers and matrices.",
+  {{
+    "Simple",
+    ut assert that( Expr( 5 + 5 ), ut approx( 10.000000001 ) );
+    ut assert that( Expr( 5 + 5 ), ut approx( 10.0001, {Relative Epsilon( 1e-5 )} ) );
+    ut assert that( Expr( 0 + 0 ), ut approx( 0.1, {Zero Epsilon( .2 )} ) );
+  }}
 );
 
 /* 
@@ -238,18 +247,27 @@ ut approx = Function( {val, options={Zero Epsilon( 1e-12 ), Relative Epsilon( 1e
 		ut assert that( expr( [5] + [5] ), ut approx digits( [10.1], [2] ) )
 		---------
 */
-ut matcher factory( "ut approx digits" );
-ut approx digits = Function({val, digits},
-	
-	If( 
-		!Is Number( Name Expr( val ) ) & !Is Matrix( Name Expr( val ) ), 
-			Throw("First argument for ut approx digits() must be a number or matrix." );
-	,
-		!Is Number( Name Expr( digits ) ) & !Is Matrix( Name Expr( digits ) ),
-			Throw("Second argument for ut approx digits() must be a matrix or number of digits." )
-	);
-	
-	New Object( UtApproxDigitsMatcher( val, digits ) );
+ut matcher factory( "ut approx digits",
+  Expr(Function({val, digits},
+    
+    If( 
+      !Is Number( Name Expr( val ) ) & !Is Matrix( Name Expr( val ) ), 
+        Throw("First argument for ut approx digits() must be a number or matrix." );
+    ,
+      !Is Number( Name Expr( digits ) ) & !Is Matrix( Name Expr( digits ) ),
+        Throw("Second argument for ut approx digits() must be a matrix or number of digits." )
+    );
+    
+    New Object( UtApproxDigitsMatcher( val, digits ) );
+  )),
+  "ut approx digits( value, digits )",
+  "Returns a success if the actual value matches the expected value up to N digits. Works only on numbers and matrices.",
+  {{
+    "Simple",
+    ut assert that( Expr( 5 + 5 ), ut approx digits( 10.001, 4 ) );
+		ut assert that( Expr( 0 + 0 ), ut approx digits( 0.1, 1 ) );
+		ut assert that( expr( [5] + [5] ), ut approx digits( [10.1], [2] ) )
+  }}
 );
 
 /* 
@@ -257,7 +275,8 @@ ut approx digits = Function({val, digits},
 		---Prototype---
 		ut min lre( number val, number minLRE )
 		---------------
-		Returns a success if 
+		Returns a success if LRE of actual value and expected value is above
+    a given threshold.
 		
 		Works only on numbers and matrices.
 		
@@ -272,14 +291,18 @@ ut approx digits = Function({val, digits},
 		ut assert that( Expr( 5 + 5 ), ut min lre( 10.1, 2 ) );
 		---------
 */
-ut matcher factory( "ut min lre" );
-ut min lre = Function({val, mLRE},
-	If( 
-		!Is Number( Name Expr( val ) ) & !Is Matrix( Name Expr( val ) ),
-			Throw("First argument for ut min lre() must be a number or matrix." );
-	,
-		!Is Number( Name Expr( mLRE ) ) & !Is Matrix( Name Expr( mLRE ) ),
-			Throw("Second argument for ut min lre() must be a number or matrix." );
-	);
-	New Object( UtMinLREMatcher( val, mLRE ) )
+ut matcher factory( "ut min lre",
+  Expr(Function({val, mLRE},
+    If( 
+      !Is Number( Name Expr( val ) ) & !Is Matrix( Name Expr( val ) ),
+        Throw("First argument for ut min lre() must be a number or matrix." );
+    ,
+      !Is Number( Name Expr( mLRE ) ) & !Is Matrix( Name Expr( mLRE ) ),
+        Throw("Second argument for ut min lre() must be a number or matrix." );
+    );
+    New Object( UtMinLREMatcher( val, mLRE ) )
+  )),
+  "ut min lre( value, minLRE )",
+  "Returns a success if LRE of actual value and expected value is above a given threshold. Works only on numbers and matrices.",
+  {{"Simple", ut assert that( Expr( 5 + 5 ), ut min lre( 10.1, 2 ) );}}
 );

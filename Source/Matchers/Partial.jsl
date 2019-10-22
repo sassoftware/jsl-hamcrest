@@ -64,12 +64,20 @@ Define Class(
 		> ut assert that( Expr( {1, 2, 3} ), ut starts with( {1,2} ) );
 		> ut assert that( Expr( "Test" || "string" ), ut starts with( "Tests" ) );
 */
-ut matcher factory( "ut starts with" );
-ut starts with = Function( {val},
-	{obj},
-	obj = New Object( UtPartialMatcher( "Starts With", "starts with" ) );
-	obj:value = Name Expr( val );
-	obj;
+ut matcher factory( "ut starts with",
+  Expr(Function( {val},
+    {obj},
+    obj = New Object( UtPartialMatcher( "Starts With", "starts with" ) );
+    obj:value = Name Expr( val );
+    obj;
+  )),
+  "ut starts with( value )",
+  "Asserts using the Starts With() built-in function.",
+  {{
+    "Simple",
+    ut assert that( Expr( {1, 2, 3} ), ut starts with( {1,2} ) );
+		ut assert that( Expr( "Test" || "string" ), ut starts with( "Tests" ) );
+  }}
 );
 
 /*
@@ -89,10 +97,19 @@ ut starts with = Function( {val},
 		> ut assert that( Expr( {1, 2, 3} ), ut ends with( 3 ) );
 		> ut assert that( Expr( "Test" || "string" ), ut ends with( "tstring" ) );
 */
-ut matcher factory( "ut ends with" );
-ut ends with = Function( {val},
-	{obj},
-	obj = New Object( UtPartialMatcher( "Ends With", "ends with" ) );
-	obj:value = Name Expr( val );
-	obj;
+ut matcher factory( "ut ends with",
+  Expr(Function( {val},
+    {obj},
+    obj = New Object( UtPartialMatcher( "Ends With", "ends with" ) );
+    obj:value = Name Expr( val );
+    obj;
+  )),
+  "ut ends with( value )",
+  "Asserts using the Ends With() built-in function.",
+  {{
+    "Simple",
+    ut assert that( Expr( {1, 2, 3} ), ut ends with( {2,3} ) );
+		ut assert that( Expr( {1, 2, 3} ), ut ends with( 3 ) );
+		ut assert that( Expr( "Test" || "string" ), ut ends with( "tstring" ) );
+  }}
 );

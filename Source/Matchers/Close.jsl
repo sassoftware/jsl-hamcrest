@@ -63,10 +63,14 @@ Define Class(
 	Example:
 		> ut assert that( Expr( 5 + 5 ), ut close to( 10, 0.01 ) );
 */
-ut matcher factory( "ut close to" );
-ut close to = Function( {val, delta},
-	If( Is Number( val ) & Is Number(delta),
-		New Object( UtCloseMatcher( val, delta ) ),
-		Throw( "Both value and delta arguments for ut close to() must be numeric." )
-	)
+ut matcher factory( "ut close to",
+  Expr(Function( {val, delta},
+    If( Is Number( val ) & Is Number(delta),
+      New Object( UtCloseMatcher( val, delta ) ),
+      Throw( "Both value and delta arguments for ut close to() must be numeric." )
+    )
+  )),
+  "ut close to( value, delta )",
+  "Returns a success if the actual value is within the delta of the expected value.",
+  {{"Simple", ut assert that( Expr( 5 + 5 ), ut close to( 10, 0.01 ) ); }}
 );

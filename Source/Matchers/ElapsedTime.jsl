@@ -48,7 +48,11 @@ Define Class(
 	Example:
 		> ut assert that( Expr( Wait( 2 ) ), ut elapsed time( ut greater than or equal to( 2 ) ) );
 */
-ut matcher factory( "ut elapsed time" );
-ut elapsed time = Function( {matcher},
-	New Object( UtElapsedTimeMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+ut matcher factory( "ut elapsed time",
+  Expr(Function( {matcher},
+    New Object( UtElapsedTimeMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+  )),
+  "ut elapsed time( matcher )",
+  "Captures the amount of time it takes for the test expression to evaluate. Accurate up to the microsecond, but compares in seconds.",
+  {{"Simple", ut assert that( Expr( Wait( 2 ) ), ut elapsed time( ut greater than or equal to( 2 ) ) ); }}
 );

@@ -51,7 +51,12 @@ Define Class(
 	Example:
 		> ut assert that( Expr( 5 + 5 ), ut typed as( "Number" ) );
 */
-ut matcher factory( "ut typed as" );
-ut typed as = Function( {matcher},
-	New Object( UtTypedAsMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+ut matcher factory( 
+  "ut typed as",
+  Expr(Function( {matcher},
+    New Object( UtTypedAsMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+  )),
+  "ut typed as( matcher )",
+  "Gets the type of the actual value for an inner matcher. Can be useful if testing a large expression and you want to assert that there is something of a specific type, but you don't care what the actual value is (but a little more specific than ut anything()).",
+  {{"Simple", ut assert that( Expr( 5 + 5 ), ut typed as( "Number" ) ); }}
 );

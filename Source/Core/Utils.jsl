@@ -10,9 +10,14 @@ Names Default To Here( 0 );
 */
 ut matcher factories = {};
 
+// Variable: ut add custom functions
+If( Is Empty( ut add custom functions ), 
+  ut add custom functions = 1;
+);
+
 /*	Function: ut matcher factory
 		---Prototype---
-		ut matcher factory( string name )
+		ut matcher factory( String name, Function func, String prototype = "", String description = "", List<List> examples )
 		---------------
 		Function used to insert their names into the ut matcher 
 		factories list.
@@ -20,9 +25,42 @@ ut matcher factories = {};
 	Arguments:
 		name - string name for the function
 */
-ut matcher factory = Function({name},
-	If( !Contains( ut matcher factories, As Name( name ) ),
+ut matcher factory = Function( {name, function decl=Expr(Function({}, .)), prototype="", description="", examples={}}, 
+	{global name, i},
+
+  If( !Contains( ut matcher factories, As Name( name ) ),
 		Insert Into( ut matcher factories, As Name( name ) );
+  );
+  
+  ut define documented function( name, Name Expr( function decl ), prototype, description, examples );
+  
+  ut nullptr;
+);
+
+/*  Function: ut define custom function
+      Define a documented function in the Scripting Index
+*/
+ut define documented function = Function({name, function decl, prototype, description, examples},
+  // add a copy of the function to the package namespace and scripting index.
+  If( ut add custom functions,
+    cf = New Custom Function( "global", name, function decl,
+      << Scripting Index Category( ut package name ),
+      << Prototype( prototype ),
+      << Description( description )
+    );
+    For( i = 1, i <= N Items( examples ), i++,
+      // A string can be used for an example to preserve
+      // whitespace and comments.
+      If( Is String( examples[i][2] ),
+        cf << Example( "Names Default To Here( 0 );\!nut global reporter = ut streaming log reporter();\!n" || examples[i][2], examples[i][1] );
+      ,
+        cf << Example( ut merge expressions( Eval List( {Expr(Names Default To Here( 0 ); ut global reporter = ut streaming log reporter(); ), examples[i][2]} ) ), examples[i][1] );
+      );
+    );
+    Log Capture( Add Custom Functions( {cf} ) );
+  ,
+    // Just assign the ut global function if not using custom functions
+    As Scoped( "global", name || "" ) = function decl;
 	);
 );
 
@@ -131,6 +169,7 @@ ut unregister matcher factory = Function( {name},
 	pos = Contains( ut matcher factories, As Name( name ) );
 	If( pos,
 		Remove From( ut matcher factories, pos );
+    Remove Custom Functions( "::" || name );
 	);
 );
 

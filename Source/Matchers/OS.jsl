@@ -58,18 +58,23 @@ Define Class(
 		---------
 		
 */
-ut matcher factory( "ut os specific" );
-ut os specific = Function( {matchers, default matcher=ut skip failing()},
-	{i},
-	matchers = ut ensure matcher list( matchers );
-	For( i = 1, i <= N Items( matchers ), i++,
-		If( matchers[i] << Get Name != "UtOSMatcher",
-				Throw( "ut os specific() requires a list of ut on os() matchers." ),
-			matchers[i] << Supports Current OS(),
-				Return( matchers[i] );
-		)
-	);
-	ut ensure matcher( default matcher );
+ut matcher factory( 
+  "ut os specific",
+  Expr(Function( {matchers, default matcher=ut skip failing()},
+    {i},
+    matchers = ut ensure matcher list( matchers );
+    For( i = 1, i <= N Items( matchers ), i++,
+      If( matchers[i] << Get Name != "UtOSMatcher",
+          Throw( "ut os specific() requires a list of ut on os() matchers." ),
+        matchers[i] << Supports Current OS(),
+          Return( matchers[i] );
+      )
+    );
+    ut ensure matcher( default matcher );
+  )),
+  "ut os specific( matchers, <default matcher> )",
+  "Function to choose matcher based on the current operating system.",
+  {{"Simple", ut assert that( Expr( 0 + 0 ), ut os specific( {ut on os( {"Windows 10", "Windows 7"}, 0 )} ) ); }}
 );
 
 /* 
@@ -94,16 +99,26 @@ ut os specific = Function( {matchers, default matcher=ut skip failing()},
 		ut assert that( Expr( 0 + 0 ), ut on os( {"Windows 10", "Windows 7"}, 0 ) );
 		---------
 */
-ut matcher factory( "ut on os" );
-ut on os = Function( {os, matcher},
-	{oses},
-	If( Is String( Name Expr( os ) ),
-			oses = Eval List( {os} ),
-		Is List( Name Expr( os ) ),
-			oses = os,
-		//else
-			Throw( "ut on os() requires an OS string or list of OS Strings as the first argument." )
-	);
-	New Object( UtOSMatcher( oses, ut ensure matcher( Name Expr( matcher ) ) ) );
+ut matcher factory( 
+  "ut on os",
+  Expr(Function( {os, matcher},
+    {oses},
+    If( Is String( Name Expr( os ) ),
+        oses = Eval List( {os} ),
+      Is List( Name Expr( os ) ),
+        oses = os,
+      //else
+        Throw( "ut on os() requires an OS string or list of OS Strings as the first argument." )
+    );
+    New Object( UtOSMatcher( oses, ut ensure matcher( Name Expr( matcher ) ) ) );
+  )),
+  "ut on os( os, matcher )",
+  "Only runs the test if on running on one of the specified operating systems. Returns a success if not running on a listed OS. OS is determined by `JMP Host Information()[1]` value.",
+  {{
+    "Simple",
+    "\[
+// only run on Windows 10 or Windows 7
+ut assert that( Expr( 0 + 0 ), ut on os( {"Windows 10", "Windows 7"}, 0 ) );
+]\"
+  }}
 );
-
