@@ -257,3 +257,9 @@ Define Class(
     Write(this:get report());
   );
 );
+
+// Function: ut JunitXML reporter
+//  Factory for <UtJunitXMLReporter>.
+ut junit xml reporter = Function({},
+  New Object( "UtJunitXMLReporter" );
+);
