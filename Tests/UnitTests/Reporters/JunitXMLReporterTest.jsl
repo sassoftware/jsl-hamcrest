@@ -11,19 +11,23 @@ n root failures = Function({xml}, {out = .},
 	local:out
 );
 
+setup_expr = Expr(
+    //include("../../../Source/Reporters/JunitXMLReporter.jsl");
+    reporter = New Object("UtJunitXMLReporter");
+    with junit reporter = Function({ex},
+        ut with reporter( reporter, Name Expr( ex ) );	
+    );
+    outer assert value = Function({value, matcher, label=""},
+        // Circumvent the decorated `ut assert that` from our own 'JunitXMLReporters' case.
+        // This allows us to write assertions that are reported as outside of any test.
+        ::ut assert that(ut as expr(Name Expr(value)), matcher, label);
+    );
+    report = Expr(reporter << get report);
+);
+	
+
 JunitXMLReporters = ut test case("JunitXMLReporters")
-	<< Setup(Expr(
-		reporter = New Object("UtJunitXMLReporter");
-		with junit reporter = Function({ex},
-			ut with reporter( reporter, Name Expr( ex ) );	
-		);
-		outer assert value = Function({value, matcher, label=""},
-			// Circumvent the decorated `ut assert that` from our own 'JunitXMLReporters' case.
-			// This allows us to write assertions that are reported as outside of any test.
-			::ut assert that(ut as expr(Name Expr(value)), matcher, label);
-		);
-		report = Expr(reporter << get report);
-	));
+	<< Setup(setup_expr);
 
 ut test(JunitXMLReporters, "Factory return correct type", Expr(
 	ut assert that( Expr(reporter), ut instance of("UtJunitXMLReporter") );
@@ -36,6 +40,14 @@ ut test(JunitXMLReporters, "No assertions gives valid xml", Expr(
 ut test(JunitXMLReporters, "Single passing assertion gives valid xml", Expr(
 	with junit reporter(Expr(
 		outer assert value(1, 1);
+	));
+	ut assert that( Expr(report), ut valid xml() );
+));
+
+ut test(JunitXMLReporters, "Single failing assertion gives valid xml", Expr(
+	with junit reporter(Expr(
+		outer assert value(1, 2);
+
 	));
 	ut assert that( Expr(report), ut valid xml() );
 ));
@@ -97,7 +109,7 @@ ut test(JunitXMLReporters, "Counts are correct at root", Expr(
 // 1.0 JunitXMLReporter one simple passing
 
 ut test( "Simple Pass", "JunitXMLReporter one simple passing", Expr(
-	reporter  = New Object(UtJunitXMLReporter);
+	reporter  = New Object("UtJunitXMLReporter");
 	reporter << add success("Simple Pass ⮚ One plus one equals two ⮚ 1", 1 + 1, "equal to 2", Empty());
 	ut assert that(Expr(reporter << successes), ut equal to ({{"Simple Pass ⮚ One plus one equals two ⮚ 1", 2, "equal to 2", Empty()}}));
 
@@ -132,7 +144,7 @@ ut test( "Simple Pass", "JunitXMLReporter one simple passing", Expr(
 // 2.0 JunitXMLReporter one simple failing
 
 ut test( "Simple Fail", "JunitXMLReporter one simple failing", Expr(
-	reporter  = New Object(UtJunitXMLReporter);
+	reporter  = New Object("UtJunitXMLReporter");
 	reporter << add failure("Simple Fail ⮚ One plus one equals one ⮚ 1", 1 + 1, "equal to 1", "was 2", 0, Empty());
 	ut assert that(Expr(reporter << failures), ut equal to ({{"Simple Fail ⮚ One plus one equals one ⮚ 1", 2, "equal to 1", "was 2", 0, Empty()}}));
 	
