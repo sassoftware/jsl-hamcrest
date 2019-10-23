@@ -77,10 +77,10 @@ Define Class(
   );
 
   /*
-  Method: show_xml_report
+  Method: get_xml_report
 
   ---Prototype---
-  show_xml_report(<xml_results>)
+  get_xml_report(<xml_results>)
   ---------------
   takes a hash which should have test suites as keys, returns the JunitXML format
     
@@ -103,7 +103,7 @@ Define Class(
                   ]
                 ];
 
-  show_xml_report(xml_results);      
+  get_xml_report(xml_results);      
 
   Expected Return:
     <testsuites failures="1" id="20191011_175324" tests="1">
@@ -119,7 +119,7 @@ Define Class(
     ---------
   */
 
-  show_xml_report = Method({xml_results},
+  get_xml_report = Method({xml_results},
     start_line = "<?xml version=\!"1.0\!" encoding=\!"UTF-8\!" ?>\!n";
     
     content = "";
@@ -251,7 +251,7 @@ Define Class(
 
     );
       
-    this:show_xml_report(hash_results);
+    this:get_xml_report(hash_results);
   );
   
   // Method: show report
