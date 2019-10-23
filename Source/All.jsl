@@ -15,3 +15,5 @@ ut include jsl files recursively( "Reporters" );
 If( ut add custom functions,
 	Log Capture( Add Custom Functions( ut custom functions ) );
 );
+
+ut nullptr;
