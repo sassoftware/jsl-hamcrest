@@ -1,43 +1,44 @@
 ﻿/*
-  Class: UtJunitXMLReporter
-  
-  ---Prototype---
-  class UtJunitXMLReporter inherits UtReporter
-  ---------------
-  Collect failure information about test cases.
-  Then issue a report in JUnitXML format on demand.
+Class: UtJunitXMLReporter
 
-  Example of JunitXML format:
+---Prototype---
+class UtJunitXMLReporter inherits UtReporter
+---------------
+Collect failure information about test cases.
+Then issue a report in JUnitXML format on demand.
 
-  <?xml version="1.0" encoding="UTF-8" ?> 
-  <testsuites id="20140612_170519" name="New_configuration (14/06/12 17:05:19)" tests="225" failures="1262" time="0.001">
-    <testsuite id="codereview.cobol.analysisProvider" name="COBOL Code Review" tests="45" failures="17" time="0.001">
+Example of JunitXML format:
+
+<?xml version="1.0" encoding="UTF-8" ?> 
+<testsuites id="20140612_170519" name="New_configuration (14/06/12 17:05:19)" tests="225" failures="1262" time="0.001">
+  <testsuite id="codereview.cobol.analysisProvider" name="COBOL Code Review" tests="45" failures="17" time="0.001">
     <testcase id="codereview.cobol.rules.ProgramIdRule" name="Use a program name that matches the source file name" time="0.001">
-    <failure message="PROGRAM.cbl:2 Use a program name that matches the source file name" type="WARNING">
-    WARNING: Use a program name that matches the source file name
-    Category: COBOL Code Review – Naming Conventions
-    File: /project/PROGRAM.cbl
-    Line: 2
-    </failure>
+      <failure message="PROGRAM.cbl:2 Use a program name that matches the source file name" type="WARNING">
+        WARNING: Use a program name that matches the source file name
+        Category: COBOL Code Review – Naming Conventions
+        File: /project/PROGRAM.cbl
+        Line: 2
+      </failure>
     </testcase>
   </testsuite>
-  </testsuites>
+</testsuites>
 */
 
 Define Class(
   "UtJunitXMLReporter",
   Base Class( UtCollectingReporter ),
 
-/*
+  /*
   Method: generate_xml_tag
-    ---Prototype---
-    generate_xml_tag(<tag>, <content>, <properties>)
-    ---------------
-    takes in a tag as a string and content, puts the content into the tag in xml format
+
+  ---Prototype---
+  generate_xml_tag(<tag>, <content>, <properties>)
+  ---------------
+  takes in a tag as a string and content, puts the content into the tag in xml format
 
   Arguments:
     tag: string: string that the tag should be
-  content: string: content that goes inside the string
+    content: string: content that goes inside the string
     properties: associative array: associative array with properties as keys and the values
 
   Example:
@@ -45,12 +46,13 @@ Define Class(
     ---JSL---
     test = generate_xml_tag("test", "content", ["prop"=>1]);
 
-    Expected Return:
+  Expected Return:
     <test prop="1">
       content
     </test>
     ---------
-*/
+  */
+
   generate_xml_tag = Method({tag, content, properties},
     xml_tag = "<" || tag;
     props = properties << get keys;
@@ -74,34 +76,36 @@ Define Class(
     Return(xml_tag);
   );
 
-/*
-    Method: show_xml_report
-      ---Prototype---
-     show_xml_report(<xml_results>)
-        ---------------
-        takes a hash which should have test suites as keys, returns the JunitXML format
-      
-    Arguments:
-    xml_result: Associative Array: associative array where keys should be the test suites.
-    Values will be associative arrays with test cases as keys.
-    The values of those associative arrays will be failure messages with "failure" as the key.
+  /*
+  Method: show_xml_report
 
-    Example:
-	
-	This is an example
-	---JSL---
+  ---Prototype---
+  show_xml_report(<xml_results>)
+  ---------------
+  takes a hash which should have test suites as keys, returns the JunitXML format
+    
+  Arguments:
+  xml_result: Associative Array: associative array where keys should be the test suites.
+  Values will be associative arrays with test cases as keys.
+  The values of those associative arrays will be failure messages with "failure" as the key.
 
-    xml_results = ["Example Tests" => 
-              ["Test1" => 
-              ["failure" =>
-              "Expected: add_nums(1, 1) equal to 3
-              But: was 2"
-              ]
-            ]
-            ];
-    show_xml_report(xml_results);      
+  Example:
 
-    Expected Return:
+  This is an example
+  ---JSL---
+
+  xml_results = ["Example Tests" => 
+                  ["Test1" => 
+                    ["failure" =>
+                      "Expected: add_nums(1, 1) equal to 3
+                      But: was 2"
+                    ]
+                  ]
+                ];
+
+  show_xml_report(xml_results);      
+
+  Expected Return:
     <testsuites failures="1" id="20191011_175324" tests="1">
       <testsuite failures="1" name="Example Tests" tests="1">
         <testcase name="Test1">
@@ -112,8 +116,9 @@ Define Class(
         </testcase>
       </testsuite>
     </testsuites>
-        ---------
-*/
+    ---------
+  */
+
   show_xml_report = Method({xml_results},
     start_line = "<?xml version=\!"1.0\!" encoding=\!"UTF-8\!" ?>\!n";
     
