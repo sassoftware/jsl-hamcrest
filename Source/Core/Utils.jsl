@@ -15,6 +15,9 @@ If( Is Empty( ut add custom functions ),
   ut add custom functions = 1;
 );
 
+// Variable: ut custom functions
+ut custom functions = {};
+
 /*	Function: ut matcher factory
 		---Prototype---
 		ut matcher factory( String name, Function func, String prototype = "", String description = "", List<List> examples )
@@ -57,7 +60,7 @@ ut define documented function = Function({name, function decl, prototype, descri
         cf << Example( ut merge expressions( Eval List( {Expr(Names Default To Here( 0 ); ut global reporter = ut streaming log reporter(); ), examples[i][2]} ) ), examples[i][1] );
       );
     );
-    Log Capture( Add Custom Functions( {cf} ) );
+    Insert Into( ut custom functions, cf );
   ,
     // Just assign the ut global function if not using custom functions
     As Scoped( "global", name || "" ) = function decl;
