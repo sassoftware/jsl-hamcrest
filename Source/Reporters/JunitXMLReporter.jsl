@@ -205,7 +205,6 @@ Define Class(
       curr_suite = "Anonymous_Test_Suite";
       curr_test = list_label[1];
 
-      show(curr_test);
       // need to increase the number
       anonymous_test_suite = hash_results["Anonymous_Test_Suite"];
       anonymous_test_cases = anonymous_test_suite << get keys;
@@ -232,7 +231,6 @@ Define Class(
     num successes = Length( this:successes );
     num failures = Length( this:failures );
     num unexpected throws = Length( this:unexpected throws );
-
     hash_results = [=>Associative Array()];
 
     For( i = 1, i <= num successes, i++,
