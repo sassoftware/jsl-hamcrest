@@ -2,14 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0 
 
 n root tests = Function({xml}, {out = .},
-	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Xml Attr("tests"))));
-	local:out = Num(local:out);
+	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Num(Xml Attr("tests")))));
 	local:out
 );
 
 n root failures = Function({xml}, {out = .},
-	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Xml Attr("failures"))));
-	local:out = Num(local:out);
+	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Num(Xml Attr("failures")))));
 	local:out
 );
 
@@ -28,7 +26,7 @@ setup_expr = Expr(
 );
 	
 JunitXMLReporters = ut test case("JunitXMLReporters")
-	<< Setup(setup_expr);
+	<< Setup(Expr(setup_expr));
 
 ut test(JunitXMLReporters, "Factory return correct type", Expr(
 	ut assert that( Expr(reporter), ut instance of("UtJunitXMLReporter") );
@@ -77,7 +75,6 @@ ut test(JunitXMLReporters, "Angle brackets in failure gives valid xml", Expr(
 ));
 
 ut test(JunitXMLReporters, "Counts are correct at root", Expr(
-	setup_expr;
 	with junit reporter(Expr(
 		outer assert value(1, 1);
 		outer assert value(2, 0);
@@ -110,7 +107,7 @@ ut test(JunitXMLReporters, "Counts are correct at root", Expr(
 
 // 1.0 JunitXMLReporter one simple passing
 
-ut test( "Simple Pass", "JunitXMLReporter one simple passing", Expr(
+ut test( JunitXMLReporters, "JunitXMLReporter one simple passing", Expr(
 	reporter  = New Object("UtJunitXMLReporter");
 	reporter << add success("Simple Pass ⮚ One plus one equals two ⮚ 1", 1 + 1, "equal to 2", Empty());
 	ut assert that(Expr(reporter << successes), ut equal to ({{"Simple Pass ⮚ One plus one equals two ⮚ 1", 2, "equal to 2", Empty()}}));
@@ -145,7 +142,7 @@ ut test( "Simple Pass", "JunitXMLReporter one simple passing", Expr(
 
 // 2.0 JunitXMLReporter one simple failing
 
-ut test( "Simple Fail", "JunitXMLReporter one simple failing", Expr(
+ut test( JunitXMLReporters, "JunitXMLReporter one simple failing", Expr(
 	reporter  = New Object("UtJunitXMLReporter");
 	reporter << add failure("Simple Fail ⮚ One plus one equals one ⮚ 1", 1 + 1, "equal to 1", "was 2", 0, Empty());
 	ut assert that(Expr(reporter << failures), ut equal to ({{"Simple Fail ⮚ One plus one equals one ⮚ 1", 2, "equal to 1", "was 2", 0, Empty()}}));
