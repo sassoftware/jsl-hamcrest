@@ -13,7 +13,7 @@ n root failures = Function({xml}, {out = .},
 
 setup_expr = Expr(
     //include("../../../Source/Reporters/JunitXMLReporter.jsl");
-    reporter = New Object("UtJunitXMLReporter");
+    reporter = ut junit xml reporter();
     with junit reporter = Function({ex},
         ut with reporter( reporter, Name Expr( ex ) );	
     );
@@ -130,12 +130,11 @@ ut test( JunitXMLReporters, "JunitXMLReporter one simple passing", Expr(
 	]\";
 	
 	//replace tabs and carriage returns used for easier readability
-	pattern = Substitute(pattern, "\!r", ".+");
-	pattern = Substitute(pattern, "\!t", "");
+	pattern = Substitute(pattern, "\!N", ".+", "\!r", ".+", "\!t", "");
 
 	match = Regex Match(report_text, pattern);
 	
-	ut assert that(Expr(Nitems(match)), ut equal to(1));
+	ut assert that(Expr(match), ut length(1));
 	
 	ut assert that(Expr(match[1]), ut equal to(report_text));
 ));
@@ -169,12 +168,11 @@ ut test( JunitXMLReporters, "JunitXMLReporter one simple failing", Expr(
 	]\";
 	
 	//replace tabs and carriage returns used for easier readability
-	pattern = Substitute(pattern, "\!r", ".+");
-	pattern = Substitute(pattern, "\!t", "");
+	pattern = Substitute(pattern, "\!N", ".+", "\!r", ".+", "\!t", "");
 
 	match = Regex Match(report_text, pattern);
 	
-	ut assert that(Expr(Nitems(match)), ut equal to(1));
+	ut assert that(Expr(match), ut length(1));
 	
 	ut assert that(Expr(match[1]), ut equal to(report_text));
 ));
