@@ -14,6 +14,7 @@
 // 10.0 JunitXMLReporter one simple failing
 // 11.0 Assertion with 4 part label works
 // 12.0 Multiple successes and failure report as expected
+// 13.0 Unexpected throws are treated as failures
 
 // uncomment to reinitialize and reinclude source file
 //init_framework = convert file path("$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\InitializeFramework.jsl");
@@ -114,21 +115,6 @@ ut test(JunitXMLReporters, "Angle brackets in failure gives valid xml", Expr(
 
 // 8.0 Counts are correct at root
 
-ut test(JunitXMLReporters, "Unexpected throws are treated as failures", Expr(
-	// There may be some room for improvement here. I think there may be a
-	// separate mechanism for reporting these.
-	with junit reporter(Expr(
-		ut test("A", "a", Expr(
-			Throw("I am unexpected!");
-		));
-	));
-	ut assert that( Expr(report), ut valid xml() );
-	ut assert that( Expr(n root tests(report)), 1 );
-	ut assert that( Expr(n root failures(report)), 1 );
-));
-
-// 8.0 Counts are correct at root
-
 ut test(JunitXMLReporters, "Counts are correct at root", Expr(
 	with junit reporter(Expr(
 		outer assert value(1, 1);
@@ -174,11 +160,11 @@ ut test( JunitXMLReporters, "JunitXMLReporter one simple passing", Expr(
 	]\";
 	
 	//replace tabs and carriage returns used for easier readability
-	Substitute Into(pattern, "\!r", ".+", "\!t", "");
+	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "");
 
 	match = Regex Match(report, pattern);
 	
-	ut assert that(Expr(Nitems(match)), ut equal to(1));
+	ut assert that(Expr(match), ut length(1));
 	ut assert that(Expr(report), ut valid xml() );
 	ut assert that(Expr(match[1]), ut equal to(report));
 ));
@@ -210,11 +196,11 @@ ut test( JunitXMLReporters, "JunitXMLReporter one simple failing", Expr(
 	]\";
 	
 	//replace tabs and carriage returns used for easier readability
-	Substitute Into(pattern, "\!r", ".+", "\!t", "");
+	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "");
 
 	match = Regex Match(report, pattern);
 	
-	ut assert that(Expr(Nitems(match)), ut equal to(1));
+	ut assert that(Expr(match), ut length(1));
 	ut assert that(Expr(report), ut valid xml() );
 	ut assert that(Expr(match[1]), ut equal to(report));
 ));
@@ -243,11 +229,11 @@ ut test(JunitXMLReporters, "Assertion with 4 part label works", Expr(
 	";
 
 	//replace tabs and carriage returns used for easier readability
-	Substitute Into(pattern, "\!r", ".+", "\!t", "");
+	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "");
 
 	match = Regex Match(report, pattern);
 	
-	ut assert that(Expr(Nitems(match)), ut equal to(1));
+	ut assert that(Expr(match), ut length(1));
 	ut assert that(Expr(report), ut valid xml() );
 	ut assert that(Expr(match[1]), ut equal to(report));
 ));
@@ -409,13 +395,26 @@ ut test(JunitXMLReporters, "Multiple successes and failure report as expected", 
 	";
 
 	//replace tabs and carriage returns used for easier readability
-	Substitute Into(pattern, "\!r", ".+", "\!t", "", "?", "\?", ")", "\)", "(", "\(");
+	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "", "?", "\?", ")", "\)", "(", "\(");
 
 	match = Regex Match(report, pattern);
 	
-	ut assert that(Expr(Nitems(match)), ut equal to(1));
+	ut assert that(Expr(match), ut length(1));
 	ut assert that(Expr(report), ut valid xml() );
 	ut assert that(Expr(match[1]), ut equal to(report));
 ));
 
+// 13.0 Unexpected throws are treated as failures
 
+ut test(JunitXMLReporters, "Unexpected throws are treated as failures", Expr(
+	// There may be some room for improvement here. I think there may be a
+	// separate mechanism for reporting these.
+	with junit reporter(Expr(
+		ut test("A", "a", Expr(
+			Throw("I am unexpected!");
+		));
+	));
+	ut assert that( Expr(report), ut valid xml() );
+	ut assert that( Expr(n root tests(report)), 1 );
+	ut assert that( Expr(n root failures(report)), 1 );
+));
