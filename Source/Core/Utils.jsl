@@ -35,7 +35,7 @@ ut matcher factory = Function( {name, function decl=Empty(), prototype="", descr
 	If( !Contains( ut matcher factories, As Name( name ) ),
 		Insert Into( ut matcher factories, As Name( name ) );
 	);
-	If( !Is Empty( Name Expr( funciton decl ) ),
+	If( !Is Empty( Name Expr( function decl ) ),
 		ut define documented function( name, Name Expr( function decl ), prototype, description, examples );
 	);
 	ut nullptr;
