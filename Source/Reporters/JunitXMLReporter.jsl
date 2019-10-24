@@ -187,7 +187,6 @@ Define Class(
   //
   // Arguments: 
   //  label - A label separated by a separator
-  //  sep - Separator that splits the label
   //  hash_results - Associative Array with test suites as keys and associative arrays with test cases as keys as values
   // 
   // Results:
@@ -197,8 +196,8 @@ Define Class(
   //  and the test will be the given label or "Anonymous_Test_Name"
   //  with one higher than the latest number found in the hash_results
 
-  parse_label = Method({label, sep, hash_results},
-    list_label = words(label, sep);
+  parse_label = Method({label, hash_results},
+    list_label = words(label, ::ut concat test label sep);
 
     // set to anonymous test name if missing
     If(label == "",
@@ -250,7 +249,7 @@ Define Class(
         Char( Name Expr( this:successes[i][2] ) ),
         Char( this:successes[i][2] )
       ) || " ";
-      parsed_label = this:parse_label(this:successes[i][1], ut concat test label sep, hash_results);
+      parsed_label = this:parse_label(this:successes[i][1], hash_results);
       curr_suite = parsed_label [1];
       curr_test = parsed_label[2];
       // empty for a success
@@ -272,7 +271,7 @@ Define Class(
         Char( this:failures[i][2] )
       ) || " ";
 
-      parsed_label = this:parse_label(this:failures[i][1], ut concat test label sep, hash_results);
+      parsed_label = this:parse_label(this:failures[i][1], hash_results);
       curr_suite = parsed_label [1];
       curr_test = parsed_label[2];
       fail_msg = "Expected: " || char test expr || this:failures[i][3] || "\!n";
@@ -292,7 +291,7 @@ Define Class(
         Char( Name Expr( this:unexpected throws[i][2] ) ),
         Char( this:unexpected throws[i][2] )
       ) || " ";
-      parsed_label = this:parse_label(this:unexpected throws[i][1], ut concat test label sep, hash_results);
+      parsed_label = this:parse_label(this:unexpected throws[i][1], hash_results);
       curr_suite = parsed_label [1];
       curr_test = parsed_label[2];
       throw_msg = "  Expected: " || char test expr || this:unexpected throws[i][3] || "\!n";
