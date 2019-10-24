@@ -40,6 +40,7 @@ Define Class(
     tag: string: string that the tag should be
     content: string: content that goes inside the string
     properties: associative array: associative array with properties as keys and the values
+    escape_content_flag: Integer: 1 if content should have &, < and > escaped, 0 otherwise
 
   Example:
     This is an example
@@ -53,7 +54,7 @@ Define Class(
     ---------
   */
 
-  generate_xml_tag = Method({tag, content, properties},
+  generate_xml_tag = Method({tag, content, properties, escape_content_flag=1},
     xml_tag = "<" || tag;
     props = properties << get keys;
     vals = properties << get values;
@@ -62,13 +63,16 @@ Define Class(
       If(Type(name) != "String",
         Throw("property argument has a non string key found type:" || Type(name));
       );
-      xml_tag ||= " " || name || "=\!"" || Char(vals[i]) || "\!"";
+      encoded_val = XML Encode(Char(vals[i]));
+      xml_tag ||= " " || XML Encode(name) || "=\!"" || encoded_val || "\!"";
     );
     xml_tag ||= ">" || "\!n";
-    
     If(content != "",
       // replace all newline with doublespace then newline
       Substitute Into(content, "\!n", "\!n  ");
+      If(escape_content_flag,
+        Substitute Into(content, "&", "&amp;", "<", "&lt;", ">", "&gt;");
+      );
       xml_tag ||= "  " || content || "\!n";
     );
 
@@ -148,7 +152,7 @@ Define Class(
         );
         props = Associative Array();
         props["name"] = test_case_names[k];
-        test_case_xml ||= this:generate_xml_tag("testcase", trim(test_case_content), props);
+        test_case_xml ||= this:generate_xml_tag("testcase", trim(test_case_content), props, 0);
         
       );
       num_tests = NItems(test_case_names);
@@ -159,7 +163,7 @@ Define Class(
       // find test results that are non empty
       num_successes = Nitems(loc(test_case_info, [=>]));
       props["failures"] = Char(num_tests-num_successes);
-      test_suite_tag = this:generate_xml_tag("testsuite", trim(test_case_xml), props);
+      test_suite_tag = this:generate_xml_tag("testsuite", trim(test_case_xml), props, 0);
       content ||= test_suite_tag;
     );
     
@@ -169,7 +173,7 @@ Define Class(
     props["tests"] = Char(Nitems(this:successes) + NItems(this:failures) + NItems(this:unexpected throws));
     props["failures"] = Char(NItems(this:failures) + NItems(this:unexpected throws));
 
-    xml_result = start_line || this:generate_xml_tag("testsuites", trim(content), props);;
+    xml_result = start_line || this:generate_xml_tag("testsuites", trim(content), props, 0);
     Return(xml_result);
   );
 
