@@ -129,6 +129,8 @@ ut test(JunitXMLReporters, "Unexpected throws are treated as failures", Expr(
 	ut assert that( Expr(n root failures(report)), 1 );
 ));
 
+// 8.0 Counts are correct at root
+
 ut test(JunitXMLReporters, "Counts are correct at root", Expr(
 	with junit reporter(Expr(
 		outer assert value(1, 1);
