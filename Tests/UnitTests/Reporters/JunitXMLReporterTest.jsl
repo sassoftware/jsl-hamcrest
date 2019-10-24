@@ -32,7 +32,7 @@ n root failures = Function({xml}, {out = .},
 
 setup_expr = Expr(
     //include("../../../Source/Reporters/JunitXMLReporter.jsl");
-    reporter = New Object("UtJunitXMLReporter");
+    reporter = ut junit xml reporter();
     with junit reporter = Function({ex},
         ut with reporter( reporter, Name Expr( ex ) );	
     );
