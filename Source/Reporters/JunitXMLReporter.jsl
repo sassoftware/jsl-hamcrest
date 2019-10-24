@@ -201,6 +201,10 @@ Define Class(
       list_label = {"Anonymous_Test_Name"};
     );
     Match(NItems(list_label),
+      4,
+      curr_suite = Trim(list_label[1]);
+      curr_test = Trim(list_label[2]) || "_" || Trim(list_label[3]) || "_" || Trim(list_label[4]);
+      ,
       3,
       curr_suite = Trim(list_label[1]);
       curr_test = Trim(list_label[2]) || "_" || Trim(list_label[3]);
