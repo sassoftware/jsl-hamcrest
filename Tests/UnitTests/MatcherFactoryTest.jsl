@@ -1,0 +1,78 @@
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+MatcherFactoryTests = ut test case( "MatcherFactoryTests" )
+	<<Setup(Expr(
+		saved value = ut should deploy documented functions;
+		prev n documented = N Items( ut documented functions );
+	))
+	<<Teardown(Expr(
+		ut unregister matcher factory("test factory");
+		ut assert value( ut matcher factories, ut not( ut contains( Expr( test factory ) ) ) );
+		ut assert that( Expr( ::test factory() ), ut no throw() );
+		ut should deploy documented functions = saved value;
+	));
+
+ut test(MatcherFactoryTests, "No Function Definition", Expr(
+	ut should deploy documented functions = 1;
+	ut matcher factory("test factory");
+
+	// added as matcher factory
+	ut assert value( ut matcher factories, ut contains( Expr( test factory ) ) );
+	// not added as documented function
+	ut assert value( ut documented functions, ut n items( prev n documented ) );
+	// no function defined
+	ut assert that( Expr( test factory() ), ut throws name unresolved( "test factory" ) );
+
+	test factory = Function({}, 5 ); // make valid function for teardown
+
+));
+
+ut test(MatcherFactoryTests, "Defines Function in Global", Expr(
+	ut should deploy documented functions = 1;
+	ut matcher factory("test factory", Expr(Function({}, 5 )) );
+
+	// added as matcher factory
+	ut assert value( ut matcher factories, ut contains( Expr( test factory ) ) );
+	// added to documented functions list
+	ut assert value( ut documented functions, ut n items( prev n documented + 1 ) );
+	// defined in global
+	ut assert that( Expr( ::test factory() ), 5 );
+	
+	// Function that will get overwritten by a deploy
+	::test factory = Function({}, 10 );
+	
+	ut deploy documented functions();
+	// Should overwrite to original defined function
+	ut assert that( Expr( ::test factory() ), 5 );
+	
+));
+
+ut test(MatcherFactoryTests, "Correct documentation", Expr(
+	ut should deploy documented functions = 1;
+	ut matcher factory("test factory", Expr(Function({}, 5 )), "test factory()", "a description" );
+	
+	ut assert value( ut documented functions, ut n items( ut greater than( 0 ) ) );
+
+	cf = ut documented functions[N Items( ut documented functions)];
+	
+	ut assert value( cf, ut name( "test factory" ) );
+	ut assert value( cf, ut message( "test factory()", "prototype", "Get Prototype" ) );
+	ut assert value( cf, ut message( "a description", "description", "Get Description" ) );
+
+));
+
+ut test(MatcherFactoryTests, "Documented functions turned off", Expr(
+	// Opt out of documented functions
+	ut should deploy documented functions = 0;
+
+	ut matcher factory("test factory", Expr(Function({}, 5 )) );
+
+	// added as matcher factory
+	ut assert value( ut matcher factories, ut contains( Expr( test factory ) ) );
+	// NOT added to documented functions list
+	ut assert value( ut documented functions, ut n items( prev n documented ) );
+	// still defined in global
+	ut assert that( Expr( ::test factory() ), 5 );
+
+));

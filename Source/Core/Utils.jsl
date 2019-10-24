@@ -10,14 +10,23 @@ Names Default To Here( 0 );
 */
 ut matcher factories = {};
 
-// Variable: ut add custom functions
+// Variable: ut documented functions
+ut documented functions = {};
+
+// Variable: ut should deploy documented functions
 // Only overwritten if not already set. Default is 1.
-If( Is Empty( ut add custom functions ), 
-	ut add custom functions = 1;
+If( Is Empty( ut should deploy documented functions ), 
+	ut should deploy documented functions = 1;
 );
 
-// Variable: ut custom functions
-ut custom functions = {};
+ut deploy documented functions = Function({},
+	If( ut should deploy documented functions,
+		Log Capture( Add Custom Functions( ut documented functions ) );
+		// Clear memory and make room to call again with new fuctions
+		ut documented functions = {};
+	);
+	ut nullptr;
+);
 
 /*	Function: ut matcher factory
 		---Prototype---
@@ -46,7 +55,7 @@ ut matcher factory = Function( {name, function decl=Empty(), prototype="", descr
 */
 ut define documented function = Function({name, function decl, prototype, description, examples},
 	// add a copy of the function to the package namespace and scripting index.
-	If( ut add custom functions,
+	If( ut should deploy documented functions,
 		cf = New Custom Function( "global", name, function decl,
 			<< Scripting Index Category( ut package name ),
 			<< Prototype( prototype ),
@@ -61,11 +70,10 @@ ut define documented function = Function({name, function decl, prototype, descri
 				cf << Example( ut merge expressions( Eval List( {Expr(Names Default To Here( 0 ); ut global reporter = ut streaming log reporter(); ), examples[i][2]} ) ), examples[i][1] );
 			);
 		);
-		Insert Into( ut custom functions, cf );
-	,
-	// Just assign the ut global function if not using custom functions
-		As Scoped( "global", name || "" ) = function decl;
+		Insert Into( ut documented functions, cf );
 	);
+	// Always assign the ut global function, for backwards compatibility
+	As Scoped( "global", name || "" ) = function decl;
 );
 
 /*	Function: ut is a matcher

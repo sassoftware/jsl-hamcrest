@@ -12,8 +12,6 @@ ut include jsl files recursively( "Matchers" );
 // Reporters
 ut include jsl files recursively( "Reporters" );
 
-If( ut add custom functions,
-	Log Capture( Add Custom Functions( ut custom functions ) );
-);
+ut deploy documented functions();
 
 ut nullptr;
