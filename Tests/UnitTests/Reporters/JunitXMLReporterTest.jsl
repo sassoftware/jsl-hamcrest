@@ -18,7 +18,11 @@
 // uncomment to reinitialize and reinclude source file
 //init_framework = convert file path("$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\InitializeFramework.jsl");
 //include(init_framework);
-//include("../../../Source/Reporters/JunitXMLReporter.jsl");
+
+// include the JunitXMLReporter if this is the only file being run
+If( N Items( Include File List() ) == 1, 
+	include("../../../Source/Reporters/JunitXMLReporter.jsl");
+);
 
 n root tests = Function({xml}, {out = .},
 	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Num(Xml Attr("tests")))));
@@ -32,7 +36,7 @@ n root failures = Function({xml}, {out = .},
 
 setup_expr = Expr(
     //include("../../../Source/Reporters/JunitXMLReporter.jsl");
-    reporter = New Object("UtJunitXMLReporter");
+    reporter = ut junit xml reporter();
     with junit reporter = Function({ex},
         ut with reporter( reporter, Name Expr( ex ) );	
     );
@@ -153,11 +157,11 @@ ut test( JunitXMLReporters, "JunitXMLReporter one simple passing", Expr(
 	]\";
 	
 	//replace tabs and carriage returns used for easier readability
-	Substitute Into(pattern, "\!r", ".+", "\!t", "");
+	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "");
 
 	match = Regex Match(report, pattern);
 	
-	ut assert that(Expr(Nitems(match)), ut equal to(1));
+	ut assert that(Expr(match), ut length(1));
 	ut assert that(Expr(report), ut valid xml() );
 	ut assert that(Expr(match[1]), ut equal to(report));
 ));
@@ -189,7 +193,7 @@ ut test( JunitXMLReporters, "JunitXMLReporter one simple failing", Expr(
 	]\";
 	
 	//replace tabs and carriage returns used for easier readability
-	Substitute Into(pattern, "\!r", ".+", "\!t", "");
+	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "");
 
 	match = Regex Match(report, pattern);
 	
@@ -226,7 +230,7 @@ ut test(JunitXMLReporters, "Assertion with 4 part label works", Expr(
 
 	match = Regex Match(report, pattern);
 	
-	ut assert that(Expr(Nitems(match)), ut equal to(1));
+	ut assert that(Expr(match), ut length(1));
 	ut assert that(Expr(report), ut valid xml() );
 	ut assert that(Expr(match[1]), ut equal to(report));
 ));
@@ -388,11 +392,11 @@ ut test(JunitXMLReporters, "Multiple successes and failure report as expected", 
 	";
 
 	//replace tabs and carriage returns used for easier readability
-	Substitute Into(pattern, "\!r", ".+", "\!t", "", "?", "\?", ")", "\)", "(", "\(");
+	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "", "?", "\?", ")", "\)", "(", "\(");
 
 	match = Regex Match(report, pattern);
 	
-	ut assert that(Expr(Nitems(match)), ut equal to(1));
+	ut assert that(Expr(match), ut length(1));
 	ut assert that(Expr(report), ut valid xml() );
 	ut assert that(Expr(match[1]), ut equal to(report));
 ));
