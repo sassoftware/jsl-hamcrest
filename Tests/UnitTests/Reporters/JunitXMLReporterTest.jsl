@@ -1,6 +1,23 @@
 ﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0 
 
+// Unit test cases for JunitXMLReporter
+// 1.0 Factory return correct type
+// 2.0 No assertions gives valid xml
+// 3.0 Single passing assertion gives valid xml
+// 4.0 Single failing assertion gives valid xml
+// 5.0 Test case gives valid xml
+// 6.0 Quotes in label gives valid xml
+// 7.0 Angle brackets in failure gives valid xml
+// 8.0 Counts are correct at root
+// 9.0 JunitXMLReporter one simple passing
+// 10.0 JunitXMLReporter one simple failing
+
+// uncomment to reinitialize and reinclude source file
+//init_framework = convert file path("$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\InitializeFramework.jsl");
+//include(init_framework);
+//include("../../../Source/Reporters/JunitXMLReporter.jsl");
+
 n root tests = Function({xml}, {out = .},
 	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Num(Xml Attr("tests")))));
 	local:out
@@ -27,14 +44,20 @@ setup_expr = Expr(
 	
 JunitXMLReporters = ut test case("JunitXMLReporters")
 	<< Setup(Expr(setup_expr));
+	
+// 1.0 Factory return correct type
 
 ut test(JunitXMLReporters, "Factory return correct type", Expr(
 	ut assert that( Expr(reporter), ut instance of("UtJunitXMLReporter") );
 ));
 
+// 2.0 No assertions gives valid xml
+
 ut test(JunitXMLReporters, "No assertions gives valid xml", Expr(
 	ut assert that( Expr(report), ut all of({ut valid xml(), ut not("")}) );
 ));
+
+// 3.0 Single passing assertion gives valid xml
 
 ut test(JunitXMLReporters, "Single passing assertion gives valid xml", Expr(
 	with junit reporter(Expr(
@@ -43,6 +66,8 @@ ut test(JunitXMLReporters, "Single passing assertion gives valid xml", Expr(
 	ut assert that( Expr(report), ut valid xml() );
 ));
 
+// 4.0 Single failing assertion gives valid xml
+
 ut test(JunitXMLReporters, "Single failing assertion gives valid xml", Expr(
 	with junit reporter(Expr(
 		outer assert value(1, 2);
@@ -50,6 +75,8 @@ ut test(JunitXMLReporters, "Single failing assertion gives valid xml", Expr(
 	));
 	ut assert that( Expr(report), ut valid xml() );
 ));
+
+// 5.0 Test case gives valid xml
 
 ut test(JunitXMLReporters, "Test case gives valid xml", Expr(
 	with junit reporter(Expr(
@@ -60,6 +87,8 @@ ut test(JunitXMLReporters, "Test case gives valid xml", Expr(
 	ut assert that( Expr(report), ut valid xml() );
 ));
 
+// 6.0 Quotes in label gives valid xml
+
 ut test(JunitXMLReporters, "Quotes in label gives valid xml", Expr(
 	with junit reporter(Expr(
 		outer assert value(1, 0, "quotes may cause \!"trouble\!" if not escaped");
@@ -67,12 +96,16 @@ ut test(JunitXMLReporters, "Quotes in label gives valid xml", Expr(
 	ut assert that( Expr(report), ut valid xml() );
 ));
 
+// 7.0 Angle brackets in failure gives valid xml
+
 ut test(JunitXMLReporters, "Angle brackets in failure gives valid xml", Expr(
 	with junit reporter(Expr(
 		outer assert value("brackets", "brackets may cause <<trouble>> if not escaped");
 	));
 	ut assert that( Expr(report), ut valid xml() );
 ));
+
+// 8.0 Counts are correct at root
 
 ut test(JunitXMLReporters, "Counts are correct at root", Expr(
 	with junit reporter(Expr(
@@ -95,29 +128,17 @@ ut test(JunitXMLReporters, "Counts are correct at root", Expr(
 	ut assert that( Expr(n root failures(report)), 4 );
 ));
 
-// Unit test cases for JunitXMLReporter
-
-// 1.0 JunitXMLReporter one simple passing
-// 2.0 JunitXMLReporter one simple failing
-
-// uncomment to reinitialize and reinclude source file
-//init_framework = convert file path("$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\InitializeFramework.jsl");
-//include(init_framework);
-//include("../../../Source/Reporters/JunitXMLReporter.jsl");
-
-// 1.0 JunitXMLReporter one simple passing
+// 9.0 JunitXMLReporter one simple passing
 
 ut test( JunitXMLReporters, "JunitXMLReporter one simple passing", Expr(
-	reporter  = New Object("UtJunitXMLReporter");
-	reporter << add success("Simple Pass ⮚ One plus one equals two ⮚ 1", 1 + 1, "equal to 2", Empty());
-	ut assert that(Expr(reporter << successes), ut equal to ({{"Simple Pass ⮚ One plus one equals two ⮚ 1", 2, "equal to 2", Empty()}}));
 
-	// Example test that would produce the success shown above
-	// ut test ("Simple Pass", "One plus one equals two", Expr(
-	//   ut assert that(Expr(1+1), ut equal to (2));
-	// ));
+	with junit reporter(Expr(
+	   ut test ("Simple Pass", "One plus one equals two", Expr(
+	     ut assert that(Expr(1+1), ut equal to (2));
+	   ));
+	));
 	
-	report_text = Log Capture(reporter << show report);
+	ut assert that(Expr(reporter << successes), ut equal to ({{"Simple Pass ⮚ One plus one equals two ⮚ 1", 1 + 1, "equal to 2", Empty()}}));
 	
 	pattern = 
 	"\[<\?xml version="1.0" encoding="UTF-8" \?>
@@ -133,26 +154,24 @@ ut test( JunitXMLReporters, "JunitXMLReporter one simple passing", Expr(
 	pattern = Substitute(pattern, "\!r", ".+");
 	pattern = Substitute(pattern, "\!t", "");
 
-	match = Regex Match(report_text, pattern);
+	match = Regex Match(report, pattern);
 	
 	ut assert that(Expr(Nitems(match)), ut equal to(1));
-	
-	ut assert that(Expr(match[1]), ut equal to(report_text));
+	ut assert that(Expr(report), ut valid xml() );
+	ut assert that(Expr(match[1]), ut equal to(report));
 ));
 
-// 2.0 JunitXMLReporter one simple failing
+// 10.0 JunitXMLReporter one simple failing
 
 ut test( JunitXMLReporters, "JunitXMLReporter one simple failing", Expr(
-	reporter  = New Object("UtJunitXMLReporter");
-	reporter << add failure("Simple Fail ⮚ One plus one equals one ⮚ 1", 1 + 1, "equal to 1", "was 2", 0, Empty());
-	ut assert that(Expr(reporter << failures), ut equal to ({{"Simple Fail ⮚ One plus one equals one ⮚ 1", 2, "equal to 1", "was 2", 0, Empty()}}));
-	
-	// Example test that would produce the failure shown above
-	// ut test ("Simple Fail", "One plus one equals one", Expr(
-	//   ut assert that(Expr(1+1), ut equal to (1));
-	// ));
 
-	report_text = Log Capture(reporter << show report);
+	with junit reporter(Expr(
+	    ut test ("Simple Fail", "One plus one equals one", Expr(
+	       ut assert that(Expr(1+1), ut equal to (1));
+	    ));
+	));
+	
+	ut assert that(Expr(reporter << failures), ut equal to ({{"Simple Fail ⮚ One plus one equals one ⮚ 1", 1 + 1, "equal to 1", "was 2", 0, Empty()}}));
 	
 	pattern = 
 	"\[<\?xml version="1.0" encoding="UTF-8" \?>
@@ -160,7 +179,7 @@ ut test( JunitXMLReporters, "JunitXMLReporter one simple failing", Expr(
 	  <testsuite failures="1" name="Simple Fail" tests="1">
 		<testcase name="One plus one equals one_1">
 		  <failure type="failure">
-			Expected: 2 equal to 1
+			Expected: 1 \+ 1 equal to 1
 			But: was 2
 		  </failure>
 		</testcase>
@@ -172,10 +191,10 @@ ut test( JunitXMLReporters, "JunitXMLReporter one simple failing", Expr(
 	pattern = Substitute(pattern, "\!r", ".+");
 	pattern = Substitute(pattern, "\!t", "");
 
-	match = Regex Match(report_text, pattern);
+	match = Regex Match(report, pattern);
 	
 	ut assert that(Expr(Nitems(match)), ut equal to(1));
-	
-	ut assert that(Expr(match[1]), ut equal to(report_text));
+	ut assert that(Expr(report), ut valid xml() );
+	ut assert that(Expr(match[1]), ut equal to(report));
 ));
 
