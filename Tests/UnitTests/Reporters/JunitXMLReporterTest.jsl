@@ -11,6 +11,11 @@ n root failures = Function({xml}, {out = .},
 	local:out
 );
 
+suite names = Function({xml}, {out = {}},
+	Parse XML(xml, On Element("testsuite", Start Tag(Insert Into(local:out, Xml Attr("name")))));
+	local:out
+);
+
 setup_expr = Expr(
     //include("../../../Source/Reporters/JunitXMLReporter.jsl");
     reporter = ut junit xml reporter();
@@ -74,6 +79,19 @@ ut test(JunitXMLReporters, "Angle brackets in failure gives valid xml", Expr(
 	ut assert that( Expr(report), ut valid xml() );
 ));
 
+ut test(JunitXMLReporters, "Unexpected throws are treated as failures", Expr(
+	// There may be some room for improvement here. I think there may be a
+	// separate mechanism for reporting these.
+	with junit reporter(Expr(
+		ut test("A", "a", Expr(
+			Throw("I am unexpected!");
+		));
+	));
+	ut assert that( Expr(report), ut valid xml() );
+	ut assert that( Expr(n root tests(report)), 1 );
+	ut assert that( Expr(n root failures(report)), 1 );
+));
+
 ut test(JunitXMLReporters, "Counts are correct at root", Expr(
 	with junit reporter(Expr(
 		outer assert value(1, 1);
@@ -93,6 +111,7 @@ ut test(JunitXMLReporters, "Counts are correct at root", Expr(
 	));
 	ut assert that( Expr(n root tests(report)), 8 );
 	ut assert that( Expr(n root failures(report)), 4 );
+	ut assert that( Expr(suite names(report)), {"A", "Anonymous_Test_Suite", "B"} );
 ));
 
 // Unit test cases for JunitXMLReporter
