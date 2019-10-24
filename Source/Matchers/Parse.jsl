@@ -130,13 +130,13 @@ ut parsed = Function( {matcher},
 		---------
 */
 ut matcher factory( 
-  "ut parse error",
-  Expr(Function( {matcher},
-    New Object( UtParseErrorMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
-  )),
-  "ut parse error( matcher )",
-  "Checks that a given string throws an error when parsed.",
-  {{"Simple", ut assert that( ut as expr( "x == ." ), ut parse error( ut starts with( "Comparisons with missing must be done with the isMissing() function" ) ) ); }}
+	"ut parse error",
+	Expr(Function( {matcher},
+		New Object( UtParseErrorMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
+	)),
+	"ut parse error( matcher )",
+	"Checks that a given string throws an error when parsed.",
+	{{"Simple", ut assert that( ut as expr( "x == ." ), ut parse error( ut starts with( "Comparisons with missing must be done with the isMissing() function" ) ) ); }}
 );
 
 /* 
@@ -154,11 +154,11 @@ ut matcher factory(
 		---------
 */
 ut matcher factory( 
-  "ut no parse error",
-  Expr(Function( {},
-    New Object( UtNoParseErrorMatcher() );
-  )),
-  "ut no parse error()",
-  "Checks that a given string parses successfully.",
-  {{"Simple", ut assert that( ut as expr( "x = 5;" ), ut no parse error() );}}
+	"ut no parse error",
+	Expr(Function( {},
+		New Object( UtNoParseErrorMatcher() );
+	)),
+	"ut no parse error()",
+	"Checks that a given string parses successfully.",
+	{{"Simple", ut assert that( ut as expr( "x = 5;" ), ut no parse error() );}}
 );

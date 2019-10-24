@@ -54,12 +54,12 @@ Define Class(
 		> ut assert that( Expr( "str" || "ing" ), ut length( 6 ) );
 */
 ut matcher factory( "ut length",
-  Expr(Function( {matcher},
-    New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "Length", "length" ) )
-  )),
-  "ut length( matcher )",
-  "Passes the Length() of the actual value to the inner matcher.",
-  {{"Simple", ut assert that( Expr( {1,2,3} ), ut length( 3 ) ); ut assert that( Expr( "str" || "ing" ), ut length( 6 ) ); }}
+	Expr(Function( {matcher},
+		New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "Length", "length" ) )
+	)),
+	"ut length( matcher )",
+	"Passes the Length() of the actual value to the inner matcher.",
+	{{"Simple", ut assert that( Expr( {1,2,3} ), ut length( 3 ) ); ut assert that( Expr( "str" || "ing" ), ut length( 6 ) ); }}
 );
 
 /* 
@@ -78,13 +78,13 @@ ut matcher factory( "ut length",
 		> ut assert that( Expr( {1,2,3} ), ut n items( 3 ) );
 */
 ut matcher factory( 
-  "ut n items",
-  Expr(Function( {matcher},
-    New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Items", "n items" ) )
-  )),
-  "ut n items( matcher )",
-  "Passes the N Items() of the actual value to the inner matcher.",
-  {{"Simple", ut assert that( Expr( {1,2,3} ), ut n items( 3 ) ); }}
+	"ut n items",
+	Expr(Function( {matcher},
+		New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Items", "n items" ) )
+	)),
+	"ut n items( matcher )",
+	"Passes the N Items() of the actual value to the inner matcher.",
+	{{"Simple", ut assert that( Expr( {1,2,3} ), ut n items( 3 ) ); }}
 );
 
 /* 
@@ -104,13 +104,13 @@ ut matcher factory(
 		> ut assert that( Expr( Transpose( 1::3 ) ), ut n cols( 1 ) );
 */
 ut matcher factory( 
-  "ut n cols",
-  Expr(Function( {matcher},
-    New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Cols", "n cols" ) )
-  )),
-  "ut n cols( matcher )",
-  "Passes the N Cols() of the actual value to the inner matcher.",
-  {{"Simple", ut assert that( Expr( dt ), ut n cols( 3 ) ); ut assert that( Expr( Transpose( 1::3 ) ), ut n cols( 1 ) ); }}
+	"ut n cols",
+	Expr(Function( {matcher},
+		New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Cols", "n cols" ) )
+	)),
+	"ut n cols( matcher )",
+	"Passes the N Cols() of the actual value to the inner matcher.",
+	{{"Simple", ut assert that( Expr( dt ), ut n cols( 3 ) ); ut assert that( Expr( Transpose( 1::3 ) ), ut n cols( 1 ) ); }}
 );
 
 /* 
@@ -130,11 +130,11 @@ ut matcher factory(
 		> ut assert that( Expr( Transpose( 1::3 ) ), ut n rows( 3 ) );
 */
 ut matcher factory( 
-  "ut n rows",
-  Expr(Function( {matcher},
-    New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Rows", "n rows" ) )
-  )),
-  "ut n rows( matcher )",
-  "Passes the N Rows() of the actual value to the inner matcher.",
-  {{"Simple", ut assert that( Expr( dt ), ut n rows( 3 ) ); ut assert that( Expr( Transpose( 1::3 ) ), ut n rows( 3 ) ); }}
+	"ut n rows",
+	Expr(Function( {matcher},
+		New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Rows", "n rows" ) )
+	)),
+	"ut n rows( matcher )",
+	"Passes the N Rows() of the actual value to the inner matcher.",
+	{{"Simple", ut assert that( Expr( dt ), ut n rows( 3 ) ); ut assert that( Expr( Transpose( 1::3 ) ), ut n rows( 3 ) ); }}
 );

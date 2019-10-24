@@ -53,20 +53,20 @@ Define Class(
 		---------
 */
 ut matcher factory( 
-  "ut instance of",
-  Expr(Function({val},
-    {obj},
-    If( !Is String( Name Expr( val ) ),
-      Throw( "argument to ut instance of() must be a string" ),
-      obj = New Object( UtInstanceOfMatcher( val ) );
-      obj:self = obj;
-    );
-  )),
-  "ut instance of( value )",
-  "Checks if actual value is a class object of a specific type. This matcher does not check base class names. You may need to use duck typing and create your own matcher for this purpose.",
-  {{
-    "Simple",
-    Define Class("Foo");
+	"ut instance of",
+	Expr(Function({val},
+		{obj},
+		If( !Is String( Name Expr( val ) ),
+			Throw( "argument to ut instance of() must be a string" ),
+			obj = New Object( UtInstanceOfMatcher( val ) );
+			obj:self = obj;
+		);
+	)),
+	"ut instance of( value )",
+	"Checks if actual value is a class object of a specific type. This matcher does not check base class names. You may need to use duck typing and create your own matcher for this purpose.",
+	{{
+		"Simple",
+		Define Class("Foo");
 		ut assert that( Expr( New Object( "Foo" ) ), ut instance of( "Foo" ) );
-  }}
+	}}
 );

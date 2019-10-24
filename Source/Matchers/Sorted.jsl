@@ -39,20 +39,20 @@ Define Class("UtSortedMatcher", Base Class(Ut Matcher),
 		---Prototype---
 		ut sorted( UtMatcher matcher )
 		---------------
-    Sorts a list before passing to inner matcher.
-    
-    Factory function for <UtSortedMatcher>.
+		Sorts a list before passing to inner matcher.
+		
+		Factory function for <UtSortedMatcher>.
 
 	Example:
 		> ut assert that( Expr( {3,2,1} ), ut sorted( {1,2,3} ) );
 */
 
 ut matcher factory( 
-  "ut sorted",
-  Expr(Function( {matcher},
-    New Object( UtSortedMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
-  )),
-  "ut sorted( matcher )",
-  "Sorts a list before passing to inner matcher.",
-  {{"Simple", ut assert that( Expr( {3,2,1} ), ut sorted( {1,2,3} ) );}}
+	"ut sorted",
+	Expr(Function( {matcher},
+		New Object( UtSortedMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
+	)),
+	"ut sorted( matcher )",
+	"Sorts a list before passing to inner matcher.",
+	{{"Simple", ut assert that( Expr( {3,2,1} ), ut sorted( {1,2,3} ) );}}
 );

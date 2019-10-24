@@ -50,12 +50,12 @@ Define Class(
 		> ut assert that( Expr( "Test" || "string" ), ut as lowercase( "teststring" ) );
 */
 ut matcher factory( "ut as lowercase",
-  Expr(Function( {matcher},
-    New Object( UtCaseMatcher( ut ensure matcher( Name Expr( matcher ) ), "Lowercase", "lowercase" ) )
-  )),
-  "ut as lowercase( matcher )",
-  "Converts actual value to lowercase before passing it to an inner matcher (or equal to if one is not provided).",
-  {{"Simple", ut assert that( Expr( "Test" || "string" ), ut as lowercase( "teststring" ) )}}
+	Expr(Function( {matcher},
+		New Object( UtCaseMatcher( ut ensure matcher( Name Expr( matcher ) ), "Lowercase", "lowercase" ) )
+	)),
+	"ut as lowercase( matcher )",
+	"Converts actual value to lowercase before passing it to an inner matcher (or equal to if one is not provided).",
+	{{"Simple", ut assert that( Expr( "Test" || "string" ), ut as lowercase( "teststring" ) )}}
 );
 
 /* 
@@ -75,10 +75,10 @@ ut matcher factory( "ut as lowercase",
 		> ut assert that( Expr( "Test" || "string" ), ut as uppercase( "TESTSTRING" ) );
 */
 ut matcher factory( "ut as uppercase",
-  Expr(Function( {matcher},
-    New Object( UtCaseMatcher( ut ensure matcher( Name Expr( matcher ) ), "Uppercase", "uppercase" ) )
-  )),
-  "ut as uppercase( matcher )",
-  "Converts actual value to uppercase before passing it to an inner matcher (or equal to if one is not provided).",
-  {{"Simple", ut assert that( Expr( "Test" || "string" ), ut as uppercase( "TESTSTRING" ) );}}
+	Expr(Function( {matcher},
+		New Object( UtCaseMatcher( ut ensure matcher( Name Expr( matcher ) ), "Uppercase", "uppercase" ) )
+	)),
+	"ut as uppercase( matcher )",
+	"Converts actual value to uppercase before passing it to an inner matcher (or equal to if one is not provided).",
+	{{"Simple", ut assert that( Expr( "Test" || "string" ), ut as uppercase( "TESTSTRING" ) );}}
 );

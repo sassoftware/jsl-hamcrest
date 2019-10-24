@@ -58,21 +58,21 @@ Define Class(
 */
 	
 ut matcher factory(
-  // Function name
+	// Function name
 	"ut all of", 
-  // Function declaration
+	// Function declaration
 	Expr(Function( {matchers},
 		New Object( UtAllOfMatcher( ut ensure matcher list( matchers ) ) );
 	)),
-  // Prototype
+	// Prototype
 	"ut all of( matchers )", 
-  // Description
+	// Description
 	"Matches the test expression with every matcher given in the list.\!n\!nThis matcher will give the test expression (unevaluated) to each matcher in the given list.", 
 	// Examples
-  { 
-    {
-      "Simple", 
-      ut assert that( Expr( 5 + 5 ), ut all of( { ut equal to( 10 ), ut typed as( "Number" ) } ) );
-    }
-  }
+	{ 
+		{
+			"Simple", 
+			ut assert that( Expr( 5 + 5 ), ut all of( { ut equal to( 10 ), ut typed as( "Number" ) } ) );
+		}
+	}
 );

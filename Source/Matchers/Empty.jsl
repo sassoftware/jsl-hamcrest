@@ -43,11 +43,11 @@ Define Class(
 		> ut assert that( Expr( Empty() ), ut empty() );
 */
 ut matcher factory( 
-  "ut empty",
-  Expr(Function( {},
-    New Object( UtEmptyMatcher() );
-  )),
-  "ut empty()",
-  "Uses the built-in Empty() function to determine if something is empty.",
-  {{"Simple", ut assert that( Expr( Empty() ), ut empty() ); }}
+	"ut empty",
+	Expr(Function( {},
+		New Object( UtEmptyMatcher() );
+	)),
+	"ut empty()",
+	"Uses the built-in Empty() function to determine if something is empty.",
+	{{"Simple", ut assert that( Expr( Empty() ), ut empty() ); }}
 );

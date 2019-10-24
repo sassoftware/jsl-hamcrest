@@ -349,7 +349,7 @@ Define Class(
 			ut is a matcher( valueData["matcher"] ),
 				match info = valueData["matcher"]:matches( Insert( Expr( Expr() ), actualData["expression"] ) );
 				
-				If(  // Just in case we missed something (match info could be a missing value)
+				If(	// Just in case we missed something (match info could be a missing value)
 					!Is Class( match info ),
 						match info = ut match info failure( "the " || (valueData["matcher"] << Get Name) || " failed to return success/failure info. the matcher itself is broken, not the test." );
 				,
@@ -392,7 +392,7 @@ Define Class(
 		,
 			//else
 				If( valueData["required"], 
-					Return(  ::ut match info failure( Eval Insert( "\[ required head expressions did not match (Actual=^Char( actualData["head"] )^, Expected=^Char( valueData["head"] )^)]\" ) ) ), 
+					Return( ::ut match info failure( Eval Insert( "\[ required head expressions did not match (Actual=^Char( actualData["head"] )^, Expected=^Char( valueData["head"] )^)]\" ) ) ), 
 					Return( New Object( Ut Match Info( -1, "optional" ) ) )
 				);
 		);
@@ -438,7 +438,7 @@ Define Class(
 		ut expression matches(
 			Expr(
 				Graph Builder(
-					ut optional( size( ut  wild(), ut wild() ) ),
+					ut optional( size( ut wild(), ut wild() ) ),
 					Show ControlPanel( 0 ),
 					Variables( X( :height ), Y( :weight ), Overlay( :sex ) ),
 					Elements( Points( X, Y, Legend( 1 ) ), Smoother( X, Y, Legend( 2 ) ) )
@@ -459,41 +459,41 @@ Define Class(
 	> ut assert that( Expr( Expr( x << Get Name(); b = 10; c; ) ), ut expression matches( Expr( x << Get Name; b = 10; c; ) ) );
 */
 ut matcher factory( "ut expression matches",
-  Expr(Function({valueExpression},
-    {obj},
-    obj = New Object( UtExpressionCompositeMatcher() );
-    obj:value = Name Expr( valueExpression );
-    obj;
-  )),
-  "",
-  "",
-  {
-    {
-      "Expression",
-      ut assert that(
-        Expr( gb << get script ),
-        ut expression matches(
-          Expr(
-            Graph Builder(
-              ut optional( size( ut  wild(), ut wild() ) ),
-              Show ControlPanel( 0 ),
-              Variables( X( :height ), Y( :weight ), Overlay( :sex ) ),
-              Elements( Points( X, Y, Legend( 1 ) ), Smoother( X, Y, Legend( 2 ) ) )
-            )
-          )
-        )
-      );
-    },
-    {
-      "List",
-      ut assert that(
-        Expr( {400, c( [1,5] ), x( z( "TEST", 1 ) )} ),
-        ut expression matches(
-          {ut less than( 500 ), c( [1,5] ), x( z( ut equal to ignoring case( "test" ), ut greater than( 0 ) ) )}
-        )
-      );
-    }
-  }
+	Expr(Function({valueExpression},
+		{obj},
+		obj = New Object( UtExpressionCompositeMatcher() );
+		obj:value = Name Expr( valueExpression );
+		obj;
+	)),
+	"",
+	"",
+	{
+		{
+			"Expression",
+			ut assert that(
+				Expr( gb << get script ),
+				ut expression matches(
+					Expr(
+						Graph Builder(
+							ut optional( size( ut wild(), ut wild() ) ),
+							Show ControlPanel( 0 ),
+							Variables( X( :height ), Y( :weight ), Overlay( :sex ) ),
+							Elements( Points( X, Y, Legend( 1 ) ), Smoother( X, Y, Legend( 2 ) ) )
+						)
+					)
+				)
+			);
+		},
+		{
+			"List",
+			ut assert that(
+				Expr( {400, c( [1,5] ), x( z( "TEST", 1 ) )} ),
+				ut expression matches(
+					{ut less than( 500 ), c( [1,5] ), x( z( ut equal to ignoring case( "test" ), ut greater than( 0 ) ) )}
+				)
+			);
+		}
+	}
 );
 
 /* 
@@ -514,15 +514,15 @@ ut matcher factory( "ut expression matches",
 		> ut assert that( Expr( Expr( 5 + 5 ) ), ut equal to expression( Expr( 5 + 5 ) ) );
 */
 ut matcher factory( "ut equal to expression",
-  Expr(Function({val},
-    {obj},
-    obj = New Object( UtEqualToExpressionMatcher() );
-    obj:value = Name Expr( val );
-    obj;
-  )),
-  "ut equal to expression( value )",
-  "Compares the expression using the built-in == operator. Available since ut equal to() matcher uses ut expression matches() by default.",
-  {{"Simple", ut assert that( Expr( Expr( 5 + 5 ) ), ut equal to expression( Expr( 5 + 5 ) ) ); }}
+	Expr(Function({val},
+		{obj},
+		obj = New Object( UtEqualToExpressionMatcher() );
+		obj:value = Name Expr( val );
+		obj;
+	)),
+	"ut equal to expression( value )",
+	"Compares the expression using the built-in == operator. Available since ut equal to() matcher uses ut expression matches() by default.",
+	{{"Simple", ut assert that( Expr( Expr( 5 + 5 ) ), ut equal to expression( Expr( 5 + 5 ) ) ); }}
 );
 
 /* 	
@@ -546,59 +546,59 @@ ut matcher factory( "ut equal to expression",
 		> ut assert that( Expr( "test" || "string" ), ut equal to( "teststring" ) );
 */
 ut matcher factory( "ut equal to",
-  Expr(Function( {val},
-    {obj},
-    obj = Match( Type( Name Expr( val ) ),
-      "Number",
-        New Object( UtEqualToNumberMatcher() );
-    ,
-      "Integer",
-        New Object( UtEqualToNumberMatcher() );
-    ,
-      "Matrix",
-        New Object( UtEqualToMatrixMatcher() );
-    ,
-      "List",
-        New Object( UtEqualToListMatcher() );
-    ,
-      "Associative Array",
-        New Object( UtEqualToAssociativeArrayMatcher() );
-    ,
-      "Expression",
-        // only use the composite matcher if this expression has children
-        If( NArg( val ) > 0,
-          New Object( UtExpressionCompositeMatcher() ),
-          New Object( UtEqualToExpressionMatcher() )
-        );
-    ,
-      "Name",
-        // only use the composite matcher if this name has children
-        If( NArg( val ) > 0,
-          New Object( UtExpressionCompositeMatcher() ),
-          New Object( UtEqualToExpressionMatcher() )
-        );
-    ,
-      "Function",
-        New Object( UtEqualToExpressionMatcher() );
-    ,
-      "Class",
-        New Object( UtEqualToClassMatcher() );
-    ,
-      "Namespace",
-        New Object( UtEqualToNamespaceMatcher() )
-    ,
-      // default
-        New Object( UtEqualToMatcher() );
-    );
-    
-    obj:value = Name Expr( val );
-    obj;
-  )),
-  "ut equal to( value )",
-  "Compares objects to see if they are equal to each other. Expressions and names with arguments default to the ut expression matches() matcher.",
-  {{
-    "Simple",
-    "\[
+	Expr(Function( {val},
+		{obj},
+		obj = Match( Type( Name Expr( val ) ),
+			"Number",
+				New Object( UtEqualToNumberMatcher() );
+		,
+			"Integer",
+				New Object( UtEqualToNumberMatcher() );
+		,
+			"Matrix",
+				New Object( UtEqualToMatrixMatcher() );
+		,
+			"List",
+				New Object( UtEqualToListMatcher() );
+		,
+			"Associative Array",
+				New Object( UtEqualToAssociativeArrayMatcher() );
+		,
+			"Expression",
+				// only use the composite matcher if this expression has children
+				If( NArg( val ) > 0,
+					New Object( UtExpressionCompositeMatcher() ),
+					New Object( UtEqualToExpressionMatcher() )
+				);
+		,
+			"Name",
+				// only use the composite matcher if this name has children
+				If( NArg( val ) > 0,
+					New Object( UtExpressionCompositeMatcher() ),
+					New Object( UtEqualToExpressionMatcher() )
+				);
+		,
+			"Function",
+				New Object( UtEqualToExpressionMatcher() );
+		,
+			"Class",
+				New Object( UtEqualToClassMatcher() );
+		,
+			"Namespace",
+				New Object( UtEqualToNamespaceMatcher() )
+		,
+			// default
+				New Object( UtEqualToMatcher() );
+		);
+		
+		obj:value = Name Expr( val );
+		obj;
+	)),
+	"ut equal to( value )",
+	"Compares objects to see if they are equal to each other. Expressions and names with arguments default to the ut expression matches() matcher.",
+	{{
+		"Simple",
+		"\[
 // Numbers
 ut assert that( Expr( 5 + 5 ), ut equal to( 10 ) );
 // Matrices
@@ -610,5 +610,5 @@ ut assert that( Expr( Expr( 5 + 5 ) ), ut equal to( Expr( 5 + 5 ) ) );
 // Strings
 ut assert that( Expr( "test" || "string" ), ut equal to( "teststring" ) );
 ]\"
-  }}
+	}}
 );

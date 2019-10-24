@@ -59,12 +59,12 @@ Define Class(
 		> ut assert that( Expr( 5 + 5 ), ut less than( 11 ) );
 */
 ut matcher factory( "ut less than",
-  Expr(Function( {val},
-    New Object( UtOrderingComparisonMatcher( val, "Less", "less than" ) )
-  )),
-  "ut less than( value )",
-  "",
-  {{"Simple", ut assert that( Expr( 5 + 5 ), ut less than( 11 ) ); }}
+	Expr(Function( {val},
+		New Object( UtOrderingComparisonMatcher( val, "Less", "less than" ) )
+	)),
+	"ut less than( value )",
+	"",
+	{{"Simple", ut assert that( Expr( 5 + 5 ), ut less than( 11 ) ); }}
 );
 
 /*
@@ -81,12 +81,12 @@ ut matcher factory( "ut less than",
 		> ut assert that( Expr( 5 + 5 ), ut less than or equal to( 10 ) );
 */
 ut matcher factory( "ut less than or equal to",
-  Expr(Function( {val},
-    New Object( UtOrderingComparisonMatcher( val, "Less or Equal", "less than or equal to" ) )
-  )),
-  "ut less than or equal to( value )",
-  "",
-  {{"Simple", ut assert that( Expr( 5 + 5 ), ut less than or equal to( 10 ) ); }}
+	Expr(Function( {val},
+		New Object( UtOrderingComparisonMatcher( val, "Less or Equal", "less than or equal to" ) )
+	)),
+	"ut less than or equal to( value )",
+	"",
+	{{"Simple", ut assert that( Expr( 5 + 5 ), ut less than or equal to( 10 ) ); }}
 );
 
 /*
@@ -103,13 +103,13 @@ ut matcher factory( "ut less than or equal to",
 		> ut assert that( Expr( 5 + 5 ), ut greater than( 9 ) );
 */
 ut matcher factory( 
-  "ut greater than",
-  Expr(Function( {val},
-    New Object( UtOrderingComparisonMatcher( val, "Greater", "greater than" ) )
-  )),
-  "ut greater than( value )",
-  "",
-  {{"Simple", ut assert that( Expr( 5 + 5 ), ut greater than( 9 ) ); }}
+	"ut greater than",
+	Expr(Function( {val},
+		New Object( UtOrderingComparisonMatcher( val, "Greater", "greater than" ) )
+	)),
+	"ut greater than( value )",
+	"",
+	{{"Simple", ut assert that( Expr( 5 + 5 ), ut greater than( 9 ) ); }}
 );
 
 /*
@@ -126,11 +126,11 @@ ut matcher factory(
 		> ut assert that( Expr( 5 + 5 ), ut greater than or equal to( 10 ) );
 */
 ut matcher factory( 
-  "ut greater than or equal to",
-  Expr(Function( {val},
-    New Object( UtOrderingComparisonMatcher( val, "Greater or Equal", "greater than or equal to" ) )
-  )),
-  "ut greater than or equal to( value )",
-  "",
-  {{"Simple", ut assert that( Expr( 5 + 5 ), ut greater than or equal to( 10 ) ); }}
+	"ut greater than or equal to",
+	Expr(Function( {val},
+		New Object( UtOrderingComparisonMatcher( val, "Greater or Equal", "greater than or equal to" ) )
+	)),
+	"ut greater than or equal to( value )",
+	"",
+	{{"Simple", ut assert that( Expr( 5 + 5 ), ut greater than or equal to( 10 ) ); }}
 );

@@ -44,10 +44,10 @@ Define Class(
 		> ut assert that( Expr( [1] || [1] ), ut as char( "[1 1]" ) )
 */
 ut matcher factory( "ut as char",
-  Expr(Function( {matcher},
-    New Object( UtAsCharMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
-  )),
-  "ut as char( value )",
-  "Compares the given string to the actual value converted to character.",
-  {{"Simple", ut assert that( Expr( [1] || [1] ), ut as char( "[1 1]" ) )}}
+	Expr(Function( {matcher},
+		New Object( UtAsCharMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
+	)),
+	"ut as char( value )",
+	"Compares the given string to the actual value converted to character.",
+	{{"Simple", ut assert that( Expr( [1] || [1] ), ut as char( "[1 1]" ) )}}
 );

@@ -57,11 +57,11 @@ Define Class(
 		This matcher will give the test expression (unevaluated) to each matcher in the given list.
 */
 ut matcher factory( 
-  "ut any of",
-  Expr(Function( {matchers},
-    New Object( UtAnyOfMatcher( ut ensure matcher list( matchers ) ) );
-  )),
-  "ut any of( matchers )",
-  "Matches the test expression with any matcher given in the list.\!n\!nThis matcher will give the test expression (unevaluated) to each matcher in the given list.",
-  {{"Simple", ut assert that( Expr( 5 + 5 ), ut any of( {19, 10} ) ); }}
+	"ut any of",
+	Expr(Function( {matchers},
+		New Object( UtAnyOfMatcher( ut ensure matcher list( matchers ) ) );
+	)),
+	"ut any of( matchers )",
+	"Matches the test expression with any matcher given in the list.\!n\!nThis matcher will give the test expression (unevaluated) to each matcher in the given list.",
+	{{"Simple", ut assert that( Expr( 5 + 5 ), ut any of( {19, 10} ) ); }}
 );

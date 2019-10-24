@@ -98,19 +98,19 @@ Define Class(
 		> ut assert that( Expr( "Test" || "string" ), ut contains( "string" ) );
 */
 ut matcher factory( "ut contains",
-  Expr(Function( {val},
-    {obj},
-    If( !ut is a matcher( Name Expr( val ) ), 
-      obj = New Object( UtContainsMatcher() );
-      obj:value = Name Expr( val );
-      obj;
-    ,
-      Throw( "ut contains() does not allow for inner matchers. Use ut contains item() for inner matchers for lists." )
-    );
-  )),
-  "ut contains( value )",
-  "Uses built-in Contains() function to check if the actual value contains the expected value.",
-  {{"Simple", ut assert that( Expr( {1, 2, 3} ), ut contains( 3 ) ); ut assert that( Expr( "Test" || "string" ), ut contains( "string" ) );}}
+	Expr(Function( {val},
+		{obj},
+		If( !ut is a matcher( Name Expr( val ) ), 
+			obj = New Object( UtContainsMatcher() );
+			obj:value = Name Expr( val );
+			obj;
+		,
+			Throw( "ut contains() does not allow for inner matchers. Use ut contains item() for inner matchers for lists." )
+		);
+	)),
+	"ut contains( value )",
+	"Uses built-in Contains() function to check if the actual value contains the expected value.",
+	{{"Simple", ut assert that( Expr( {1, 2, 3} ), ut contains( 3 ) ); ut assert that( Expr( "Test" || "string" ), ut contains( "string" ) );}}
 );
 
 /* 
@@ -130,10 +130,10 @@ ut matcher factory( "ut contains",
 		> ut assert that( Expr( {a( 1 ), b( 2 ), c( 3 )} ), ut contains item( Expr( b( ut wild() ) ) ) );
 */
 ut matcher factory( "ut contains item",
-  Expr(Function( {matcher},
-    New Object( UtContainsItemMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
-  )),
-  "ut contains item( matcher )",
-  "Checks if the actual value contains the expected value. Expected value can be an inner matcher if the actual result is a list.",
-  {{"Simple", ut assert that( Expr( {a( 1 ), b( 2 ), c( 3 )} ), ut contains item( Expr( b( ut wild() ) ) ) ); }}
+	Expr(Function( {matcher},
+		New Object( UtContainsItemMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
+	)),
+	"ut contains item( matcher )",
+	"Checks if the actual value contains the expected value. Expected value can be an inner matcher if the actual result is a list.",
+	{{"Simple", ut assert that( Expr( {a( 1 ), b( 2 ), c( 3 )} ), ut contains item( Expr( b( ut wild() ) ) ) ); }}
 );
