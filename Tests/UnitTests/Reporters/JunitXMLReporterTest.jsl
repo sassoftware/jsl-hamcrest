@@ -245,7 +245,7 @@ ut test(JunitXMLReporters, "Assertion with 4 part label works", Expr(
 	";
 
 	//replace tabs and carriage returns used for easier readability
-	Substitute Into(pattern, "\!r", ".+", "\!t", "");
+	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "");
 
 	match = Regex Match(report, pattern);
 	
