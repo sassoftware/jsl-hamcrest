@@ -9,6 +9,7 @@ Then issue a report in JUnitXML format on demand.
 
 Example of JunitXML format:
 
+====== Text ======
 <?xml version="1.0" encoding="UTF-8" ?> 
 <testsuites id="20140612_170519" name="New_configuration (14/06/12 17:05:19)" tests="225" failures="1262" time="0.001">
   <testsuite id="codereview.cobol.analysisProvider" name="COBOL Code Review" tests="45" failures="17" time="0.001">
@@ -22,6 +23,7 @@ Example of JunitXML format:
     </testcase>
   </testsuite>
 </testsuites>
+==================
 */
 
 Define Class(
@@ -34,23 +36,22 @@ Define Class(
   ---Prototype---
   generate_xml_tag(<tag>, <content>, <properties>)
   ---------------
-  takes in a tag as a string and content, puts the content into the tag in xml format
+  Takes in a tag as a string and content, puts the content into the tag in xml format
 
   Arguments:
-    tag: string: string that the tag should be
-    content: string: content that goes inside the string
-    properties: associative array: associative array with properties as keys and the values
-    escape_content_flag: Integer: 1 if content should have &, < and > escaped, 0 otherwise
+    tag - String that the tag should be
+    content - Content that goes inside the string [string]
+    properties - Associative array with properties as keys and the values
+    escape_content_flag - 1 if content should have &, < and > escaped, 0 otherwise
 
   Example:
-    This is an example
     ---JSL---
     test = generate_xml_tag("test", "content", ["prop"=>1]);
-
-  Expected Return:
-    <test prop="1">
-      content
-    </test>
+    ---Text---
+    Expected Return:
+      <test prop="1">
+        content
+      </test>
     ---------
   */
 
@@ -86,18 +87,16 @@ Define Class(
   ---Prototype---
   get_xml_report(<xml_results>)
   ---------------
-  takes a hash which should have test suites as keys, returns the JunitXML format
+  Takes a hash which should have test suites as keys, returns the JunitXML format
     
   Arguments:
-  xml_result: Associative Array: associative array where keys should be the test suites.
+  xml_result - Associative array where keys should be the test suites.
+  
   Values will be associative arrays with test cases as keys.
   The values of those associative arrays will be failure messages with "failure" as the key.
 
   Example:
-
-  This is an example
   ---JSL---
-
   xml_results = ["Example Tests" => 
                   ["Test1" => 
                     ["failure" =>
@@ -107,8 +106,8 @@ Define Class(
                   ]
                 ];
 
-  get_xml_report(xml_results);      
-
+  get_xml_report(xml_results);   
+  ---Text---  
   Expected Return:
     <testsuites failures="1" id="20191011_175324" tests="1">
       <testsuite failures="1" name="Example Tests" tests="1">
@@ -179,12 +178,12 @@ Define Class(
 
   // Method: parse_label
   //
-  // parses a label into test suite, test name, and case
+  // Parses a label into test suite, test name, and case
   //
   // Arguments: 
-  //  label: string: a label separated by a separator
-  //  sep: sring: separator that splits the label
-  //  hash_results: Associative Array: AA with test suites as keys and associative arrays with test cases as keys as values
+  //  label - A label separated by a separator
+  //  sep - Separator that splits the label
+  //  hash_results - Associative Array with test suites as keys and associative arrays with test cases as keys as values
   // 
   // Results:
   //  The label split by the separator. The second and third values will be joined by an _
