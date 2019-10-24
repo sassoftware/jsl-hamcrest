@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0 
 
 n root tests = Function({xml}, {out = .},
-	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Num(Xml Attr("tests")))));
+	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Xml Attr("tests"))));
+	local:out = Num(local:out);
 	local:out
 );
 
 n root failures = Function({xml}, {out = .},
-	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Num(Xml Attr("failures")))));
+	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Xml Attr("failures"))));
+	local:out = Num(local:out);
 	local:out
 );
 
@@ -25,7 +27,6 @@ setup_expr = Expr(
     report = Expr(reporter << get report);
 );
 	
-
 JunitXMLReporters = ut test case("JunitXMLReporters")
 	<< Setup(setup_expr);
 
@@ -76,6 +77,7 @@ ut test(JunitXMLReporters, "Angle brackets in failure gives valid xml", Expr(
 ));
 
 ut test(JunitXMLReporters, "Counts are correct at root", Expr(
+	setup_expr;
 	with junit reporter(Expr(
 		outer assert value(1, 1);
 		outer assert value(2, 0);
