@@ -9,7 +9,8 @@
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 
 - [ ] **I am adding a new matcher.**
-  - [ ] I have included documentation with at least one example and description.
+  - [ ] I have included documentation with at least the prototype and description in a comment above the matcher factory.
+  - [ ] I have included the prototype, description, and at least one example in the matcher factory definition for use in the Scripting Index.
   - [ ] I have added tests in `Tests/UnitTests/Matchers`.
   - [ ] I have added matcher to `Source/Matchers-Index.txt`.
   - [ ] I have added a note to `CHANGELOG.md`.

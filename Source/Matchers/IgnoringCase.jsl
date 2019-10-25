@@ -55,10 +55,16 @@ Define Class(
 	Examples:
 		> ut assert that( Expr( "st" || "ring"), ut equal to ignoring case( "STRING" ) )
 */
-ut matcher factory( "ut equal to ignoring case" );
-ut equal to ignoring case = Function( {val},
-	If( Is String( val ),
-		New Object( UtIgnoringCaseMatcher( val ) ),
-		Throw( "ut equal to ignoring case() requires a string as the argument" )
-	);
+ut matcher factory( 
+	"ut equal to ignoring case",
+	Expr(Function( {val},
+		If( Is String( val ),
+			New Object( UtIgnoringCaseMatcher( val ) ),
+			Throw( "ut equal to ignoring case() requires a string as the argument" )
+		);
+	)),
+	"ut equal to ignoring case( value )",
+	"Compares actual value ingoring the case. This matcher requires the expected to be a string (and not a matcher).\!n\!n" || 
+	"To use an inner matcher, instead use ut as lowercase or ut as uppercase and use an expected string that matches the chosen matcher.",
+	{{"Simple", ut assert that( Expr( "st" || "ring"), ut equal to ignoring case( "STRING" ) ); }}
 );

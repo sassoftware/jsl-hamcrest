@@ -40,7 +40,12 @@ Define Class(
 	Example:
 		> ut assert that( Expr( 5 + . ), ut missing() );
 */
-ut matcher factory( "ut missing" );
-ut missing = Function( {},
-	New Object( UtMissingMatcher() );
+ut matcher factory( 
+	"ut missing",
+	Expr(Function( {},
+		New Object( UtMissingMatcher() );
+	)),
+	"ut missing()",
+	"Use when expected value should be missing (a dot! see ut is numeric missing).",
+	{{"Simple", ut assert that( Expr( 5 + . ), ut missing() ); }}
 );

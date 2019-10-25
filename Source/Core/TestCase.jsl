@@ -101,8 +101,7 @@ Define Class(
 	Function: ut test case
 		Used to isolate a test case from other code in the test file.
 		Also prepends the name of the test and assert number to the beginning
-		of the labels for ut assert, ut assert digits, ut assert LRE, and
-		ut assert that.
+		of the labels for ut assert that.
 		
 	Arguments:
 		name - Name of the test case to be used as part of the label.
@@ -148,15 +147,57 @@ Define Class(
 		);
 		---------------------------
 */
-ut test case = Function({name},
-	{obj},
-	obj = New Object( UtTestCaseFixture( name ) );
-	
-	// Set a reference to itself.
-	obj:self = local:obj;
-	
-	// return the object
-	obj
+ut define documented function(
+	"ut test case",
+	Expr(Function({name},
+		{obj},
+		obj = New Object( UtTestCaseFixture( name ) );
+		
+		// Set a reference to itself.
+		obj:self = local:obj;
+		
+		// return the object
+		obj
+	)),
+	"ut test case( test case name )",
+	"Used to isolate a test case from other code in the test file. Also prepends the name of the test and assert number to the beginning of the labels for ut assert that.",
+	{
+		{
+			"Setup/Teardown",
+			test case = ut test case( "Sample test case" )
+				<< Setup( Expr( dt = Open( "$SAMPLE_DATA\Big Class.jmp" ); ) )
+				<< Teardown( Expr( Close( dt, NoSave ); ) );
+				
+			ut test( test case, "test level comment",
+				Expr(
+					dt << new column( "Test", Formula( Row() ) );
+					ut assert that( Expr( dt:Test << Get Values ), (1::40)`, "my assert level comment" ); 
+				)
+			);
+			ut test( test case, "test level comment",
+				Expr(
+					dt << new column( "Test", Value Labels( {0 = "N", 1 = "Y"} ) );
+					ut assert that( Expr( dt:Test << Get Property( "Value Labels" ) ), Expr( Value Labels( {0 = "N", 1 = "Y"} ) ), "my assert level comment" );
+				)
+			);
+		},
+		{
+			"Repeating Labels",
+			test case = ut test case( "Sample test case" );
+			ut test( test case, "test level comment - addition",
+				Expr(
+					ut assert that( Expr( 5 + 6 ), 11 );
+					ut assert that( Expr( 5 + 5 ), 10, "my assert level comment" ); 
+				)
+			);
+			ut test( test case, "test level comment - subtraction",
+				Expr(
+					ut assert that( Expr( 5 - 6 ), -1 );
+					ut assert that( Expr( 5 - 5 ), 0, "my assert level comment" ); 
+				)
+			);
+		}
+	}
 );
 
 /* 
@@ -322,175 +363,192 @@ ut test filtering reporter = New Object("UtSuccessFilteringReporter"(Empty()));
 		);
 		---------------------------
 */
-ut test = Function({test case, test name, test expr, log benchmark = ut log bench()},
-	
-	// Validate inputs
-	If( 
-		Is String( Name Expr( test case ) ),
-			test case = ::ut test case( test case );
-	,
-		!Is Class( Name Expr( test case ) ),
-			Throw( "ut test() requires the first argument to be a string or test case object." );
-	,
-		test case << Get Name != "UtTestCaseFixture",
-			Throw( "ut test() requires the first argument to be a string or test case object." );
-	);
-	
-	If( !Is String( Name Expr( test name ) ),
-		Throw( "ut test() requires the second argument to be a string." );
-	);
-	
-	If( !Is Expr( Name Expr( test expr ) ),
-		Throw( "ut test() requires the third argument to be an expression." );
-	);
-	
-	If( !Is Class( Name Expr( log benchmark ) ),
-			Throw( "ut test() requires the optional fourth argument to be ut log bench( < 0 | 1 >, < string matcher > )" );
-	,
-		log benchmark << Get Name != "UtLogBenchmark",
-			Throw( "ut test() requires the optional fourth argument to be ut log bench( < 0 | 1 >, < string matcher > )" );
-	);
-	
-	// Create an anonymous namespace that is not in the current
-	// dynamic scoping hierarchy.
-	// This variable is the only thing that could potentially collide 
-	// with a test.
-	local:_utTestNS = ut move to anonymous namespace( Namespace( "local" ) );
-	
-	// get the symbols defined before running the test case
-	_utTestNS:before symbols = ::ut get symbol information();
-	
-	_utTestNS:n asserts = 0;
-	_utTestNS:results = {};
-	
-	For( _utTestNS:iAssertion = 1, _utTestNS:iAssertion <= N Items( ut test registered assertions ), _utTestNS:iAssertion++,
-		Eval( 
-			ut test assertion decorator( 
-				ut test registered assertions[_utTestNS:iAssertion][1], 
-				ut test registered assertions[_utTestNS:iAssertion][2]
-			)
-		);
-	);
-	
-	_utTestNS:run setup expr = Expr(
-		// evaluate the setup expression
-		Try( 
-			Eval( _utTestNS:test case << Get Setup() );
-			Names Default to Here( 0 );
-			1;
-		,
-			Names Default to Here( 0 );
-			ut global reporter << Add Unexpected Throw( 
-				ut concat test label(
-					_utTestNS:test case << Get Test Case Name(),
-					_utTestNS:test name,
-					"Setup"
-				),
-				ut get exception expression( exception_msg ),
-				"test case setup does not throw...skipping test...",
-				::ut get exception message( exception_msg );
-			);
-			0;
-		);
-	);
-	
-	_utTestNS:run test expr = Expr(
-		// evaluate the test expression
-		Try( 
-			Eval( _utTestNS << Get Value("test expr") );
-			Names Default to Here( 0 );
-		,
-			Names Default to Here( 0 );
-			_utTestNS:temp label = ut concat test label(
-				_utTestNS:test case << Get Test Case Name(),
-				_utTestNS:test name,
-				"Test"
-			);
-			ut global reporter << Add Unexpected Throw( 
-				_utTestNS:temp label,
-				ut get exception expression( exception_msg ),
-				"test does not throw outside of an assertion",
-				::ut get exception message( exception_msg );
-			);
-		);
-	);
-	
-	_utTestNS:run teardown expr = Expr(
-		// evaluate the teardown expression
-		Try( 
-			Eval( _utTestNS:test case << Get Teardown() );
-			Names Default to Here( 0 );
-		,
-			Names Default to Here( 0 );
-			ut global reporter << Add Unexpected Throw( 
-				ut concat test label(
-					_utTestNS:test case << Get Test Case Name(),
-					_utTestNS:test name,
-					"Teardown"
-				),
-				ut get exception expression( exception_msg ),
-				"test case teardown does not throw",
-				::ut get exception message( exception_msg );
-			);
-		);
-	);
-	
-	// Get Do Log Bench() < 0 means don't capture
-	If( _utTestNS:log benchmark << Get Do Log Bench() >= 0,
-		// Replace reporter so event handlers don't happen under Log Capture
-		ut test buffering reporter:inner = ut global reporter;
-		ut global reporter = ut test buffering reporter;
+ut define documented function(
+	"ut test",
+	Expr(Function({test case, test name, test expr, log benchmark = ut log bench()},
 		
-		// Do Setup, Body, Teardown under Log Capture
-		_utTestNS:log = Log Capture( _utTestNS:setup success = Eval( _utTestNS << Get Value( "run setup expr" ) ) );
-		If( _utTestNS:setup success,
-			_utTestNS:log ||= Log Capture( Eval( _utTestNS << Get Value( "run test expr" ) ) );
+		// Validate inputs
+		If( 
+			Is String( Name Expr( test case ) ),
+				test case = ::ut test case( test case );
+		,
+			!Is Class( Name Expr( test case ) ),
+				Throw( "ut test() requires the first argument to be a string or test case object." );
+		,
+			test case << Get Name != "UtTestCaseFixture",
+				Throw( "ut test() requires the first argument to be a string or test case object." );
 		);
-		_utTestNS:log ||= Log Capture( Eval( _utTestNS << Get Value( "run teardown expr" ) ) );
 		
-		// Release results to original reporter and restore it
-		ut global reporter = ut test buffering reporter << release();
+		If( !Is String( Name Expr( test name ) ),
+			Throw( "ut test() requires the second argument to be a string." );
+		);
 		
-		// Do benchmark if requested
-		If( _utTestNS:log benchmark << Get Do Log Bench(),
-			Local({log contents},
-				// Replace reporter so we supress success events
-				ut test filtering reporter:inner = ut global reporter;
-				ut global reporter = ut test filtering reporter;
-				
-				log contents = _utTestNS:log;
-				// Qualified so that the ut test log benchmark label
-				// is used without modification
-				_utTestNS:n asserts++;
-				Insert Into(_utTestNS:results,
-					::ut assert that(
-						Expr( log contents ), 
-						_utTestNS:log benchmark << Get Matcher(),
-						ut test log benchmark label(_utTestNS:test case:name, _utTestNS:test name)
-					);
+		If( !Is Expr( Name Expr( test expr ) ),
+			Throw( "ut test() requires the third argument to be an expression." );
+		);
+		
+		If( !Is Class( Name Expr( log benchmark ) ),
+				Throw( "ut test() requires the optional fourth argument to be ut log bench( < 0 | 1 >, < string matcher > )" );
+		,
+			log benchmark << Get Name != "UtLogBenchmark",
+				Throw( "ut test() requires the optional fourth argument to be ut log bench( < 0 | 1 >, < string matcher > )" );
+		);
+		
+		// Create an anonymous namespace that is not in the current
+		// dynamic scoping hierarchy.
+		// This variable is the only thing that could potentially collide 
+		// with a test.
+		local:_utTestNS = ut move to anonymous namespace( Namespace( "local" ) );
+		
+		// get the symbols defined before running the test case
+		_utTestNS:before symbols = ::ut get symbol information();
+		
+		_utTestNS:n asserts = 0;
+		_utTestNS:results = {};
+		
+		For( _utTestNS:iAssertion = 1, _utTestNS:iAssertion <= N Items( ut test registered assertions ), _utTestNS:iAssertion++,
+			Eval( 
+				ut test assertion decorator( 
+					ut test registered assertions[_utTestNS:iAssertion][1], 
+					ut test registered assertions[_utTestNS:iAssertion][2]
+				)
+			);
+		);
+		
+		_utTestNS:run setup expr = Expr(
+			// evaluate the setup expression
+			Try( 
+				Eval( _utTestNS:test case << Get Setup() );
+				Names Default to Here( 0 );
+				1;
+			,
+				Names Default to Here( 0 );
+				ut global reporter << Add Unexpected Throw( 
+					ut concat test label(
+						_utTestNS:test case << Get Test Case Name(),
+						_utTestNS:test name,
+						"Setup"
+					),
+					ut get exception expression( exception_msg ),
+					"test case setup does not throw...skipping test...",
+					::ut get exception message( exception_msg );
 				);
-				
-				ut global reporter = ut test filtering reporter << release();
-			)
-		)
-	,
-		_utTestNS:setup success = Eval( _utTestNS << Get Value( "run setup expr" ) );
-		If( _utTestNS:setup success,
-			Eval( _utTestNS << Get Value("run test expr") );
+				0;
+			);
 		);
-		Eval( _utTestNS << Get Value( "run teardown expr" ) );
-	);
-	
-	// get the symbols after the test case is run
-	_utTestNS:after symbols = ::ut get symbol information();
-	
-	// delete the symbols that were added during the test
-	::ut delete symbols difference( _utTestNS:before symbols, _utTestNS:after symbols, 1 /* Close Windows */ );
-	
-	// Return whether or not all asserts passed
-	First( All( _utTestNS:results ), Delete Namespaces( Force( 1 ), _utTestNS ) );
+		
+		_utTestNS:run test expr = Expr(
+			// evaluate the test expression
+			Try( 
+				Eval( _utTestNS << Get Value("test expr") );
+				Names Default to Here( 0 );
+			,
+				Names Default to Here( 0 );
+				_utTestNS:temp label = ut concat test label(
+					_utTestNS:test case << Get Test Case Name(),
+					_utTestNS:test name,
+					"Test"
+				);
+				ut global reporter << Add Unexpected Throw( 
+					_utTestNS:temp label,
+					ut get exception expression( exception_msg ),
+					"test does not throw outside of an assertion",
+					::ut get exception message( exception_msg );
+				);
+			);
+		);
+		
+		_utTestNS:run teardown expr = Expr(
+			// evaluate the teardown expression
+			Try( 
+				Eval( _utTestNS:test case << Get Teardown() );
+				Names Default to Here( 0 );
+			,
+				Names Default to Here( 0 );
+				ut global reporter << Add Unexpected Throw( 
+					ut concat test label(
+						_utTestNS:test case << Get Test Case Name(),
+						_utTestNS:test name,
+						"Teardown"
+					),
+					ut get exception expression( exception_msg ),
+					"test case teardown does not throw",
+					::ut get exception message( exception_msg );
+				);
+			);
+		);
+		
+		// Get Do Log Bench() < 0 means don't capture
+		If( _utTestNS:log benchmark << Get Do Log Bench() >= 0,
+			// Replace reporter so event handlers don't happen under Log Capture
+			ut test buffering reporter:inner = ut global reporter;
+			ut global reporter = ut test buffering reporter;
+			
+			// Do Setup, Body, Teardown under Log Capture
+			_utTestNS:log = Log Capture( _utTestNS:setup success = Eval( _utTestNS << Get Value( "run setup expr" ) ) );
+			If( _utTestNS:setup success,
+				_utTestNS:log ||= Log Capture( Eval( _utTestNS << Get Value( "run test expr" ) ) );
+			);
+			_utTestNS:log ||= Log Capture( Eval( _utTestNS << Get Value( "run teardown expr" ) ) );
+			
+			// Release results to original reporter and restore it
+			ut global reporter = ut test buffering reporter << release();
+			
+			// Do benchmark if requested
+			If( _utTestNS:log benchmark << Get Do Log Bench(),
+				Local({log contents},
+					// Replace reporter so we supress success events
+					ut test filtering reporter:inner = ut global reporter;
+					ut global reporter = ut test filtering reporter;
+					
+					log contents = _utTestNS:log;
+					// Qualified so that the ut test log benchmark label
+					// is used without modification
+					_utTestNS:n asserts++;
+					Insert Into(_utTestNS:results,
+						::ut assert that(
+							Expr( log contents ), 
+							_utTestNS:log benchmark << Get Matcher(),
+							ut test log benchmark label(_utTestNS:test case << Get Test Case Name, _utTestNS:test name)
+						);
+					);
+					
+					ut global reporter = ut test filtering reporter << release();
+				)
+			)
+		,
+			_utTestNS:setup success = Eval( _utTestNS << Get Value( "run setup expr" ) );
+			If( _utTestNS:setup success,
+				Eval( _utTestNS << Get Value("run test expr") );
+			);
+			Eval( _utTestNS << Get Value( "run teardown expr" ) );
+		);
+		
+		// get the symbols after the test case is run
+		_utTestNS:after symbols = ::ut get symbol information();
+		
+		// delete the symbols that were added during the test
+		::ut delete symbols difference( _utTestNS:before symbols, _utTestNS:after symbols, 1 /* Close Windows */ );
+		
+		// Return whether or not all asserts passed
+		First( All( _utTestNS:results ), Delete Namespaces( Force( 1 ), _utTestNS ) );
+	)),
+	"ut test( test case | test case name, test name, body, <log bench> )",
+	"Run a test expression. Runs any given setup and tear down expressions. Reports any unexpected exceptions as failures.\!n\!n" || 
+	"The log benchmark argument determines if the log is captured and what is asserted about the captured log (if anything). The default is managed by the ut log bench and ut log bench default.",
+	{{
+		"Simple", 
+		"\[
+ut test( "TC #5", "addition",
+	Expr(
+		ut assert that( Expr( 5 + 6 ), 11 );
+		ut assert that( Expr( 5 + 5 ), 10, "my assert level comment" ); 
+	),
+	ut log bench( 1, "" ) // Capture the log and assert that it is empty
 );
-
+]\"
+	}}
+);
 /*	Function: ut log bench
 		-------------Prototype-------------
 		ut log bench(
@@ -504,7 +562,7 @@ ut test = Function({test case, test name, test expr, log benchmark = ut log benc
 		-  1: Capture the log and assert that contents satisfy the matcher
 		- -1: Do not capture the log (no benchmark, matcher not run)
 
-   		Factory function for <UtLogBenchmark>
+	 		Factory function for <UtLogBenchmark>
 
 	Arguments:
 		do_log_bench - See description above.
