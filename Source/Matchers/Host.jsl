@@ -93,7 +93,7 @@ ut matcher factory(
 	)),
 	"ut on windows( matcher )",
 	"Only runs the test if on a Windows host. Returns a success if running on a Mac.",
-	{{"Simple", ut assert that( Expr( Get Default Directory() ), ut on windows( ut starts with( "/C:/" ) ) ); }}
+	{{"Simple", ut assert that( Expr( Get Path Variable( "Documents" ) ), ut on windows( ut starts with( "/C:/" ) ) ); }}
 );
 
 /* 

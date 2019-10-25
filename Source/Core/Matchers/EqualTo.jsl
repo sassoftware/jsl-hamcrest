@@ -465,20 +465,21 @@ ut matcher factory( "ut expression matches",
 		obj:value = Name Expr( valueExpression );
 		obj;
 	)),
-	"",
-	"",
+	"ut expression matches( expression )",
+	"Compare the actual expression to and expected expression, which itself can contain matchers or optional tokens. This can be very useful for size arguments that change based on the machine settings/font size or if there is a small difference in output between operating systems. This is the default matcher for expressions and and names which contain arguments.",
 	{
 		{
 			"Expression",
+			dt = Open( "$SAMPLE_DATA\Big Class.jmp" );
+			gb = dt << Run Script( "Graph Builder Smoother Line" );
 			ut assert that(
 				Expr( gb << get script ),
 				ut expression matches(
 					Expr(
 						Graph Builder(
-							ut optional( size( ut wild(), ut wild() ) ),
 							Show ControlPanel( 0 ),
 							Variables( X( :height ), Y( :weight ), Overlay( :sex ) ),
-							Elements( Points( X, Y, Legend( 1 ) ), Smoother( X, Y, Legend( 2 ) ) )
+							Elements( Points( X, Y, Legend( 1 ) ), Smoother( X, Y, Legend( ut wild() ) ) )
 						)
 					)
 				)

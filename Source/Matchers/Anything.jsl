@@ -39,7 +39,7 @@ ut matcher factory( "ut anything",
 	)),
 	"ut anything()",
 	"Always returns a success.",
-	{{"Simple", ut assert that( Expr( 5 + 5 ), ut anything() ); ut assert that( Expr( Sin( "a" ), ut throws( ut anything() ) ) );}}
+	{{"Simple", ut assert that( Expr( 5 + 5 ), ut anything() ); ut assert that( Expr( Sin( "a" ) ), ut throws( ut anything() ) );}}
 );
 
 /*
@@ -55,5 +55,5 @@ ut matcher factory( "ut wild",
 	)),
 	"ut wild()",
 	"Alias of ut anything. Always returns a success.",
-	{{"Simple", ut assert that( Expr( 5 + 5 ), ut wild() ); ut assert that( Expr( Sin( "a" ), ut throws( ut wild() ) ) );}}
+	{{"Simple", ut assert that( Expr( 5 + 5 ), ut wild() ); ut assert that( Expr( Sin( "a" ) ), ut throws( ut wild() ) );}}
 );

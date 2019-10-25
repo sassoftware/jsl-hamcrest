@@ -110,7 +110,12 @@ ut matcher factory(
 	)),
 	"ut n cols( matcher )",
 	"Passes the N Cols() of the actual value to the inner matcher.",
-	{{"Simple", ut assert that( Expr( dt ), ut n cols( 3 ) ); ut assert that( Expr( Transpose( 1::3 ) ), ut n cols( 1 ) ); }}
+	{{
+		"Simple", 
+		dt = Open( "$SAMPLE_DATA\Big Class.jmp" );
+		ut assert that( Expr( dt ), ut n cols( 5 ) ); 
+		ut assert that( Expr( Transpose( 1::3 ) ), ut n cols( 1 ) );
+	}}
 );
 
 /* 
@@ -136,5 +141,10 @@ ut matcher factory(
 	)),
 	"ut n rows( matcher )",
 	"Passes the N Rows() of the actual value to the inner matcher.",
-	{{"Simple", ut assert that( Expr( dt ), ut n rows( 3 ) ); ut assert that( Expr( Transpose( 1::3 ) ), ut n rows( 3 ) ); }}
+	{{
+		"Simple", 
+		dt = Open( "$SAMPLE_DATA\Big Class.jmp" );
+		ut assert that( Expr( dt ), ut n rows( 40 ) ); 
+		ut assert that( Expr( Transpose( 1::3 ) ), ut n rows( 3 ) );
+	}}
 );

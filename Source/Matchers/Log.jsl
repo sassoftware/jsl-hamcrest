@@ -51,8 +51,10 @@ ut matcher factory(
 	"Passes the captured log from evaluating the test expression to the inner matcher",
 	{{
 		"Simple",
-		ut assert that( Expr( Show( 5 + 5 ) ), ut log output( "\!N5 + 5 = 10;" ) );
-		ut assert that( Expr( Show( 5 + 5 ) ), ut log output( ut ignoring whitespace( "5 + 5 = 10;" ) ) );
+		"\[
+ut assert that( Expr( Show( 5 + 5 ) ), ut log output( "\!N5 + 5 = 10;" ) );
+ut assert that( Expr( Show( 5 + 5 ) ), ut log output( ut ignoring whitespace( "5 + 5 = 10;" ) ) );
+]\"
 	}}
 );
 
