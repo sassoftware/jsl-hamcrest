@@ -3,7 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 ## [1.2.0]
+<<<<<<< HEAD
 ### Added
+=======
+
+### Added
+ - `ut valid xml` matcher (#56)
+ - `UtJunitXMLReporter` (#56)
+>>>>>>> saas-origin/add-Junit-xml-reporter
 
 ### Changed
 

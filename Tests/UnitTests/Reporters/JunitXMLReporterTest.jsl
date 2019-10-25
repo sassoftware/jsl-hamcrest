@@ -1,0 +1,420 @@
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0 
+
+// Unit test cases for JunitXMLReporter
+// 1.0 Factory return correct type
+// 2.0 No assertions gives valid xml
+// 3.0 Single passing assertion gives valid xml
+// 4.0 Single failing assertion gives valid xml
+// 5.0 Test case gives valid xml
+// 6.0 Quotes in label gives valid xml
+// 7.0 Angle brackets in failure gives valid xml
+// 8.0 Counts are correct at root
+// 9.0 JunitXMLReporter one simple passing
+// 10.0 JunitXMLReporter one simple failing
+// 11.0 Assertion with 4 part label works
+// 12.0 Multiple successes and failure report as expected
+// 13.0 Unexpected throws are treated as failures
+
+// uncomment to reinitialize and reinclude source file
+//init_framework = convert file path("$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\InitializeFramework.jsl");
+//include(init_framework);
+//include("../../../Source/Reporters/JunitXMLReporter.jsl");
+
+n root tests = Function({xml}, {out = .},
+	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Num(Xml Attr("tests")))));
+	local:out
+);
+
+n root failures = Function({xml}, {out = .},
+	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Num(Xml Attr("failures")))));
+	local:out
+);
+
+suite names = Function({xml}, {out = {}},
+	Parse XML(xml, On Element("testsuite", Start Tag(Insert Into(local:out, Xml Attr("name")))));
+	local:out
+);
+
+setup_expr = Expr(
+    //include("../../../Source/Reporters/JunitXMLReporter.jsl");
+    reporter = ut junit xml reporter();
+    with junit reporter = Function({ex},
+        ut with reporter( reporter, Name Expr( ex ) );	
+    );
+    outer assert value = Function({value, matcher, label=""},
+        // Circumvent the decorated `ut assert that` from our own 'JunitXMLReporters' case.
+        // This allows us to write assertions that are reported as outside of any test.
+        ::ut assert that(ut as expr(Name Expr(value)), matcher, label);
+    );
+    report = Expr(reporter << get report);
+);
+	
+JunitXMLReporters = ut test case("JunitXMLReporters")
+	<< Setup(Expr(setup_expr));
+	
+// 1.0 Factory return correct type
+
+ut test(JunitXMLReporters, "Factory return correct type", Expr(
+	ut assert that( Expr(reporter), ut instance of("UtJunitXMLReporter") );
+));
+
+// 2.0 No assertions gives valid xml
+
+ut test(JunitXMLReporters, "No assertions gives valid xml", Expr(
+	ut assert that( Expr(report), ut all of({ut valid xml(), ut not("")}) );
+));
+
+// 3.0 Single passing assertion gives valid xml
+
+ut test(JunitXMLReporters, "Single passing assertion gives valid xml", Expr(
+	with junit reporter(Expr(
+		outer assert value(1, 1);
+	));
+	ut assert that( Expr(report), ut valid xml() );
+));
+
+// 4.0 Single failing assertion gives valid xml
+
+ut test(JunitXMLReporters, "Single failing assertion gives valid xml", Expr(
+	with junit reporter(Expr(
+		outer assert value(1, 2);
+
+	));
+	ut assert that( Expr(report), ut valid xml() );
+));
+
+// 5.0 Test case gives valid xml
+
+ut test(JunitXMLReporters, "Test case gives valid xml", Expr(
+	with junit reporter(Expr(
+		ut test("A", "a", Expr(
+			ut assert value(1, 0);
+		));
+	));
+	ut assert that( Expr(report), ut valid xml() );
+));
+
+// 6.0 Quotes in label gives valid xml
+
+ut test(JunitXMLReporters, "Quotes in label gives valid xml", Expr(
+	with junit reporter(Expr(
+		outer assert value(1, 0, "quotes may cause \!"trouble\!" if not escaped");
+	));
+	ut assert that( Expr(report), ut valid xml() );
+));
+
+// 7.0 Angle brackets in failure gives valid xml
+
+ut test(JunitXMLReporters, "Angle brackets in failure gives valid xml", Expr(
+	with junit reporter(Expr(
+		outer assert value("brackets", "brackets may cause <<trouble>> if not escaped");
+	));
+	ut assert that( Expr(report), ut valid xml() );
+));
+
+// 8.0 Counts are correct at root
+
+ut test(JunitXMLReporters, "Counts are correct at root", Expr(
+	with junit reporter(Expr(
+		outer assert value(1, 1);
+		outer assert value(2, 0);
+		ut test("A", "a", Expr(
+			ut assert value(3, 3);
+			ut assert value(4, 0);
+		));
+		ut test("A", "1", Expr(
+			ut assert value(5, 5);
+			ut assert value(6, 0);
+		));
+		ut test("B", "b", Expr(
+			ut assert value(7, 7);
+			ut assert value(8, 0);
+		));
+	));
+	ut assert that( Expr(n root tests(report)), 8 );
+	ut assert that( Expr(n root failures(report)), 4 );
+	ut assert that( Expr(suite names(report)), {"A", "Anonymous_Test_Suite", "B"} );
+));
+
+// 9.0 JunitXMLReporter one simple passing
+
+ut test( JunitXMLReporters, "JunitXMLReporter one simple passing", Expr(
+
+	with junit reporter(Expr(
+	   ut test ("Simple Pass", "One plus one equals two", Expr(
+	     ut assert that(Expr(1+1), ut equal to (2));
+	   ));
+	));
+	
+	ut assert that(Expr(reporter << successes), ut equal to ({{"Simple Pass ⮚ One plus one equals two ⮚ 1", 1 + 1, "equal to 2", Empty()}}));
+	
+	pattern = 
+	"\[<\?xml version="1.0" encoding="UTF-8" \?>
+	<testsuites failures="0" id="\d+_\d+" tests="1">
+	  <testsuite failures="0" name="Simple Pass" tests="1">
+		<testcase name="One plus one equals two_1">
+		</testcase>
+	  </testsuite>
+	</testsuites>
+	]\";
+	
+	//replace tabs and carriage returns used for easier readability
+	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "");
+
+	match = Regex Match(report, pattern);
+	
+	ut assert that(Expr(match), ut length(1));
+	ut assert that(Expr(report), ut valid xml() );
+	ut assert that(Expr(match[1]), ut equal to(report));
+));
+
+// 10.0 JunitXMLReporter one simple failing
+
+ut test( JunitXMLReporters, "JunitXMLReporter one simple failing", Expr(
+
+	with junit reporter(Expr(
+	    ut test ("Simple Fail", "One plus one equals one", Expr(
+	       ut assert that(Expr(1+1), ut equal to (1));
+	    ));
+	));
+	
+	ut assert that(Expr(reporter << failures), ut equal to ({{"Simple Fail ⮚ One plus one equals one ⮚ 1", 1 + 1, "equal to 1", "was 2", 0, Empty()}}));
+	
+	pattern = 
+	"\[<\?xml version="1.0" encoding="UTF-8" \?>
+	<testsuites failures="1" id="\d+_\d+" tests="1">
+	  <testsuite failures="1" name="Simple Fail" tests="1">
+		<testcase name="One plus one equals one_1">
+		  <failure type="failure">
+			Expected: 1 \+ 1 equal to 1
+			But: was 2
+		  </failure>
+		</testcase>
+	  </testsuite>
+	</testsuites>
+	]\";
+	
+	//replace tabs and carriage returns used for easier readability
+	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "");
+
+	match = Regex Match(report, pattern);
+	
+	ut assert that(Expr(match), ut length(1));
+	ut assert that(Expr(report), ut valid xml() );
+	ut assert that(Expr(match[1]), ut equal to(report));
+));
+
+// 11.0 Assertion with 4 part label works
+
+ut test(JunitXMLReporters, "Assertion with 4 part label works", Expr(
+	with junit reporter(Expr(
+		ut test("A", "a", Expr(
+			ut assert value(1, 0, "extra info");
+		));
+	));
+	ut assert that( Expr(report), ut valid xml() );
+	
+	pattern = "<\?xml version=\!"1.0\!" encoding=\!"UTF-8\!" \?>
+	<testsuites failures=\!"1\!" id=\!"\d+_\d+\!" tests=\!"1\!">
+	  <testsuite failures=\!"1\!" name=\!"A\!" tests=\!"1\!">
+		<testcase name=\!"a_extra info_1\!">
+		  <failure type=\!"failure\!">
+			Expected: Expr\(1\) equal to 0
+			But: was 1
+		  </failure>
+		</testcase>
+	  </testsuite>
+	</testsuites>
+	";
+
+	//replace tabs and carriage returns used for easier readability
+	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "");
+
+	match = Regex Match(report, pattern);
+	
+	ut assert that(Expr(match), ut length(1));
+	ut assert that(Expr(report), ut valid xml() );
+	ut assert that(Expr(match[1]), ut equal to(report));
+));
+
+// 12.0 Multiple successes and failure report as expected
+
+ut test(JunitXMLReporters, "Multiple successes and failure report as expected", Expr(
+	with junit reporter(Expr(
+		add_nums = Function( {num1, num2},
+			{DEFAULT LOCAL},
+			num3 = num1 + num2;
+			num3;
+		);
+
+		case = ut test case( "Example Tests" ) << Setup( Expr( Print( "Setting up!" ) ) ) <<
+		Teardown( Expr( Print( "Tearing down!" ) ) );
+
+		case2 = ut test case( "Example Tests 2" ) << Setup( Expr( Print( "Setting up!" ) ) ) <<
+		Teardown( Expr( Print( "Tearing down!" ) ) );
+
+		// two passes and two fails for first test case
+		// 1.0 Example Test
+
+		ut test(
+			case,
+			"Test1",
+			Expr(
+				ut assert that( Eval Expr( add_nums( 1, 1 ) ), ut equal to( 2 ) );
+				ut assert that( Eval Expr( add_nums( 1, 1 ) ), ut equal to( 3 ) );
+			)
+		);
+
+		// 1.1 Example Test
+
+		ut test(
+			case,
+			"Test2",
+			Expr(
+				ut assert that( Eval Expr( add_nums( 3, 5 ) ), ut equal to( 7 ) );
+				ut assert that( Eval Expr( add_nums( 3, 5 ) ), ut equal to( 29 ) );
+			)
+		);
+
+		// 1.2 Example Test
+
+		ut test(
+			case,
+			"Test3",
+			Expr(
+				ut assert that( Eval Expr( add_nums( 2, 2 ) ), ut equal to( 4 ) )
+			)
+		);
+
+		// 1.3 Example Test
+
+		ut test(
+			case,
+			"Test4",
+			Expr(
+				ut assert that( Eval Expr( add_nums( 3, 5 ) ), ut equal to( 9 ) )
+			)
+		);
+
+		//two passes and two fails for second test case
+
+		// 2.0 Example Test
+
+		ut test(
+			case2,
+			"Test1",
+			Expr(
+				ut assert that( Eval Expr( add_nums( 1, 1 ) ), ut equal to( 2 ) )
+			)
+		);
+
+		// 2.1 Example Test
+
+		ut test(
+			case2,
+			"Test2",
+			Expr(
+				ut assert that( Eval Expr( add_nums( 3, 5 ) ), ut equal to( 7 ) )
+			)
+		);
+
+		// 2.2 Example Test
+
+		ut test(
+			case2,
+			"Test3",
+			Expr(
+				ut assert that( Eval Expr( add_nums( 2, 2 ) ), ut equal to( 4 ) )
+			)
+		);
+
+		// 2.3 Example Test
+
+		ut test(
+			case2,
+			"Test4",
+			Expr(
+				ut assert that( Eval Expr( add_nums( 3, 5 ) ), ut equal to( 9 ) )
+			)
+		);
+	));
+	ut assert that( Expr(report), ut valid xml() );
+	
+	pattern ="<?xml version=\!"1.0\!" encoding=\!"UTF-8\!" ?>
+	<testsuites failures=\!"6\!" id=\!"\d+_\d+\!" tests=\!"10\!">
+	  <testsuite failures=\!"4\!" name=\!"Example Tests\!" tests=\!"6\!">
+		<testcase name=\!"Test1_1\!">
+		</testcase>
+		<testcase name=\!"Test1_2\!">
+		  <failure type=\!"failure\!">
+			Expected: add_nums(1, 1) equal to 3
+			But: was 2
+		  </failure>
+		</testcase>
+		<testcase name=\!"Test2_1\!">
+		  <failure type=\!"failure\!">
+			Expected: add_nums(3, 5) equal to 7
+			But: was 8
+		  </failure>
+		</testcase>
+		<testcase name=\!"Test2_2\!">
+		  <failure type=\!"failure\!">
+			Expected: add_nums(3, 5) equal to 29
+			But: was 8
+		  </failure>
+		</testcase>
+		<testcase name=\!"Test3_1\!">
+		</testcase>
+		<testcase name=\!"Test4_1\!">
+		  <failure type=\!"failure\!">
+			Expected: add_nums(3, 5) equal to 9
+			But: was 8
+		  </failure>
+		</testcase>
+	  </testsuite>
+	  <testsuite failures=\!"2\!" name=\!"Example Tests 2\!" tests=\!"4\!">
+		<testcase name=\!"Test1_1\!">
+		</testcase>
+		<testcase name=\!"Test2_1\!">
+		  <failure type=\!"failure\!">
+			Expected: add_nums(3, 5) equal to 7
+			But: was 8
+		  </failure>
+		</testcase>
+		<testcase name=\!"Test3_1\!">
+		</testcase>
+		<testcase name=\!"Test4_1\!">
+		  <failure type=\!"failure\!">
+			Expected: add_nums(3, 5) equal to 9
+			But: was 8
+		  </failure>
+		</testcase>
+	  </testsuite>
+	</testsuites>
+	";
+
+	//replace tabs and carriage returns used for easier readability
+	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "", "?", "\?", ")", "\)", "(", "\(");
+
+	match = Regex Match(report, pattern);
+	
+	ut assert that(Expr(match), ut length(1));
+	ut assert that(Expr(report), ut valid xml() );
+	ut assert that(Expr(match[1]), ut equal to(report));
+));
+
+// 13.0 Unexpected throws are treated as failures
+
+ut test(JunitXMLReporters, "Unexpected throws are treated as failures", Expr(
+	// There may be some room for improvement here. I think there may be a
+	// separate mechanism for reporting these.
+	with junit reporter(Expr(
+		ut test("A", "a", Expr(
+			Throw("I am unexpected!");
+		));
+	));
+	ut assert that( Expr(report), ut valid xml() );
+	ut assert that( Expr(n root tests(report)), 1 );
+	ut assert that( Expr(n root failures(report)), 1 );
+));
