@@ -202,11 +202,26 @@ ut on thursday = Function( {},
 
 ## Building Documentation
 
-1. Download Natural Docs (naturaldocs.org)
+1. Download [Natural Docs](naturaldocs.org)
 2. Navigate to the root of this project
 3. Run NaturalDocs 
    > NaturalDocs Docs
-4. Open Docs/_html/index.html
+4. Open `Docs/_html/index.html`
+
+## Releasing a Version
+
+See [Semantic Versioning](semver.org) for details on version numbers.
+
+1. Check `CHANGELOG.md`, `addin.def`, and `Source/DevAddin/addin.def` for correct (current) version number.
+2. Build the documentation.
+3. Zip up the entire repository with `addin.def` at the root (don't include the `.git` folder).
+4. Rename the zip file as `JSL-Hamcrest-v<MAJOR>.<MINOR>.<PATCH>.jmpaddin`.
+5. Zip up the `Source/DevAddin` folder with its `addin.def` at the root.
+6. Rename the zip file as `JSL-Hamcrest-Dev-v<MAJOR>.<MINOR>.<PATCH>.jmpaddin`.
+7. Push a tag of the form `v<MAJOR>.<MINOR>.<PATCH>`.
+8. Create a GitHub release. Add the relevant `CHANGELOG` section there and attach the two addins.
+9. Update the `gh-pages` branch
+10. Create a new Pull Request bumping the version number to the next predicted (see files from (1))
 
 ## Support
 
