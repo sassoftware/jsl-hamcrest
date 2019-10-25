@@ -10,14 +10,14 @@
           <jm:command>
             <jm:name>TEST RUNNER</jm:name>
             <jm:caption>Test Runner</jm:caption>
-            <jm:action type="text">Include(::ut addin home || "\Source\Addin\Actions\AddTestRunner.jsl")</jm:action>
+            <jm:action type="text">Include("$ADDIN_HOME(com.jmp.jslhamcrestdev)/InitializeHome.jsl"); Include(::ut addin home || "\Source\Addin\Actions\AddTestRunner.jsl")</jm:action>
             <jm:tip>Add Hamcrest Test Runner to current script editor window</jm:tip>
             <jm:icon type="path">$ADDIN_HOME(com.jmp.jslhamcrestdev)\runner-32px.png</jm:icon>
           </jm:command>
           <jm:command>
             <jm:name>RUN TESTS</jm:name>
             <jm:caption>Run Tests</jm:caption>
-            <jm:action type="text">Include(::ut addin home || "\Source\All.jsl"); Include(::ut addin home || "\Source\Addin\Actions\RunTests.jsl")</jm:action>
+            <jm:action type="text">Include("$ADDIN_HOME(com.jmp.jslhamcrestdev)/InitializeHome.jsl"); Include(::ut addin home || "\Source\All.jsl"); Include(::ut addin home || "\Source\Addin\Actions\RunTests.jsl")</jm:action>
             <jm:tip>Run tests for the current window</jm:tip>
             <jm:accel>F5</jm:accel>
             <jm:icon type="none"></jm:icon>
@@ -25,28 +25,28 @@
           <jm:command>
             <jm:name>INITIALIZE</jm:name>
             <jm:caption>Initialize</jm:caption>
-            <jm:action type="text">Include(::ut addin home || "\Source\Addin\Actions\InitializeFramework.jsl"); Include(::ut addin home || "\Source\All.jsl")</jm:action>
+            <jm:action type="text">Include("$ADDIN_HOME(com.jmp.jslhamcrestdev)/InitializeHome.jsl"); Include(::ut addin home || "\Source\Addin\Actions\InitializeFramework.jsl"); Include(::ut addin home || "\Source\All.jsl")</jm:action>
             <jm:tip>Define global functions needed for Hamcrest (without starting Test Runner)</jm:tip>
             <jm:icon type="none"></jm:icon>
           </jm:command>
           <jm:command>
             <jm:name>PREFERENCES</jm:name>
             <jm:caption>Preferences</jm:caption>
-            <jm:action type="text">Include(::ut addin home || "\Source\Addin\Actions\OpenTestRunnerPreferences.jsl")</jm:action>
+            <jm:action type="text">Include("$ADDIN_HOME(com.jmp.jslhamcrestdev)/InitializeHome.jsl"); Include(::ut addin home || "\Source\Addin\Actions\OpenTestRunnerPreferences.jsl")</jm:action>
             <jm:tip>Modify Hamcrest preferences</jm:tip>
             <jm:icon type="none"></jm:icon>
           </jm:command>
           <jm:command>
             <jm:name>CONFIGURATION</jm:name>
             <jm:caption>Configuration</jm:caption>
-            <jm:action type="path">$ADDIN_HOME(com.jmp.jslhamcrestdev)\DevConfiguration.jsl</jm:action>
+            <jm:action type="text">Include("$ADDIN_HOME(com.jmp.jslhamcrestdev)/InitializeHome.jsl"); Include("$ADDIN_HOME(com.jmp.jslhamcrestdev)\DevConfiguration.jsl")</jm:action>
             <jm:tip>Configured Hamcrest Dev Addin</jm:tip>
             <jm:icon type="none"></jm:icon>
           </jm:command>
           <jm:command>
             <jm:name>HELP</jm:name>
             <jm:caption>Help</jm:caption>
-            <jm:action type="text">Include(::ut addin home || "\Source\Addin\Actions\OpenDocumentation.jsl")</jm:action>
+            <jm:action type="text">Include("$ADDIN_HOME(com.jmp.jslhamcrestdev)/InitializeHome.jsl"); Include(::ut addin home || "\Source\Addin\Actions\OpenDocumentation.jsl")</jm:action>
             <jm:tip>Open Hamcrest documentation</jm:tip>
             <jm:icon type="none"></jm:icon>
           </jm:command>
@@ -62,7 +62,7 @@
       <jm:command>
         <jm:name>TEST RUNNER</jm:name>
         <jm:caption>Test Runner</jm:caption>
-        <jm:action type="text">Include(::ut addin home || "\Source\All.jsl"); Include(::ut addin home || "\Source\Addin\Actions\AddTestRunner.jsl")</jm:action>
+        <jm:action type="text">Include("$ADDIN_HOME(com.jmp.jslhamcrestdev)/InitializeHome.jsl"); Include(::ut addin home || "\Source\All.jsl"); Include(::ut addin home || "\Source\Addin\Actions\AddTestRunner.jsl")</jm:action>
         <jm:icon type="path">$ADDIN_HOME(com.jmp.jslhamcrestdev)\runner-32px.png</jm:icon>
         <jm:accel>Ctrl+F5</jm:accel>
       </jm:command>
