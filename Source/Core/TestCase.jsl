@@ -535,7 +535,7 @@ ut define documented function(
 	)),
 	"ut test( test case | test case name, test name, body, <log bench> )",
 	"Run a test expression. Runs any given setup and tear down expressions. Reports any unexpected exceptions as failures.\!n\!n" || 
-	"The log benchmark argument determines if the log is captured and whatis asserted about the captured log (if anything). The default is managed by the ut log bench and ut log bench default.",
+	"The log benchmark argument determines if the log is captured and what is asserted about the captured log (if anything). The default is managed by the ut log bench and ut log bench default.",
 	{{
 		"Simple", 
 		"\[
