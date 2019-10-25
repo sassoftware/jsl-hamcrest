@@ -420,7 +420,7 @@ Define Class(
 		change based on the machine settings/font size or if there is a small difference in 
 		output between operating systems.
 		
-		This is the default matcher for expressions and and names which contain arguments.
+		This is the default matcher for expressions and names which contain arguments.
 
 		Factory function for <UtExpressionCompositeMatcher>.
 
@@ -466,7 +466,7 @@ ut matcher factory( "ut expression matches",
 		obj;
 	)),
 	"ut expression matches( expression )",
-	"Compare the actual expression to and expected expression, which itself can contain matchers or optional tokens. This can be very useful for size arguments that change based on the machine settings/font size or if there is a small difference in output between operating systems. This is the default matcher for expressions and and names which contain arguments.",
+	"Compare the actual expression to and expected expression, which itself can contain matchers or optional tokens. This can be very useful for size arguments that change based on the machine settings/font size or if there is a small difference in output between operating systems. This is the default matcher for expressions and names which contain arguments.",
 	{
 		{
 			"Expression",
