@@ -3,41 +3,70 @@
 
 MatcherFactoryTests = ut test case( "MatcherFactoryTests" )
 	<<Setup(Expr(
-		saved value = ut should deploy documented functions;
-		prev n documented = N Items( ut documented functions );
+		should deploy = ut should deploy documented functions;
+		documented functions = ut documented functions;
+		ut documented functions = {};
 	))
 	<<Teardown(Expr(
-		ut unregister matcher factory("test factory");
-		ut assert value( ut matcher factories, ut not( ut contains( Expr( test factory ) ) ) );
-		ut assert that( Expr( ::test factory() ), ut no throw() );
-		ut should deploy documented functions = saved value;
+		ut documented functions = documented functions;
+		ut should deploy documented functions = should deploy;
 	));
 
-ut test(MatcherFactoryTests, "No Function Definition", Expr(
+ut test(MatcherFactoryTests, "MatcherFactoryRegistered", Expr(
 	ut should deploy documented functions = 1;
 	ut matcher factory("test factory");
 
 	// added as matcher factory
 	ut assert value( ut matcher factories, ut contains( Expr( test factory ) ) );
-	// not added as documented function
-	ut assert value( ut documented functions, ut n items( prev n documented ) );
+));
+
+ut test(MatcherFactoryTests, "UnregisterRemovesMatcherFactory", Expr(
+	ut should deploy documented functions = 1;
+	ut matcher factory("test factory");
+	
+	ut unregister matcher factory("test factory");
+	ut assert value( ut matcher factories, ut not( ut contains( Expr( test factory ) ) ) );
+));
+
+ut test(MatcherFactoryTests, "NoFunctionDefinitionLeavesUndefined", Expr(
+	ut should deploy documented functions = 1;
+	ut matcher factory("test factory");
+	
 	// no function defined
 	ut assert that( Expr( test factory() ), ut throws name unresolved( "test factory" ) );
 
-	test factory = Function({}, 5 ); // make valid function for teardown
+));
+
+ut test(MatcherFactoryTests, "NoFunctionDefinitionNotDocumented", Expr(
+	ut should deploy documented functions = 1;
+	ut matcher factory("test factory");
+
+	// not added as documented function
+	ut assert value( ut documented functions, ut n items( 0 ) );
 
 ));
 
-ut test(MatcherFactoryTests, "Defines Function in Global", Expr(
+ut test(MatcherFactoryTests, "FunctionDefinitionAssignsToGlobal", Expr(
 	ut should deploy documented functions = 1;
 	ut matcher factory("test factory", Expr(Function({}, 5 )) );
 
-	// added as matcher factory
-	ut assert value( ut matcher factories, ut contains( Expr( test factory ) ) );
-	// added to documented functions list
-	ut assert value( ut documented functions, ut n items( prev n documented + 1 ) );
 	// defined in global
 	ut assert that( Expr( ::test factory() ), 5 );
+	
+));
+
+ut test(MatcherFactoryTests, "FunctionDefinitionAddedAsDocmented", Expr(
+	ut should deploy documented functions = 1;
+	ut matcher factory("test factory", Expr(Function({}, 5 )) );
+
+	// added to documented functions list
+	ut assert value( ut documented functions, ut n items( 1 ) );
+	
+));
+
+ut test(MatcherFactoryTests, "FunctionDefinitionOverwritesAfterDeploy", Expr(
+	ut should deploy documented functions = 1;
+	ut matcher factory("test factory", Expr(Function({}, 5 )) );
 	
 	// Function that will get overwritten by a deploy
 	::test factory = Function({}, 10 );
@@ -46,33 +75,51 @@ ut test(MatcherFactoryTests, "Defines Function in Global", Expr(
 	// Should overwrite to original defined function
 	ut assert that( Expr( ::test factory() ), 5 );
 	
-));
+	// Removing deployed function should not throw
+	ut assert that( Expr( Remove Custom Functions( "::test factory" ) ), ut no throw() );
 
-ut test(MatcherFactoryTests, "Correct documentation", Expr(
+), ut log bench( 0 ) );
+
+ut test(MatcherFactoryTests, "FunctionDefinitionWithDocumentation", Expr(
 	ut should deploy documented functions = 1;
 	ut matcher factory("test factory", Expr(Function({}, 5 )), "test factory()", "a description" );
-	
-	ut assert value( ut documented functions, ut n items( ut greater than( 0 ) ) );
 
-	cf = ut documented functions[N Items( ut documented functions)];
+	cf = ut documented functions[1];
 	
+	// test that all documentation is put in the right place
 	ut assert value( cf, ut name( "test factory" ) );
 	ut assert value( cf, ut message( "test factory()", "prototype", "Get Prototype" ) );
 	ut assert value( cf, ut message( "a description", "description", "Get Description" ) );
 
 ));
 
-ut test(MatcherFactoryTests, "Documented functions turned off", Expr(
+ut test(MatcherFactoryTests, "DocumentationOffNotAddedAsDocumented", Expr(
 	// Opt out of documented functions
 	ut should deploy documented functions = 0;
-
 	ut matcher factory("test factory", Expr(Function({}, 5 )) );
 
-	// added as matcher factory
-	ut assert value( ut matcher factories, ut contains( Expr( test factory ) ) );
 	// NOT added to documented functions list
-	ut assert value( ut documented functions, ut n items( prev n documented ) );
+	ut assert value( ut documented functions, ut n items( 0 ) );
+
+));
+
+ut test(MatcherFactoryTests, "DocumentationOffStillDefinedInGlobal", Expr(
+	// Opt out of documented functions
+	ut should deploy documented functions = 0;
+	ut matcher factory("test factory", Expr(Function({}, 5 )) );
+
 	// still defined in global
 	ut assert that( Expr( ::test factory() ), 5 );
+
+));
+
+ut test(MatcherFactoryTests, "DocumentationOffDoesNotDeploy", Expr(
+	ut should deploy documented functions = 0;
+	ut matcher factory("test factory", Expr(Function({}, 5 )) );
+
+	ut deploy documented functions();
+
+	// Remove Custom Functions should throw when function is not a custom function
+	ut assert that( Expr( Remove Custom Functions( "::test factory" ) ), ut throws( ut anything() ) );
 
 ));
