@@ -4,12 +4,14 @@
 MatcherFactoryTests = ut test case( "MatcherFactoryTests" )
 	<<Setup(Expr(
 		should deploy = ut should deploy documented functions;
+		matcher factories = ut matcher factories;
 		documented functions = ut documented functions;
 		ut documented functions = {};
 	))
 	<<Teardown(Expr(
-		ut documented functions = documented functions;
 		ut should deploy documented functions = should deploy;
+		ut matcher factories = matcher factories;
+		ut documented functions = documented functions;
 	));
 
 ut test(MatcherFactoryTests, "MatcherFactoryRegistered", Expr(
