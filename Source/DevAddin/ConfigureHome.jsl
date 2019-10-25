@@ -16,7 +16,7 @@ New Window("Hamcrest Test Runner Preferences",
 				0);
 			If(is valid,
 				::ut addin home = window:path << Get Text();
-				Save Text File(ut addin scratch || "DevConfiguration.txt", ::ut addin home);
+				Save Text File(ut addin scratch || "HomeConfiguration.txt", ::ut addin home);
 				1;
 			,
 				window:errorBox << Set Text( "This does not appear to be a JSL-Hamcrest root directory" );
@@ -28,7 +28,7 @@ New Window("Hamcrest Test Runner Preferences",
 		Text Box("JSL-Hamcrest Source", <<Vertical Alignment( "Center" ) ),
 		Lineup Box(N Col(2), 
 			window:path = Text Edit Box(
-				Try(Load Text File(ut addin scratch || "DevConfiguration.txt"), ""),
+				Try(Load Text File(ut addin scratch || "HomeConfiguration.txt"), ""),
 				<<Set Width( 400 ),
 				<<Set Hint("Path to Hamcrest"),
 				<<Set Tip("Path to root containing both Source and Docs."),

@@ -39,7 +39,7 @@
           <jm:command>
             <jm:name>CONFIGURATION</jm:name>
             <jm:caption>Configuration</jm:caption>
-            <jm:action type="text">Include("$ADDIN_HOME(com.jmp.jslhamcrestdev)/InitializeHome.jsl"); Include("$ADDIN_HOME(com.jmp.jslhamcrestdev)\DevConfiguration.jsl")</jm:action>
+            <jm:action type="text">Include("$ADDIN_HOME(com.jmp.jslhamcrestdev)/InitializeHome.jsl"); Include("$ADDIN_HOME(com.jmp.jslhamcrestdev)\ConfigureHome.jsl")</jm:action>
             <jm:tip>Configured Hamcrest Dev Addin</jm:tip>
             <jm:icon type="none"></jm:icon>
           </jm:command>

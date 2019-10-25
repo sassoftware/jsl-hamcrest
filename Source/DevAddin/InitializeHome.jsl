@@ -6,7 +6,7 @@ Names Default To Here(0);
 
 ut addin scratch = Convert File Path("$ADDIN_HOME(com.jmp.jslhamcrestdev)");
 ut addin home = Try(
-	Load Text File(ut addin scratch || "/DevConfiguration.txt"),
+	Load Text File(ut addin scratch || "/HomeConfiguration.txt"),
 	Expr(
 		New Window("Error", <<Modal, Text Box("JSL Hamcrest Dev is not configured properly"));
 		Stop();
