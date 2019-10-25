@@ -42,9 +42,20 @@ Define Class(
 		> ut assert that( Expr( Show( 5 + 5 ) ), ut log output( "\!N5 + 5 = 10;" ) );
 		> ut assert that( Expr( Show( 5 + 5 ) ), ut log output( ut ignoring whitespace( "5 + 5 = 10;" ) ) );
 */
-ut matcher factory( "ut log output" );
-ut log output = Function( {matcher},
-	New Object( UtLogMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+ut matcher factory( 
+	"ut log output",
+	Expr(Function( {matcher},
+		New Object( UtLogMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+	)),
+	"ut log output( matcher )",
+	"Passes the captured log from evaluating the test expression to the inner matcher",
+	{{
+		"Simple",
+		"\[
+ut assert that( Expr( Show( 5 + 5 ) ), ut log output( "\!N5 + 5 = 10;" ) );
+ut assert that( Expr( Show( 5 + 5 ) ), ut log output( ut ignoring whitespace( "5 + 5 = 10;" ) ) );
+]\"
+	}}
 );
 
 /*
@@ -54,5 +65,10 @@ ut log output = Function( {matcher},
 		---------------
 		Alias of <ut log output>. Kept only for backwards compatibility.
 */
-ut matcher factory( "ut log is" );
-ut log is = Name Expr( ut log output );
+ut matcher factory( "ut log is", 
+	Expr(Function( {matcher},
+		New Object( UtLogMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+	)),
+	"ut log is( matcher )", 
+	"Alias of ut log output. Kept for backwards compatibility."
+);

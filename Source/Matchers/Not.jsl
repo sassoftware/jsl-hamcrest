@@ -50,7 +50,11 @@ Define Class(
 	Example:
 		> ut assert that( Expr( 5 + 5 ), ut not( ut equal to( 11 ) ) );
 */
-ut matcher factory( "ut not" );
-ut not = Function( {matcher},
-	New Object( UtNotMatcher( ut ensure matcher( Name Expr( matcher ) )) );
+ut matcher factory( "ut not",
+	Expr(Function( {matcher},
+		New Object( UtNotMatcher( ut ensure matcher( Name Expr( matcher ) )) );
+	)),
+	"ut not( matcher )",
+	"Negates the given inner matcher.",
+	{{"Simple", ut assert that( Expr( 5 + 5 ), ut not( ut equal to( 11 ) ) ); }}
 );

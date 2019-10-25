@@ -10,9 +10,27 @@ Names Default To Here( 0 );
 */
 ut matcher factories = {};
 
+// Variable: ut documented functions
+ut documented functions = {};
+
+// Variable: ut should deploy documented functions
+// Only overwritten if not already set. Default is 1.
+If( Is Empty( ut should deploy documented functions ), 
+	ut should deploy documented functions = 1;
+);
+
+ut deploy documented functions = Function({},
+	If( ut should deploy documented functions,
+		Log Capture( Add Custom Functions( ut documented functions ) );
+		// Clear memory and make room to call again with new fuctions
+		ut documented functions = {};
+	);
+	ut nullptr;
+);
+
 /*	Function: ut matcher factory
 		---Prototype---
-		ut matcher factory( string name )
+		ut matcher factory( String name, Function func, String prototype = "", String description = "", List<List> examples )
 		---------------
 		Function used to insert their names into the ut matcher 
 		factories list.
@@ -20,10 +38,45 @@ ut matcher factories = {};
 	Arguments:
 		name - string name for the function
 */
-ut matcher factory = Function({name},
+ut matcher factory = Function( {name, function decl=Empty(), prototype="", description="", examples={}}, 
+
 	If( !Contains( ut matcher factories, As Name( name ) ),
 		Insert Into( ut matcher factories, As Name( name ) );
 	);
+	If( !Is Empty( Name Expr( function decl ) ),
+		ut define documented function( name, Name Expr( function decl ), prototype, description, examples );
+	);
+	ut nullptr;
+);
+
+/*  Function: ut define custom function
+		Define a documented function in the Scripting Index
+*/
+ut define documented function = Function({name, function decl, prototype, description, examples},
+	{cf, i},
+	// add a copy of the function to the package namespace and scripting index.
+	If( ut should deploy documented functions,
+		cf = New Custom Function( "global", name, function decl,
+			<< Scripting Index Category( ut package name ),
+			<< Prototype( prototype ),
+			<< Description( description )
+		);
+		For( i = 1, i <= N Items( examples ), i++,
+			If( N Items( examples[i] ) != 2,
+				Throw("Examples must contain a name and script."),
+			);
+			// A string can be used for an example to preserve
+			// whitespace and comments.
+			If( Is String( examples[i][2] ),
+				cf << Example( "Names Default To Here( 0 );\!nut global reporter = ut streaming log reporter();\!n" || examples[i][2], examples[i][1] );
+			,
+				cf << Example( ut merge expressions( Eval List( {Expr(Names Default To Here( 0 ); ut global reporter = ut streaming log reporter(); ), examples[i][2]} ) ), examples[i][1] );
+			);
+		);
+		Insert Into( ut documented functions, cf );
+	);
+	// Always assign the ut global function, for backwards compatibility
+	As Scoped( "global", name || "" ) = function decl;
 );
 
 /*	Function: ut is a matcher
@@ -92,7 +145,7 @@ ut ensure matcher list = Function({matchers},
  		behavior is to always return missing (LRE unsupported).
 
  		<ut global lre> is used by the Equal To and Close To matchers
-   		to report the LRE value based on actual and expected values.
+	 	to report the LRE value based on actual and expected values.
 */
 ut global lre = Function( {actual, expected},
 	{i = 1, compute lre},
@@ -142,17 +195,17 @@ ut unregister matcher factory = Function( {name},
 		expression threw an error.
 */
 ut with reporter = Function({reporter, expression},
-    {global reporter},
-    global reporter = ut global reporter;
-    ut global reporter = reporter;
-    Try(
-        First(
-            expression,
-            ut global reporter = global reporter
-        ),
-        ut global reporter = global reporter;
-        Throw( Char( exception_msg ) );
-    );
+	{global reporter},
+	global reporter = ut global reporter;
+	ut global reporter = reporter;
+	Try(
+		First(
+			expression,
+			ut global reporter = global reporter
+		),
+		ut global reporter = global reporter;
+		Throw( Char( exception_msg ) );
+	);
 );
 
 /*
@@ -355,10 +408,10 @@ ut equal with missing = Function( {a, b},
 
 /*
 	Function: ut get show string
-	   Converts non-string values to character. 
-	   If the value is a string, double quotes are concatenated 
-	   to the beginning and end. This is used for showing values
-	   in expected and actual results.
+		Converts non-string values to character. 
+		If the value is a string, double quotes are concatenated 
+		to the beginning and end. This is used for showing values
+		in expected and actual results.
 */
 ut get show string = Function( {obj},
 	If( Is String( Name Expr( obj ) ),
@@ -467,7 +520,7 @@ ut expr literal = Function( {an expr},
 ut concat test label sep = "⮚";
 
 /*	Function: ut concat test label
-   		Concatenates values together for <ut test>
+	 		Concatenates values together for <ut test>
 */
 ut concat test label = Function({test case name, test name, label="", n asserts=.},
 	{labelList},
@@ -630,9 +683,9 @@ ut include jsl files recursively = Function( {folder},
 			Insert Into( include exprs, Eval Expr( Include( Expr( folder || "/" || files[iFile] ) ) ) );
 		);
 	);
-    // Eval after loop to avoid name collisions 
-    // with files and iFile.
-    Eval List( include exprs );
+	// Eval after loop to avoid name collisions 
+	// with files and iFile.
+	Eval List( include exprs );
 );
 
 // Variable: ut nullptr

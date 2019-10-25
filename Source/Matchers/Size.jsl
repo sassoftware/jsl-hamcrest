@@ -53,9 +53,13 @@ Define Class(
 		> ut assert that( Expr( {1,2,3} ), ut length( 3 ) );
 		> ut assert that( Expr( "str" || "ing" ), ut length( 6 ) );
 */
-ut matcher factory( "ut length" );
-ut length = Function( {matcher},
-	New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "Length", "length" ) )
+ut matcher factory( "ut length",
+	Expr(Function( {matcher},
+		New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "Length", "length" ) )
+	)),
+	"ut length( matcher )",
+	"Passes the Length() of the actual value to the inner matcher.",
+	{{"Simple", ut assert that( Expr( {1,2,3} ), ut length( 3 ) ); ut assert that( Expr( "str" || "ing" ), ut length( 6 ) ); }}
 );
 
 /* 
@@ -73,9 +77,14 @@ ut length = Function( {matcher},
 	Examples:
 		> ut assert that( Expr( {1,2,3} ), ut n items( 3 ) );
 */
-ut matcher factory( "ut n items" );
-ut n items = Function( {matcher},
-	New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Items", "n items" ) )
+ut matcher factory( 
+	"ut n items",
+	Expr(Function( {matcher},
+		New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Items", "n items" ) )
+	)),
+	"ut n items( matcher )",
+	"Passes the N Items() of the actual value to the inner matcher.",
+	{{"Simple", ut assert that( Expr( {1,2,3} ), ut n items( 3 ) ); }}
 );
 
 /* 
@@ -94,9 +103,19 @@ ut n items = Function( {matcher},
 		> ut assert that( Expr( dt ), ut n cols( 3 ) );
 		> ut assert that( Expr( Transpose( 1::3 ) ), ut n cols( 1 ) );
 */
-ut matcher factory( "ut n cols" );
-ut n cols = Function( {matcher},
-	New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Cols", "n cols" ) )
+ut matcher factory( 
+	"ut n cols",
+	Expr(Function( {matcher},
+		New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Cols", "n cols" ) )
+	)),
+	"ut n cols( matcher )",
+	"Passes the N Cols() of the actual value to the inner matcher.",
+	{{
+		"Simple", 
+		dt = Open( "$SAMPLE_DATA\Big Class.jmp" );
+		ut assert that( Expr( dt ), ut n cols( 5 ) ); 
+		ut assert that( Expr( Transpose( 1::3 ) ), ut n cols( 1 ) );
+	}}
 );
 
 /* 
@@ -115,7 +134,17 @@ ut n cols = Function( {matcher},
 		> ut assert that( Expr( dt ), ut n rows( 3 ) );
 		> ut assert that( Expr( Transpose( 1::3 ) ), ut n rows( 3 ) );
 */
-ut matcher factory( "ut n rows" );
-ut n rows = Function( {matcher},
-	New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Rows", "n rows" ) )
+ut matcher factory( 
+	"ut n rows",
+	Expr(Function( {matcher},
+		New Object( UtSizeMatcher( ut ensure matcher( Name Expr( matcher ) ), "N Rows", "n rows" ) )
+	)),
+	"ut n rows( matcher )",
+	"Passes the N Rows() of the actual value to the inner matcher.",
+	{{
+		"Simple", 
+		dt = Open( "$SAMPLE_DATA\Big Class.jmp" );
+		ut assert that( Expr( dt ), ut n rows( 40 ) ); 
+		ut assert that( Expr( Transpose( 1::3 ) ), ut n rows( 3 ) );
+	}}
 );

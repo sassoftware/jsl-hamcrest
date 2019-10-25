@@ -53,9 +53,21 @@ Define Class(
 		ut assert that( Expr( 1 + 1 ), ut skip( ut equal to( 2 ) ) );
 		---------
 */
-ut matcher factory( "ut skip" );
-ut skip = Function( {matcher=ut anything()},
-	New Object( UtSkipMatcher( ut ensure matcher( Name Expr( matcher ) ), 0 ) )
+ut matcher factory( "ut skip",
+	Expr(Function( {matcher=ut anything()},
+		New Object( UtSkipMatcher( ut ensure matcher( Name Expr( matcher ) ), 0 ) )
+	)),
+	"ut skip()",
+	"Used to mark an expression you want to skip. Instead a success is reported.",
+	{{
+		"Simple",
+		"\[
+// If you wanted to skip this assertion but leave it in the
+// script for some reason, you could prevent it running by
+// wrapping the expected value/matcher with ut skip()
+ut assert that( Expr( 1 + 1 ), ut skip( ut equal to( 2 ) ) );
+]\"
+	}}
 );
 
 /* 
@@ -76,10 +88,23 @@ ut skip = Function( {matcher=ut anything()},
 		// If you wanted to skip this assertion but leave it in the
 		// script for some reason, you could prevent it running by
 		// wrapping the expected value/matcher with ut skip()
-		ut assert that( Expr( 1 + 1 ), ut skip( ut equal to( 2 ) ) );
+		ut assert that( Expr( 1 + 1 ), ut skip failing( ut equal to( 2 ) ) );
 		---------
 */
-ut matcher factory( "ut skip failing" );
-ut skip failing = Function( {matcher=ut anything()},
-	New Object( UtSkipMatcher( ut ensure matcher( Name Expr( matcher ) ), 1, "skipped test marked failing" ) )
+ut matcher factory( 
+	"ut skip failing",
+	Expr(Function( {matcher=ut anything()},
+		New Object( UtSkipMatcher( ut ensure matcher( Name Expr( matcher ) ), 1, "skipped test marked failing" ) )
+	)),
+	"ut skip failing()",
+	"Used to mark an expression you want to skip. Instead a failure is reported.",
+	{{
+		"Simple",
+		"\[
+// If you wanted to skip this assertion but leave it in the
+// script failing, you could prevent it running by
+// wrapping the expected value/matcher with ut skip failing()
+ut assert that( Expr( 1 + 1 ), ut skip failing( ut equal to( 2 ) ) );
+]\"
+	}}
 );

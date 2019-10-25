@@ -69,7 +69,17 @@ Define Class(
 		> ut assert that( Expr( {2,2,2,2,2} ), ut every item( 2 ) );
 		> ut assert that( Expr( {1,2,3,4,5,6} ), ut every item( ut greater than( 0 ) ) );
 */
-ut matcher factory( "ut every item" );
-ut every item = Function( {matcher},
-	New Object( UtEveryMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+ut matcher factory( 
+	"ut every item",
+	Expr(Function( {matcher},
+		New Object( UtEveryMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+	)),
+	"ut every item( matcher )",
+	"Uses inner matcher on every item of a list or matrix.",
+	{{
+		"Simple",
+		ut assert that( Expr( [1 1,1 1] || [1, 1] ), ut every item( 1 ) );
+		ut assert that( Expr( {2,2,2,2,2} ), ut every item( 2 ) );
+		ut assert that( Expr( {1,2,3,4,5,6} ), ut every item( ut greater than( 0 ) ) );
+	}}
 );

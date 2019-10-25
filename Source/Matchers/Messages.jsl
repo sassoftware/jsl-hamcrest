@@ -49,11 +49,15 @@ Define Class("UtMessageMatcher",
 	Arguments:
 		matcher - any object
 */
-ut matcher factory( "ut message" );
-ut message = Function( {matcher, description, message},
-	{obj},
-	obj = New Object( UtMessageMatcher( ut ensure matcher( Name Expr( matcher ) ), description, message ) );
-	obj:self = obj;
+ut matcher factory( 
+	"ut message",
+	Expr(Function( {matcher, description, message},
+		{obj},
+		obj = New Object( UtMessageMatcher( ut ensure matcher( Name Expr( matcher ) ), description, message ) );
+		obj:self = obj;
+	)),
+	"ut message( matcher, description, message )",
+	"General message matcher factory. Mostly used in other factory functions, but can be used in tests if needed."
 );
 
 /* 
@@ -74,9 +78,14 @@ ut message = Function( {matcher, description, message},
 		ut assert that( Expr( pb ), ut title( "hello, world" ) );
 		---------
 */
-ut matcher factory( "ut title" );
-ut title = Function( {matcher},
-	ut message( Name Expr( matcher ), "title", "Get Title" );
+ut matcher factory( 
+	"ut title",
+	Expr(Function( {matcher},
+		ut message( Name Expr( matcher ), "title", "Get Title" );
+	)),
+	"ut title( matcher )",
+	"Compare inner matcher to the result of sending the Get Title message to the result.",
+	{{"Simple", pb = Panel Box( "hello, world" ); ut assert that( Expr( pb ), ut title( "hello, world" ) );}}
 );
 
 /* 
@@ -97,9 +106,14 @@ ut title = Function( {matcher},
 		ut assert that( Expr( tb ), ut text( "hello, world" ) );
 		---------
 */
-ut matcher factory( "ut text" );
-ut text = Function( {matcher},
-	ut message( Name Expr( matcher ), "text", "Get Text" );
+ut matcher factory( 
+	"ut text",
+	Expr(Function( {matcher},
+		ut message( Name Expr( matcher ), "text", "Get Text" );
+	)),
+	"ut text( matcher )",
+	"Compare inner matcher to the result of sending the Get Text message to the result.",
+	{{"Simple", tb = Text Box( "hello, world" );ut assert that( Expr( tb ), ut text( "hello, world" ) ); }}
 );
 
 /* 	Function: ut enabled
@@ -123,9 +137,19 @@ ut text = Function( {matcher},
 		ut assert that( Expr( tb ), ut enabled( 0 ) );
 		---------
 */
-ut matcher factory( "ut enabled" );
-ut enabled = Function( {matcher},
-	ut message( Name Expr( matcher ), "enabled", "Get Enabled" );
+ut matcher factory( "ut enabled",
+	Expr(Function( {matcher},
+		ut message( Name Expr( matcher ), "enabled", "Get Enabled" );
+	)),
+	"ut enabled( matcher )",
+	"Compare inner matcher to the result of sending the Get Enabled message to the result. This message checks the enabled state set by the Enabled message and not the Enable message.",
+	{{
+		"Simple", 
+		tb = Text Box( "hello, world" );
+		ut assert that( Expr( tb ), ut enabled( 1 ) );
+		tb << Enabled( 0 );
+		ut assert that( Expr( tb ), ut enabled( 0 ) );
+	}}
 );
 
 /* 
@@ -146,9 +170,14 @@ ut enabled = Function( {matcher},
 		ut assert that( Expr( pb ), ut class name( "PanelBox" ) );
 		---------
 */
-ut matcher factory( "ut class name" );
-ut class name = Function( {matcher},
-	ut message( Name Expr( matcher ), "class name", "Class Name" );
+ut matcher factory( 
+	"ut class name", 
+	Expr(Function( {matcher},
+		ut message( Name Expr( matcher ), "class name", "Class Name" );
+	)),
+	"ut class name( matcher )",
+	"Compare inner matcher to the result of sending the Class Name message to the result.",
+	{{"Simple", pb = Panel Box( "hello, world" ); ut assert that( Expr( pb ), ut class name( "PanelBox" ) ); }}
 );
 
 /* 
@@ -174,7 +203,19 @@ ut class name = Function( {matcher},
 		ut assert that( Expr( ns ), ut name( "Foo" ) );
 		---------
 */
-ut matcher factory( "ut name" );
-ut name = Function( {matcher},
-	ut message( Name Expr( matcher ), "name", "Get Name" );
+ut matcher factory( 
+	"ut name", 
+	Expr(Function( {matcher},
+		ut message( Name Expr( matcher ), "name", "Get Name" );
+	)),
+	"ut name( matcher )",
+	"Compare inner matcher to the result of sending the Get Name message to the result.",
+	{{
+		"Simple",
+		dt = Open( "$SAMPLE_DATA\Big Class.jmp" );
+		ut assert that( Expr( dt ), ut name( ut host table name( "Big Class" ) ) );
+		
+		ns = New Namespace( "Foo" );
+		ut assert that( Expr( ns ), ut name( "Foo" ) );
+	}}
 );
