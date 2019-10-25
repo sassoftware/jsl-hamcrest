@@ -39,7 +39,6 @@ ut deploy documented functions = Function({},
 		name - string name for the function
 */
 ut matcher factory = Function( {name, function decl=Empty(), prototype="", description="", examples={}}, 
-	{global name, i},
 
 	If( !Contains( ut matcher factories, As Name( name ) ),
 		Insert Into( ut matcher factories, As Name( name ) );
@@ -54,6 +53,7 @@ ut matcher factory = Function( {name, function decl=Empty(), prototype="", descr
 		Define a documented function in the Scripting Index
 */
 ut define documented function = Function({name, function decl, prototype, description, examples},
+	{cf, i},
 	// add a copy of the function to the package namespace and scripting index.
 	If( ut should deploy documented functions,
 		cf = New Custom Function( "global", name, function decl,
@@ -62,6 +62,9 @@ ut define documented function = Function({name, function decl, prototype, descri
 			<< Description( description )
 		);
 		For( i = 1, i <= N Items( examples ), i++,
+			If( N Items( examples[i] ) != 2,
+				Throw("Examples must contain a name and script."),
+			);
 			// A string can be used for an example to preserve
 			// whitespace and comments.
 			If( Is String( examples[i][2] ),
