@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [1.2.0]
 ### Added
+ - Development addin that can be linked to a repository for easy updating (#66)
 
 ### Changed
 
