@@ -56,3 +56,8 @@ New Window("Hamcrest Test Runner Preferences",
 		)
 	)
 );
+
+If( !Is Empty( ::ut addin home ),
+	::ut addin home,
+	Expr( Stop() )
+);
