@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 If(Is Empty(ut addin home), ut addin home = Convert File Path("../"));
-If(Is Empty(ut addin scratch), ut addin scratch = Convert File Path("%TEMP%"));
+If(Is Empty(ut addin scratch), ut addin scratch = Get Path Variable("TEMP"));
 
 Include( "../Source/All.jsl" );
 Include( "../Source/Addin/Reporters.jsl" );
