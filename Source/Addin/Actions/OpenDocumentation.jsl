@@ -6,11 +6,16 @@ Names Default To Here(0);
 Include("InitializeFramework.jsl");
 If(!::ut meets hamcrest requirements(), Stop());
 
-Local({major},
+Local({major, help path, help url},
 	major = Num( Word( 1, JMP Version(), "." ) );
+	help path = ut addin home || "Docs/_html/index.html";
+	help url = If( File Exists( help path ),
+		"file://" || help path || "#File:Matchers-Index.txt",
+		"https://sassoftware.github.io/jsl-hamcrest/#File:Matchers-Index.txt"
+	);
 	If(major == 14,
-		Web("file://" || ut addin home || "\Docs\_html\index.html#File:Matchers-Index.txt"),
-		Web("file://" || ut addin home || "\Docs\_html\index.html#File:Matchers-Index.txt", JMP Window)
+		Web(help url),
+		Web(help url, JMP Window)
 	);
 );
 

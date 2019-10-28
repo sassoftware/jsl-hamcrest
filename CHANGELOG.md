@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 ### Fixed
+ - Fixed opening help on Mac and fallback to online help when local help not available (#70)
 
 ## [1.1.0]
 ### Added
