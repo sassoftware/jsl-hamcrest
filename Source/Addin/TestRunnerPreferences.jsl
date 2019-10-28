@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here(0);
@@ -6,7 +6,7 @@ Names Default To Here(0);
 
 
 // Variable: ut test runner preferences path
-ut test runner preferences path = "$ADDIN_HOME(com.jmp.jslhamcrest)/TestRunner.PFS";
+ut test runner preferences path = ut addin scratch || "/TestRunner.PFS";
 
 /*	Function: ut load test runner preferences
 		Load and return prefereces from disk, or return the default preferences

@@ -1,0 +1,63 @@
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here(0);
+// Section: Globals
+
+New Window("Hamcrest Test Runner Preferences",
+	<<Modal,
+	<<OnValidate(
+		Local({path, is valid},
+			path = window:path << Get Text();
+			is valid = Try(
+				contents = Load Text File(path || "addin.def");
+				Ends With(Word(1, contents, "\!N"), "com.jmp.jslhamcrest")
+			,
+				0);
+			If(is valid,
+				::ut addin home = window:path << Get Text();
+				Save Text File(ut addin scratch || "HomeConfiguration.txt", ::ut addin home);
+				1;
+			,
+				window:errorBox << Set Text( "This does not appear to be a JSL-Hamcrest root directory" );
+				0;
+			);
+		);
+	),
+	LineupBox( NCol(1), Spacing( 5 ),
+		Text Box("JSL-Hamcrest Source", <<Vertical Alignment( "Center" ) ),
+		Lineup Box(N Col(2), 
+			window:path = Text Edit Box(
+				Try(Load Text File(ut addin scratch || "HomeConfiguration.txt"), ""),
+				<<Set Width( 400 ),
+				<<Set Hint("Path to Hamcrest"),
+				<<Set Tip("Path to root containing both Source and Docs."),
+				<<Enable(0)
+			),
+			Button Box("",
+				<<Set Icon( "More" ),
+				<<Set Function(
+					Function({this},
+						{dir},
+						dir = Pick Directory( "Choose Hamcrest Root Directory" );
+						If( dir != "",
+							Eval(EvalExpr(
+								window:path << Set Text( Convert File Path( dir, Expr( If( Host Is( "Windows"), "Windows", "POSIX" ) ) ) )
+							));
+						)
+					)
+				)
+			)
+		),
+		window:errorBox = Text Box( "", <<Font Color("Red"), <<Set Width( 400 ) ),
+		H List Box(
+			Spacer Box(),
+			Button Box( "OK" )
+		)
+	)
+);
+
+If( !Is Empty( ::ut addin home ),
+	::ut addin home,
+	Expr( Stop() )
+);

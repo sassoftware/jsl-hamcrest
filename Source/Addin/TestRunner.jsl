@@ -137,7 +137,7 @@ ut make reporter gui = Function({position},
 		);
 	)));
 	help << Set Mark(Function({this},
-		Include("$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\OpenDocumentation.jsl")
+		Include(ut addin home || "\Source\Addin\Actions\OpenDocumentation.jsl")
 	));
 	reporters = {};
 	Insert Into(reporters, ut summary reporter(summary));
