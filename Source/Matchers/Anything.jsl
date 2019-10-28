@@ -33,9 +33,13 @@ Define Class(
 		> ut assert that( Expr( 5 + 5 ), ut anything() );
 		> ut assert that( Expr( Sin( "a" ), ut throws( ut anything() ) ) );
 */
-ut matcher factory( "ut anything" );
-ut anything = Function( {},
-	New Object( UtAnythingMatcher() )
+ut matcher factory( "ut anything",
+	Expr(Function( {},
+		New Object( UtAnythingMatcher() )
+	)),
+	"ut anything()",
+	"Always returns a success.",
+	{{"Simple", ut assert that( Expr( 5 + 5 ), ut anything() ); ut assert that( Expr( Sin( "a" ) ), ut throws( ut anything() ) );}}
 );
 
 /*
@@ -45,5 +49,11 @@ ut anything = Function( {},
 		---------------
 		Alias of <ut anything>.
 */
-ut matcher factory( "ut wild" );
-ut wild = Name Expr( ut anything );
+ut matcher factory( "ut wild", 
+	Expr(Function( {},
+		New Object( UtAnythingMatcher() )
+	)),
+	"ut wild()",
+	"Alias of ut anything. Always returns a success.",
+	{{"Simple", ut assert that( Expr( 5 + 5 ), ut wild() ); ut assert that( Expr( Sin( "a" ) ), ut throws( ut wild() ) );}}
+);

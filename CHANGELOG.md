@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [1.2.0]
 
 ### Added
+ - Custom functions for matcher, assertion, test, and test case functions with examples in the Scripting Index and hover help (#58 #64).
  - `ut valid xml` matcher (#56)
  - `UtJunitXMLReporter` (#56)
 

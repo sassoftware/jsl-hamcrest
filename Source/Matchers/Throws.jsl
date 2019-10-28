@@ -51,9 +51,18 @@ Define Class(
 		> ut assert that( Expr( Sin( "a" ) ), ut throws( "Cannot convert argument to a number [or matrix]" ) );
 		> ut assert that( Expr( Sin( "a" ) ), ut throws( ut anything() ) );
 */
-ut matcher factory( "ut throws" );
-ut throws = Function( {matcher},
-	New Object( UtThrowsMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+ut matcher factory( 
+	"ut throws",
+	Expr(Function( {matcher},
+		New Object( UtThrowsMatcher( ut ensure matcher( Name Expr( matcher ) ) ) )
+	)),
+	"ut throws( matcher )",
+	"Captures a thrown message from evaluating the actual expression. Inner matchers can be used to assert on the actual error message. The error message comes from the first argument in the exception_msg variable, and not from the log.",
+	{{
+		"Simple",
+		ut assert that( Expr( Sin( "a" ) ), ut throws( "Cannot convert argument to a number [or matrix]" ) );
+		ut assert that( Expr( Sin( "a" ) ), ut throws( ut anything() ) );
+	}}
 );
 
 /* 
@@ -65,9 +74,13 @@ ut throws = Function( {matcher},
 
 		Factory function for <UtThrowsMatcher>.
 */
-ut matcher factory( "ut throws invalid arg" );
-ut throws invalid arg = Function({},
-	New Object( UtThrowsMatcher( ut equal to( "argument value is invalid" ) ) )
+ut matcher factory( 
+	"ut throws invalid arg",
+	Expr(Function({},
+		New Object( UtThrowsMatcher( ut equal to( "argument value is invalid" ) ) )
+	)),
+	"ut throws invalid arg()",
+	"\[Equivalent to ut throws( "argument value is invalid" )]\"
 );
 
 /* 
@@ -79,9 +92,13 @@ ut throws invalid arg = Function({},
 
 		Factory function for <UtThrowsMatcher>.
 */
-ut matcher factory( "ut throws too many args" );
-ut throws too many args = Function({},
-	New Object( UtThrowsMatcher( ut equal to( "too many arguments" ) ) )
+ut matcher factory( 
+	"ut throws too many args",
+	Expr(Function({},
+		New Object( UtThrowsMatcher( ut equal to( "too many arguments" ) ) )
+	)),
+	"ut throws too many args()",
+	"\[Equivalent to ut throws( "too many arguments" )]\"
 );
 
 /* 
@@ -93,7 +110,12 @@ ut throws too many args = Function({},
 
 		Factory function for <UtThrowsMatcher>.
 */
-ut matcher factory( "ut throws name unresolved" );
-ut throws name unresolved = Function({var},
-	New Object( UtThrowsMatcher( ut equal to( "Name Unresolved: " || var ) ) )
+ut matcher factory( 
+	"ut throws name unresolved",
+	Expr(Function({var},
+		New Object( UtThrowsMatcher( ut equal to( "Name Unresolved: " || var ) ) )
+	)),
+	"ut throws name unresolved( variable name )",
+	"\[Equivalent to ut throws( "Name Unresolved: var" )]\",
+	{{"Simple", ut assert that( Expr( someVariableThatShouldNotExist ), ut throws name unresolved("someVariableThatShouldNotExist"))}}
 );

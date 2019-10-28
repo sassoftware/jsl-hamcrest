@@ -131,14 +131,18 @@ function's name is what will be used in assertions. Include a call to
 		ut assert that( Expr( d ), ut day of week( 5 ) );
 		---------
 */
-ut matcher factory( "ut day of week" );
-ut day of week = Function( {val},
-	// Do necessary type checking of input variables
-	// in factory function.
-	If( !Is Number( val ),
-		Throw( "ut day of week() requires a numeric date value as the argument" ),
-	);
-	New Object( UtDayOfWeekMatcher( Name Expr( val ) ) );
+ut matcher factory( 
+  "ut day of week",
+  Expr(Function( {val},
+    // Do necessary type checking of input variables
+    // in factory function.
+    If( !Is Number( val ),
+      Throw( "ut day of week() requires a numeric date value as the argument" ),
+    );
+    New Object( UtDayOfWeekMatcher( Name Expr( val ) ) );
+  )),
+  "ut day of week( value )", //Prototype
+  "Matches based on the day of the week of a given date value." // Description
 );
 ```
 
