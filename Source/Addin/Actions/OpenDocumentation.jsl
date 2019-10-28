@@ -1,13 +1,16 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here(0);
 
+Include("InitializeFramework.jsl");
+If(!::ut meets hamcrest requirements(), Stop());
+
 Local({major},
 	major = Num( Word( 1, JMP Version(), "." ) );
 	If(major == 14,
-		Web("file://" || Convert File Path("$ADDIN_HOME(com.jmp.jslhamcrest)\Docs\_html\index.html") || "#File:Matchers-Index.txt"),
-		Web("file://" || Convert File Path("$ADDIN_HOME(com.jmp.jslhamcrest)\Docs\_html\index.html") || "#File:Matchers-Index.txt", JMP Window)
+		Web("file://" || ut addin home || "\Docs\_html\index.html#File:Matchers-Index.txt"),
+		Web("file://" || ut addin home || "\Docs\_html\index.html#File:Matchers-Index.txt", JMP Window)
 	);
 );
 

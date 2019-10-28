@@ -1,0 +1,11 @@
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here(0);
+// Section: Globals
+
+ut addin scratch = Convert File Path("$ADDIN_HOME(com.jmp.jslhamcrestdev)");
+ut addin home = Try(
+	Load Text File(ut addin scratch || "HomeConfiguration.txt"),
+	Include( "$ADDIN_HOME(com.jmp.jslhamcrestdev)/ConfigureHome.jsl" )
+);

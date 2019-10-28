@@ -1,7 +1,10 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here(0);
+
+ut addin home = If(Is Empty(ut addin home), Convert File Path("$ADDIN_HOME(com.jmp.jslhamcrest)"), ut addin home);
+ut addin scratch = If(Is Empty(ut addin scratch), ut addin home, ut addin scratch);
 
 ut meets hamcrest requirements = Function({}, {version, major, minor},
 	version = Words(JMP Version(), ".");

@@ -13,6 +13,7 @@
             <jm:action type="path">$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\AddTestRunner.jsl</jm:action>
             <jm:tip>Add Hamcrest Test Runner to current script editor window</jm:tip>
             <jm:icon type="path">$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Icons\runner-32px.png</jm:icon>
+        		<jm:accel>Ctrl+F5</jm:accel>
           </jm:command>
           <jm:command>
             <jm:name>RUN TESTS</jm:name>
@@ -57,7 +58,6 @@
         <jm:caption>Test Runner</jm:caption>
         <jm:action type="path">$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\AddTestRunner.jsl</jm:action>
         <jm:icon type="path">$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Icons\runner-32px.png</jm:icon>
-        <jm:accel>Ctrl+F5</jm:accel>
       </jm:command>
     </jm:insert_after>
   </jm:insert_in_toolbar>
