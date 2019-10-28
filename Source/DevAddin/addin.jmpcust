@@ -61,8 +61,8 @@
       <jm:name>DEBUG SCRIPT</jm:name>
       <jm:separator/>
       <jm:command>
-        <jm:name>TEST RUNNER</jm:name>
-        <jm:caption>Test Runner</jm:caption>
+        <jm:name>TEST RUNNER DEV</jm:name>
+        <jm:caption>Test Runner Dev</jm:caption>
         <jm:action type="text">Include("$ADDIN_HOME(com.jmp.jslhamcrestdev)/InitializeHome.jsl"); Include(::ut addin home || "\Source\All.jsl"); Include(::ut addin home || "\Source\Addin\Actions\AddTestRunner.jsl")</jm:action>
         <jm:icon type="path">$ADDIN_HOME(com.jmp.jslhamcrestdev)\runner-32px.png</jm:icon>
       </jm:command>
