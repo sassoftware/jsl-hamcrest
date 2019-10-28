@@ -248,11 +248,9 @@ ut test(JunitXMLReporters, "Multiple successes and failure report as expected", 
 			num3;
 		);
 
-		case = ut test case( "Example Tests" ) << Setup( Expr( Print( "Setting up!" ) ) ) <<
-		Teardown( Expr( Print( "Tearing down!" ) ) );
+		case = ut test case( "Example Tests" );
 
-		case2 = ut test case( "Example Tests 2" ) << Setup( Expr( Print( "Setting up!" ) ) ) <<
-		Teardown( Expr( Print( "Tearing down!" ) ) );
+		case2 = ut test case( "Example Tests 2" );
 
 		// two passes and two fails for first test case
 		// 1.0 Example Test
