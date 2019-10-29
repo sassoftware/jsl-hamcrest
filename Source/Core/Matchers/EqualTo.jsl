@@ -97,10 +97,10 @@ Define Class(
 						LRE = []|| ::ut global lre( actual, this:value );
 						::ut match info failure( mismatch, LRE );
 				);
-			,
-				mismatch = Eval Insert( "was ^Char( actual )^ and size mismatch (Actual=^actualSize^, Expected=^expectedSize^)" );
-				::ut match info failure( mismatch );
 			);
+		,
+			mismatch = Eval Insert( "was ^Char( actual )^ and size mismatch (Actual=^actualSize^, Expected=^expectedSize^)" );
+			::ut match info failure( mismatch );
 		);
 	);
 );
