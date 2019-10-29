@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
  - Fixed opening help on Mac and fallback to online help when local help not available (#70)
- - Nested `ut test`s now work with log benching (#63 #72).
+ - Nested `ut test`s now work with log benching (#63 #71).
 
 ## [1.1.0]
 ### Added
