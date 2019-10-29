@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
  - Fixed opening help on Mac and fallback to online help when local help not available (#70)
  - Nested `ut test`s now work with log benching (#63 #71).
  - `ut equal to` no longer fails with an empty matrix (#72).
+ - `ut approx` now properly shows actual value for matrices (#74).
 
 ## [1.1.0]
 ### Added

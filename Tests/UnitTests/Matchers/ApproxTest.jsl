@@ -1,0 +1,31 @@
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+ut test( "ApproxMatcher", "Mismatch", Expr(
+	mi = ut approx( [6] ) << Matches( [5] );
+	ut assert that( Expr( mi:mismatch ), "5 was not within relative epsilon at position [1, 1] within [5]" );
+));
+
+ut test( "ApproxMatcher", "Describe", Expr(
+	m = ut approx( [6] );
+	ut assert that( Expr( m << Describe ), "approximately [6] where zero epsilon=1e-12, relative epsilon=1e-9" );
+));
+
+ut test( "ApproxMatcher", "MatchInfoSuccess", Expr(
+	mi = ut approx( [6] ) << Matches( [6] );
+	ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
+	ut assert that( Expr( mi:success ), 1 );
+));
+
+ut test( "ApproxMatcher", "MatchInfoFailure", Expr(
+	mi = ut approx( [6] ) << Matches( [5] );
+	ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
+	ut assert that( Expr( mi:success ), 0 );
+));
+
+ut test( "ApproxMatcher", "MatcherFactory", Expr(
+	m = ut approx( [6] );
+	ut assert that( Expr( m ), ut instance of( "UtApproxMatcher" ) );
+));
+
+//TODO: ut digits & ut min lre
