@@ -1,0 +1,47 @@
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtValidXmlMatcher
+		---Prototype---
+		class UtValidXmlMatcher inherits UtTypedMatcher
+		---------------
+		Checks if some given XML is valid XML.
+*/
+Define Class(
+	"UtValidXmlMatcher",
+	Base Class( "UtTypedMatcher" ),
+	allowable types = {String};
+	typed matches = Method( {actual},
+		Try(
+			Parse XML(actual);
+			ut match info success(),
+			ut match info failure( Eval Insert("was invalid with ^Collapse Whitespace(ut extract thrown string(exception_msg))^") );
+		);
+	);
+	describe = Method( {},
+		"valid xml"
+	);
+);
+
+// Section: Globals
+
+/* 
+	Function: ut valid xml
+		---Prototype---
+		ut valid xml()
+		---------------
+		Use when expected value should be valid XML.
+	
+	Factory function for <UtValidXmlMatcher>.
+
+	Example:
+		> ut assert that( ut as expr( "<foo></foo>" ), ut valid xml() );
+*/
+ut matcher factory( "ut valid xml" );
+ut valid xml = Function( {},
+	obj = New Object("UtValidXmlMatcher");
+	obj:self = obj;	
+);
