@@ -37,7 +37,7 @@ ut test(Log Benchmark, "Log Bench On Captures And Asserts Empty Log", Expr(
 	ut assert that(Expr(log), "");
 ));
 
-ut test(Log Benchmark, "Log Bench Default Can Be Changed", Expr(
+ut test(Log Benchmark, "Log Bench Default Off", Expr(
 	old default = ut log bench default;
 	ut log bench default = 0;
 	log = Log Capture(rc = ut with reporter(reporter, Expr(
@@ -46,6 +46,29 @@ ut test(Log Benchmark, "Log Bench Default Can Be Changed", Expr(
 	ut log bench default = old default;
 	ut assert that(Expr(rc), 1);
 	ut assert that(Expr(log), "");
+));
+
+ut test(Log Benchmark, "Log Bench Default On", Expr(
+	old default = ut log bench default;
+	ut log bench default = 1;
+	reporter << Expect Call(Expr(add failure(ut wild, ut wild, ut wild, ut wild, ut wild, ut wild)));
+	log = Log Capture(rc = ut with reporter(reporter, Expr(
+		ut test("case", "name", Expr(Print("stuff")) /*no log bench specified*/);
+	)));
+	ut log bench default = old default;
+	ut assert that(Expr(rc), 0);
+	ut assert that(Expr(log), "" );
+));
+
+ut test(Log Benchmark, "Log Bench Default No Capture", Expr(
+	old default = ut log bench default;
+	ut log bench default = -1;
+	log = Log Capture(rc = ut with reporter(reporter, Expr(
+		ut test("case", "name", Expr(Print("stuff")) /*no log bench specified*/);
+	)));
+	ut log bench default = old default;
+	ut assert that(Expr(rc), 1);
+	ut assert that(Expr(log), ut ignoring whitespace( "\["stuff"]\" ) );
 ));
 
 ut test(Log Benchmark, "Log Bench On Does Not Report Successes", Expr(
@@ -86,4 +109,16 @@ ut test(Log Benchmark, "Log Bench On Can Use a Matcher And Fail", Expr(
 		ut test("case", "name", Expr(Write("stuff")), ut log bench(1));
 	));
 	ut test log benchmark label = Name Expr(old label gen);
+));
+
+ut test(Log Benchmark, "Nested tests can independently use log benchmarking #63", Expr(
+	log = Log Capture(rc = ut with reporter(reporter, Expr(
+		ut test("Outer", "Test Captures", Expr(
+			ut test("Inner", "Test Captures Too", Expr(
+				Print("stuff")
+			), ut log bench(0));
+		), ut log bench(0));
+	)));
+	ut assert that(Expr(rc), 1);
+	ut assert that(Expr(log), "");
 ));
