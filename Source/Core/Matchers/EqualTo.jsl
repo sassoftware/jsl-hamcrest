@@ -80,22 +80,27 @@ Define Class(
 		expectedSize = Dim(this:value);
 		
 		If( All(actualSize == expectedSize),
-			actual missing = Is Missing( actual );
-			expected missing = Is Missing( this:value );
-			If( // both matrices have missing data in the same places
-				All( actual missing == expected missing ) &
-				// now just compare non missing values
-				All( actual[Loc( !actual missing )] == this:value[Loc( !expected missing )]),
-					::ut match info success();
+			// If both are empty, then they are the same.
+			If( Length( actual ) == 0,
+				ut match info success();
 			,
-				// else matrices do not match
-					mismatch = "was " || Char( actual );
-					LRE = []|| ::ut global lre( actual, this:value );
-					::ut match info failure( mismatch, LRE );
+				actual missing = Is Missing( actual );
+				expected missing = Is Missing( this:value );
+				If( // both matrices have missing data in the same places
+					All( actual missing == expected missing ) &
+					// now just compare non missing values
+					All( actual[Loc( !actual missing )] == this:value[Loc( !expected missing )]),
+						::ut match info success();
+				,
+					// else matrices do not match
+						mismatch = "was " || Char( actual );
+						LRE = []|| ::ut global lre( actual, this:value );
+						::ut match info failure( mismatch, LRE );
+				);
+			,
+				mismatch = Eval Insert( "was ^Char( actual )^ and size mismatch (Actual=^actualSize^, Expected=^expectedSize^)" );
+				::ut match info failure( mismatch );
 			);
-		,
-			mismatch = Eval Insert( "was ^Char( actual )^ and size mismatch (Actual=^actualSize^, Expected=^expectedSize^)" );
-			::ut match info failure( mismatch );
 		);
 	);
 );

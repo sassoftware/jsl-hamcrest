@@ -20,13 +20,19 @@ ut test( "EqualToMatcher", "MatchInfoSuccess", Expr(
 
 ut test( "EqualToMatcher", "MatchInfoFailure", Expr(
 	mi = ut equal to( "EXPECTED" ) << Matches( "ACTUAL" );
-    ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
+	ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
 	ut assert that( Expr( mi:success ), 0 );
 ));
 
 ut test( "EqualToMatcher", "MatcherFactory", Expr(
 	m = ut equal to( "EXPECTED" );
-    ut assert that( Expr( m ), ut instance of( "UtEqualToMatcher" ) );
+	ut assert that( Expr( m ), ut instance of( "UtEqualToMatcher" ) );
+));
+
+ut test( "EqualToMatrixMatcher", "TwoEmptyMatricesAreEqual", Expr(
+	matcher = ut equal to( [] );
+	match info = matcher << Matches( [] );
+	ut assert value( match info:success, 1 );
 ));
 
 // TODO: Other EqualToMatcher subclasses
