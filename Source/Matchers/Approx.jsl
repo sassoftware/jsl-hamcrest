@@ -11,22 +11,19 @@ Names Default To Here( 0 );
 */
 Define Class(
 	"UtApproxMatcher",
-	Base Class( UtMatcher ),
+	Base Class( "UtTypedMatcher" ),
 	value = .;
 	zero epsilon = .;
 	relative epsilon = .;
+	allowable types = {Number, Integer, Matrix};
 	
 	_init_ = Method({value, zero epsilon, relative epsilon},
 		this:value = value;
 		this:zero epsilon = zero epsilon;
 		this:relative epsilon = relative epsilon;
 	);
-	matches = Method( {test expr},
-		actual = test expr;
-		
+	typed matches = Method( {actual},
 		If( 
-			Type( Name Expr( value ) ) != Type( Name Expr( actual ) ),
-				ut match info failure( Eval Insert( "^Name Expr( value )^ was not correct type" ) ),
 			Is Number( value ),
 				this:approx number( actual, value, this:relative epsilon ),
 			Is Matrix( value ),
@@ -34,7 +31,6 @@ Define Class(
 			// else?
 				ut match info failure( "was " || Char( actual ) )
 		)
-		
 	);
 	
 	approx number = Method({actual, expected, relativeEpsilon},
@@ -75,7 +71,7 @@ Define Class(
 		);
 	);
 	
-	approx matrix = Method({expected, actual},		
+	approx matrix = Method({actual, expected},		
 		If( N Row( actual ) == N Row( expected ) & N Col( actual ) == N Col( expected ),
 			re = If( Is Number( this:relative epsilon ),
 				J( N Row( this:value ), N Col( this:value ), this:relative epsilon ),
@@ -84,7 +80,7 @@ Define Class(
 			// need to compare values individually
 			For(rr = 1, rr <= N Row( actual ), rr++,
 				For(cc = 1, cc <= N Col( actual ), cc++,
-					match info = this:approx number( actual[rr, cc], expected[rr,cc], re[rr,cc] );
+					match info = approx number( actual[rr, cc], expected[rr,cc], re[rr,cc] );
 					If( !match info:success,
 						Return( 
 							ut match info failure( Eval Insert( "^match info:mismatch^ at position [^rr^, ^cc^] within ^actual^" ), ut global lre( expected, actual ) );
@@ -195,7 +191,7 @@ Define Class(
 */
 ut matcher factory( "ut approx",
 	Expr(Function( {val, options={Zero Epsilon( 1e-12 ), Relative Epsilon( 1e-9 )}},
-		{ze, re},
+		{ze, re, obj},
 		If( 
 			!Is Number( Name Expr( val ) ) & !Is Matrix( Name Expr( val ) ),
 				Throw("First argument for ut approx() must be a number or matrix." );
@@ -212,7 +208,8 @@ ut matcher factory( "ut approx",
 			);
 		);
 		
-		New Object( UtApproxMatcher( val, ze, re ) );
+		obj = New Object( UtApproxMatcher( val, ze, re ) );
+		obj:self = obj;
 	)),
 	"ut approx( value, <options> )",
 	"Returns a success if the relative difference between expected and actual is within the relative epsilon for non-zero values and within zero epsilon if the expected or actual value is 0. Works only on numbers and matrices.",
