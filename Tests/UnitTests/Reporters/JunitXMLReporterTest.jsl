@@ -47,7 +47,7 @@ setup_expr = Expr(
         // This allows us to write assertions that are reported as outside of any test.
         ::ut assert that(ut as expr(Name Expr(value)), matcher, label);
     );
-    report = Expr(reporter << get report);
+    report = Expr(Try(cached_report, cached_report = reporter << get report));
 );
 	
 JunitXMLReporters = ut test case("JunitXMLReporters")
