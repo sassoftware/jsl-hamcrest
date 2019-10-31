@@ -18,11 +18,17 @@ If(!ut meets hamcrest requirements(),
 	Stop();
 );
 
-// If reporter does not exist or is the wrong type, reset the framework
-If(Try((::ut global reporter << Get Name) != "UtWindowDispatchingReporter", 1),
-	Include( "../../All.jsl" );
-	Include( "../Reporters.jsl" );
-	Include( "../TestRunner.jsl" );
-	Include( "../TestRunnerPreferences.jsl" );
-	::ut global reporter = ut window dispatching reporter(ut streaming log reporter());
+// If reporter does not exist or is the wrong type, reset the framework. If we have
+// configured reporter (not UtReporter), then use it as the fallback for the
+// UtWindowDispatchingReporter. Otherwise, use logging for the fallback.
+Local({reporter name, fallback reporter},
+	reporter name = Try(::ut global reporter << Get Name, "UtReporter");
+	If(reporter name != "UtWindowDispatchingReporter",
+		Include( "../../All.jsl" );
+		Include( "../Reporters.jsl" );
+		Include( "../TestRunner.jsl" );
+		Include( "../TestRunnerPreferences.jsl" );
+		fallback reporter = If(reporter name != "UtReporter", ::ut global reporter, ut streaming log reporter());
+		::ut global reporter = ut window dispatching reporter(fallback reporter);
+	);
 );
