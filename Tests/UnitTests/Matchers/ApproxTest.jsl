@@ -1,6 +1,7 @@
 ﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+// ut approx
 ut test( "ApproxMatcher", "Mismatch", Expr(
 	mi = ut approx( [6] ) << Matches( [5] );
 	ut assert that( Expr( mi:mismatch ), "5 was not within relative epsilon at position [1, 1] within [5]" );
@@ -28,4 +29,33 @@ ut test( "ApproxMatcher", "MatcherFactory", Expr(
 	ut assert that( Expr( m ), ut instance of( "UtApproxMatcher" ) );
 ));
 
-//TODO: ut digits & ut min lre
+// ut approx digits
+ut test( "ApproxDigitsMatcher", "Mismatch", Expr(
+	mi = ut approx digits( [6.1], 1 ) << Matches( [5.1] );
+	ut assert that( Expr( mi:mismatch ), "5.1 was not within relative epsilon at position [1, 1] within [5.1]" );
+));
+
+ut test( "ApproxDigitsMatcher", "Describe", Expr(
+	m = ut approx digits( [6.1], 1 );
+	ut assert that( Expr( m << describe ), "approximately [6.1] where digits=1" );
+));
+
+ut test( "ApproxDigitsMatcher", "MatchInfoSuccess", Expr(
+	mi = ut approx digits( [6], 1 ) << Matches( [6] );
+	ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
+	ut assert that( Expr( mi:success ), 1 );
+));
+
+ut test( "ApproxDigitsMatcher", "MatchInfoFailure", Expr(
+	mi = ut approx digits( [6], 1 ) << Matches( [5] );
+	ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
+	ut assert that( Expr( mi:success ), 0 );
+));
+
+ut test( "ApproxDigitsMatcher", "MatcherFactory", Expr(
+	m = ut approx digits( [6], 1 );
+	ut assert that( Expr( m ), ut instance of( "UtApproxDigitsMatcher" ) );
+));
+
+
+//TODO: ut min lre

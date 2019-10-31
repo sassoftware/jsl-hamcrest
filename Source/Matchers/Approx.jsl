@@ -245,7 +245,7 @@ ut matcher factory( "ut approx",
 		---------
 */
 ut matcher factory( "ut approx digits",
-	Expr(Function({val, digits},
+	Expr(Function({val, digits}, {obj},
 		
 		If( 
 			!Is Number( Name Expr( val ) ) & !Is Matrix( Name Expr( val ) ), 
@@ -255,7 +255,8 @@ ut matcher factory( "ut approx digits",
 				Throw("Second argument for ut approx digits() must be a matrix or number of digits." )
 		);
 		
-		New Object( UtApproxDigitsMatcher( val, digits ) );
+		obj = New Object( UtApproxDigitsMatcher( val, digits ) );
+		obj:self = obj;
 	)),
 	"ut approx digits( value, digits )",
 	"Returns a success if the actual value matches the expected value up to N digits. Works only on numbers and matrices.",
