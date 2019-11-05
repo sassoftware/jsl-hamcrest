@@ -2,6 +2,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.3.0]
+### Changed
+ -JunitXMLReporter now reports failures per test case isntead of per assertion
+
 ## [1.2.0]
 ### Added
  - Custom functions for matcher, assertion, test, and test case functions with examples in the Scripting Index and hover help (#58 #64).
@@ -16,7 +20,7 @@ All notable changes to this project will be documented in this file.
  - Nested `ut test`s now work with log benching (#63 #71).
  - `ut equal to` no longer fails with an empty matrix (#72).
  - `ut approx` now properly shows actual value for matrices (#74).
- - Initializing the addin with an already configured `ut global reporter` will preserve that reporter (#83).
+ - Initializing the addin with an already configured `ut global reporter` will preserve that reporter (#83
 
 ## [1.1.0]
 ### Added
