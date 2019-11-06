@@ -220,17 +220,6 @@ Define Class(
       // need to increase the number
       anonymous_test_suite = hash_results["Anonymous_Test_Suite"];
       anonymous_test_cases = anonymous_test_suite << get keys;
-
-      // find number of test cases in anonymous_test_suite with form label_XX where XX is any number
-      /*curr_anonymous_test_cases = 0;
-
-      For(curr_key = anonymous_test_suite << First, !isempty(curr_key), curr_key = anonymous_test_suite << Next(curr_key),
-        regex_match = Regex Match(curr_key, "^" || curr_test || "_\d+$");
-        If(NItems(regex_match) | label == curr_key,
-          curr_anonymous_test_cases += 1;
-        );
-      );
-      curr_test ||= "_" || Char(curr_anonymous_test_cases);*/
     );
     Return(Eval List(List(curr_suite, curr_test)));
   );

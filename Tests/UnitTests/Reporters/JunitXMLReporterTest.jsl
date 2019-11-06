@@ -143,8 +143,6 @@ ut test(JunitXMLReporters, "Counts are correct at root", Expr(
 // 9.0 JunitXMLReporter one simple passing
 
 ut test( JunitXMLReporters, "JunitXMLReporter one simple passing", Expr(
-//include("../../../Source/Reporters/JunitXMLReporter.jsl");
-//setup_expr
 	with junit reporter(Expr(
 	   ut test ("Simple Pass", "One plus one equals two", Expr(
 	     ut assert that(Expr(1+1), ut equal to (2));
