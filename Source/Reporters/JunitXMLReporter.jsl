@@ -167,7 +167,6 @@ Define Class(
       props = Associative Array();
       props["name"] = test_suites[i];
       props["tests"] = Char(num_tests);
-      show(num_successes);
       props["failures"] = Char(num_tests-num_successes);
       test_suite_tag = this:generate_xml_tag("testsuite", trim(test_case_xml), props, 0);
       content ||= test_suite_tag;
@@ -208,11 +207,11 @@ Define Class(
     Match(NItems(list_label),
       4,
       curr_suite = Trim(list_label[1]);
-      curr_test = Trim(list_label[2]) || "_" || Trim(list_label[3]) /*|| "_" || Trim(list_label[4])*/;
+      curr_test = Trim(list_label[2]) || "_" || Trim(list_label[3]);
       ,
       3,
       curr_suite = Trim(list_label[1]);
-      curr_test = Trim(list_label[2]) /*|| "_" || Trim(list_label[3])*/;
+      curr_test = Trim(list_label[2]);
       ,
       1,
       curr_suite = "Anonymous_Test_Suite";
