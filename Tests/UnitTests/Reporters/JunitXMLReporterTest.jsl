@@ -47,8 +47,8 @@ setup_expr = Expr(
         // This allows us to write assertions that are reported as outside of any test.
         ::ut assert that(ut as expr(Name Expr(value)), matcher, label);
     );
-    //report = Expr(Try(cached_report, cached_report = reporter << get report));
-    report = Expr(reporter << get report);
+    delete symbols(cached_report);
+    report = Expr(Try(cached_report, cached_report = reporter << get report));
 );
 	
 JunitXMLReporters = ut test case("JunitXMLReporters")
@@ -117,6 +117,7 @@ ut test(JunitXMLReporters, "Angle brackets in failure gives valid xml", Expr(
 // 8.0 Counts are correct at root
 
 ut test(JunitXMLReporters, "Counts are correct at root", Expr(
+
 	with junit reporter(Expr(
 		outer assert value(1, 1);
 		outer assert value(2, 0);
@@ -133,6 +134,7 @@ ut test(JunitXMLReporters, "Counts are correct at root", Expr(
 			ut assert value(8, 0);
 		));
 	));
+
 	ut assert that( Expr(n root tests(report)), 8 );
 	ut assert that( Expr(n root failures(report)), 4 );
 	ut assert that( Expr(suite names(report)), {"A", "Anonymous_Test_Suite", "B"} );
@@ -232,7 +234,6 @@ ut test(JunitXMLReporters, "Assertion with 4 part label works", Expr(
 	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "");
 
 	match = Regex Match(report, pattern);
-	
 	ut assert that(Expr(match), ut length(1));
 	ut assert that(Expr(report), ut valid xml() );
 	ut assert that(Expr(match[1]), ut equal to(report));
