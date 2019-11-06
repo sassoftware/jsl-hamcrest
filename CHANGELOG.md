@@ -2,11 +2,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.3.0]
-### Changed
- -JunitXMLReporter now reports failures per test case isntead of per assertion
-
-## [1.2.0]
+## [HEAD]
 ### Added
  - Custom functions for matcher, assertion, test, and test case functions with examples in the Scripting Index and hover help (#58 #64).
  - Development addin that can be linked to a repository for easy updating (#66)
@@ -14,6 +10,7 @@ All notable changes to this project will be documented in this file.
  - `UtJunitXMLReporter` (#56)
 
 ### Changed
+ -JunitXMLReporter now reports failures per test case instead of per assertion (#87, #77).
 
 ### Fixed
  - Fixed opening help on Mac and fallback to online help when local help not available (#70)
