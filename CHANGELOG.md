@@ -2,7 +2,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.2.0]
+## [HEAD]
 ### Added
  - Custom functions for matcher, assertion, test, and test case functions with examples in the Scripting Index and hover help (#58 #64).
  - Development addin that can be linked to a repository for easy updating (#66)
@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
  - `ut equal to` no longer fails with an empty matrix (#72).
  - `ut approx` now properly shows actual value for matrices (#74).
  - Initializing the addin with an already configured `ut global reporter` will preserve that reporter (#83).
+ - `ut expression matches` now supports strings with children (#88)
 
 ## [1.1.0]
 ### Added

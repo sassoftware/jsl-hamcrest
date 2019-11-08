@@ -1,0 +1,53 @@
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+ut test( "Expression Matches", "Mismatch", Expr(
+	mi = ut expression matches( Expr(1 + 2) ) << Matches( Expr(Expr(3 + 4)) );
+	ut assert that( Expr( mi:mismatch ), "/Add()[1] was 3 but expected equal to 1 within 3 + 4" );
+));
+
+ut test( "Expression Matches", "Describe", Expr(
+	m = ut expression matches( Expr(1 + 2) );
+	ut assert that( Expr( m << Describe ), "equal to 1 + 2" );
+));
+
+ut test( "Expression Matches", "MatchInfo Success", Expr(
+	mi = ut expression matches( Expr(1 + 2) ) << Matches( Expr(Expr(1 + 2)) );
+    ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
+	ut assert that( Expr( mi:success ), 1 );
+));
+
+ut test( "Expression Matches", "MatchInfo Failure", Expr(
+	mi = ut expression matches( Expr(1 + 2) ) << Matches( Expr(Expr(3 + 4)) );
+	ut assert that( Expr( mi ), ut instance of( "UtMatchInfo" ) );
+	ut assert that( Expr( mi:success ), 0 );
+));
+
+ut test( "Expression Matches", "Matcher Factory", Expr(
+	m = ut expression matches( Expr(1 + 2) );
+	ut assert that( Expr( m ), ut instance of( "UtExpressionCompositeMatcher" ) );
+));
+
+ut test( "Expression Matches", "Strings Can Have Children (#88)", Expr(
+	ut assert value("abc"(1, 2, 3), ut expression matches("abc"(1, 2, 3)));
+	ut assert value("abc"(1, 2, 3), ut expression matches("abc"(ut wild(), 2, 3)));
+	ut assert value("abc"(1, 2, 3), ut not(ut expression matches("ac"(1, 2, 3))));
+	ut assert value("abc"(1, 2, 3), ut not(ut expression matches("abc"(., 2, 3))));
+	ut assert value("abc"(1, 2, 3), ut not(ut expression matches("abc"(1, 2, 3, 4))));
+	ut assert value("abc"(1, 2, 3), ut not(ut expression matches("abc"(1, ut greater than(2), 3))));
+));
+
+ut test( "Expression Matches", "Strings Can Have Children (Within List, #88)", Expr(
+	ut assert value({"abc"(1, 2, 3)}, ut expression matches({"abc"(1, 2, 3)}));
+	ut assert value({"abc"(1, 2, 3)}, ut expression matches({"abc"(ut wild(), 2, 3)}));
+	ut assert value({"abc"(1, 2, 3)}, ut not(ut expression matches({"ac"(1, 2, 3)})));
+	ut assert value({"abc"(1, 2, 3)}, ut not(ut expression matches({"abc"(., 2, 3)})));
+	ut assert value({"abc"(1, 2, 3)}, ut not(ut expression matches({"abc"(1, 2, 3, 4)})));
+	ut assert value({"abc"(1, 2, 3)}, ut not(ut expression matches({"abc"(1, ut greater than(2), 3)})));
+));
+
+ut test( "Expression Matches", "With Strings (#88)", Expr(
+	ut assert value(Expr("abc" || "def"), ut expression matches(Expr("abc" || "def")));
+	ut assert value(Expr("abc" || "def"), ut not(ut expression matches(Expr("ABC" || "def"))));
+	ut assert value(Expr("abc" || "def"), ut not(ut expression matches(Expr("abc"(1, 2, 3) || "def"))));
+));
