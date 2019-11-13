@@ -104,10 +104,10 @@ Define Class(
   ---JSL---
   xml_results = ["Example Tests" => 
                   ["Test1" => 
-                    ["failure" =>
+                    {["failure" =>
                       "Expected: add_nums(1, 1) equal to 3
                       But: was 2"
-                    ]
+                    ]}
                   ]
                 ];
 
@@ -129,28 +129,33 @@ Define Class(
 
   get_xml_report = Method({xml_results},
     start_line = "<?xml version=\!"1.0\!" encoding=\!"UTF-8\!" ?>\!n";
-    
     content = "";
     test_suites = xml_results << get keys;
     test_cases_set = xml_results << get values;
     For(i=1, i<=NItems(test_suites), i++,
-    
-
       test_cases = test_cases_set[i];
       test_case_names = test_cases << get keys;
       test_case_info = test_cases << get values;
       test_case_xml = "";
+      num_tests = 0;
+      num_successes = 0;
       For(k=1, k<=NItems(test_case_names), k++,
 
         info_types = test_case_info[k] << get keys;
         
         test_case_content = "";
         For(l=1, l<=NItems(test_case_info[k]), l++,
-          info_type = info_types[l];
+          num_tests += 1;
+          info_types = test_case_info[k][l] << get keys;
+          // case for a success
+          If(Nitems(info_types) == 0,
+            num_successes += 1;
+            Continue();
+          );
+          info_type = info_types[1];
           props = Associative Array();
           props["type"] = info_type;
-          failure_content = this:generate_xml_tag("failure", test_case_info[k][info_type], props);
-
+          failure_content = this:generate_xml_tag("failure", test_case_info[k][l][info_type], props);
           test_case_content ||= failure_content;
 
         );
@@ -159,13 +164,9 @@ Define Class(
         test_case_xml ||= this:generate_xml_tag("testcase", trim(test_case_content), props, 0);
         
       );
-      num_tests = NItems(test_case_names);
       props = Associative Array();
       props["name"] = test_suites[i];
       props["tests"] = Char(num_tests);
-
-      // find test results that are non empty
-      num_successes = Nitems(loc(test_case_info, [=>]));
       props["failures"] = Char(num_tests-num_successes);
       test_suite_tag = this:generate_xml_tag("testsuite", trim(test_case_xml), props, 0);
       content ||= test_suite_tag;
@@ -206,11 +207,11 @@ Define Class(
     Match(NItems(list_label),
       4,
       curr_suite = Trim(list_label[1]);
-      curr_test = Trim(list_label[2]) || "_" || Trim(list_label[3]) || "_" || Trim(list_label[4]);
+      curr_test = Trim(list_label[2]) || "_" || Trim(list_label[3]);
       ,
       3,
       curr_suite = Trim(list_label[1]);
-      curr_test = Trim(list_label[2]) || "_" || Trim(list_label[3]);
+      curr_test = Trim(list_label[2]);
       ,
       1,
       curr_suite = "Anonymous_Test_Suite";
@@ -219,17 +220,6 @@ Define Class(
       // need to increase the number
       anonymous_test_suite = hash_results["Anonymous_Test_Suite"];
       anonymous_test_cases = anonymous_test_suite << get keys;
-
-      // find number of test cases in anonymous_test_suite with form label_XX where XX is any number
-      curr_anonymous_test_cases = 0;
-
-      For(curr_key = anonymous_test_suite << First, !isempty(curr_key), curr_key = anonymous_test_suite << Next(curr_key),
-        regex_match = Regex Match(curr_key, "^" || curr_test || "_\d+$");
-        If(NItems(regex_match) | label == curr_key,
-          curr_anonymous_test_cases += 1;
-        );
-      );
-      curr_test ||= "_" || Char(curr_anonymous_test_cases);
     );
     Return(Eval List(List(curr_suite, curr_test)));
   );
@@ -255,10 +245,14 @@ Define Class(
       // empty for a success
       success_hash = Associative Array();
       If(Contains(hash_results << get keys, curr_suite),
-        // check if test has already been added, can happen for asserts with no suite or test name
-        hash_results[curr_suite][curr_test] = Associative Array();
+        If(Contains(hash_results[curr_suite] << get keys, curr_test),
+          Insert Into(hash_results[curr_suite][curr_test], success_hash);
+          ,
+          hash_results[curr_suite][curr_test] = Eval List({success_hash});
+        )
         ,
-        hash_results[curr_suite] = Associative Array(Eval List({curr_test}), Eval List({success_hash}));
+        success_hash_list = Eval List({success_hash});
+        hash_results[curr_suite] = Associative Array(Eval List({curr_test}), Eval List({success_hash_list}));
       );
     );
 
@@ -279,10 +273,14 @@ Define Class(
       fail_msg = Trim(fail_msg);
       fail_hash = Associative Array(Eval List({"failure"}), Eval List({fail_msg}));
       If(Contains(hash_results << get keys, curr_suite),
-        hash_results[curr_suite][curr_test] = Associative Array(Eval List({"failure"}), Eval List({fail_msg}));
+        If(Contains(hash_results[curr_suite] << get keys, curr_test),
+          Insert Into(hash_results[curr_suite][curr_test], fail_hash);
+          ,
+          hash_results[curr_suite][curr_test] = Eval List({fail_hash});
+        )
         ,
-        hash_results[curr_suite] = Associative Array(Eval List({curr_test}), Eval List({fail_hash}));
-        
+        fail_hash_list = Eval List({fail_hash});
+        hash_results[curr_suite] = Associative Array(Eval List({curr_test}), Eval List({fail_hash_list}));
       );
     );
 
@@ -302,14 +300,17 @@ Define Class(
       throw_msg = Trim(throw_msg);
       throw_hash = Associative Array(Eval List({"failure"}), Eval List({throw_msg}));
       If(Contains(hash_results << get keys, curr_suite),
-        hash_results[curr_suite][curr_test] = Associative Array(Eval List({"failure"}), Eval List({throw_msg}));
+        If(Contains(hash_results[curr_suite] << get keys, curr_test),
+          Insert Into(hash_results[curr_suite][curr_test], throw_hash);
+          ,
+          hash_results[curr_suite][curr_test] = Eval List({throw_hash});
+        )
         ,
-        hash_results[curr_suite] = Associative Array(Eval List({curr_test}), Eval List({throw_hash}));
-        
+        throw_hash_list = Eval List({ throw_hash});
+        hash_results[curr_suite] = Associative Array(Eval List({curr_test}), Eval List({ throw_hash_list}));
       );
 
     );
-      
     this:get_xml_report(hash_results);
   );
   
