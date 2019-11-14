@@ -35,4 +35,17 @@ ut test( "EqualToMatrixMatcher", "TwoEmptyMatricesAreEqual", Expr(
 	ut assert value( match info:success, 1 );
 ));
 
+ut test( "EqualToMatcher", "Handles Strings", Expr(
+	ut assert value("abc", ut equal to("abc"));
+	ut assert value("abc", ut not(ut equal to("ab")));
+	ut assert value("abc", ut not(ut equal to("ABC")));
+	ut assert value("abc", ut not(ut equal to("abcdef")));
+));
+
+ut test( "EqualToMatcher", "Handles Strings With Children (#88)", Expr(
+	ut assert value("abc"(1, 2, 3), ut equal to("abc"(1, 2, 3)));
+	ut assert value("abc"(1, 2, 3), ut not(ut equal to(Expr("ab"(1, 2, 3)))));
+	ut assert value("abc"(1, 2, 3), ut not(ut equal to(Expr("abc"(4, 5)))));
+));
+
 // TODO: Other EqualToMatcher subclasses

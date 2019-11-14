@@ -257,8 +257,8 @@ Define Class(
 	// A match info of information about the success or failure
 	matches = Method( {test expr},
 		actual = test expr;
-		If( !Is Expr( name expr( actual ) ),
-			mismatch = Eval Insert( "was ^Char( Name Expr( actual ) )^" ); 
+		If( !Is Expr( name expr( actual ) ) & N Arg(actual) == 0,
+			mismatch = Eval Insert( "was non-expression ^Char( Name Expr( actual ) )^" ); 
 			Return( ::ut match info failure( mismatch ) );
 		);
 		valueTree = create tree( name expr( this:value ), 1 );
@@ -304,7 +304,7 @@ Define Class(
 		data["head"] = head( rootExpr );
 		
 		If( isPattern,
-			If( Is Expr( name expr( rootExpr ) ),
+			If( Is Expr( name expr( rootExpr ) ) | N Arg( rootExpr ) > 0,
 				
 				If( Head( rootExpr ) == Expr( ut optional() ),
 					data["required"] = 0;
@@ -592,6 +592,13 @@ ut matcher factory( "ut equal to",
 		,
 			"Namespace",
 				New Object( UtEqualToNamespaceMatcher() )
+		,
+			"String",
+				// only use the composite matcher if string has children
+				If( NArg( val ) > 0,
+					New Object( UtExpressionCompositeMatcher() ),
+					New Object( UtEqualToMatcher() )
+				)
 		,
 			// default
 				New Object( UtEqualToMatcher() );
