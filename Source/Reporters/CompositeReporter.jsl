@@ -1,0 +1,32 @@
+
+/* 
+	Class: UtCompositeReporter
+		---Prototype---
+		class UtCompositeReporter inherits UtReporter
+		---------------
+*/
+Define Class("UtCompositeReporter",
+	Base Class( "UtReporter" ),
+	reporters = {};
+	_init_ = Method( {reporters},
+		this:reporters = reporters
+	);
+	add expression failure = Method( {label, payload=Empty()},
+		this:reporters << add expression failure( label, payload )
+	);
+	add failure = Method( {label, test expr, description, mismatch, lre, payload=Empty()},
+		this:reporters << add failure( label, Name Expr( test expr ), description, mismatch, lre, payload )
+	);
+	add unexpected throw = Method( {label, test expr, description, exception, payload=Empty()},
+		this:reporters << add unexpected throw( label, Name Expr( test expr ), description, exception, payload )
+	);
+	add success = Method( {label, test expr, description, payload=Empty()},
+		this:reporters << add success( label, Name Expr( test expr ), description, payload )
+	);
+);
+
+// Function: ut composite reporter
+// Factory for <UtCompositeReporter>
+ut composite reporter = Function({reporters},
+	New Object( "UtCompositeReporter"( reporters ) )
+);
