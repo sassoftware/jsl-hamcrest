@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 - `ut equal to` no longer fails with an empty matrix (#72).
 - `ut approx` now properly shows actual value for matrices (#74).
 - Initializing the addin with an already configured `ut global reporter` will preserve that reporter (#83).
+- `ut expression matches` now supports strings with children (#88)
 
 ## [1.1.0]
 
