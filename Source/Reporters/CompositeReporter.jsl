@@ -12,16 +12,16 @@ Define Class("UtCompositeReporter",
 		this:reporters = reporters
 	);
 	add expression failure = Method( {label, payload=Empty()},
-		this:reporters << add expression failure( label, payload )
+		this:reporters << add expression failure( label, Name Expr( payload ) )
 	);
 	add failure = Method( {label, test expr, description, mismatch, lre, payload=Empty()},
-		this:reporters << add failure( label, Name Expr( test expr ), description, mismatch, lre, payload )
+		this:reporters << add failure( label, Name Expr( test expr ), description, mismatch, lre, Name Expr( payload ) )
 	);
 	add unexpected throw = Method( {label, test expr, description, exception, payload=Empty()},
-		this:reporters << add unexpected throw( label, Name Expr( test expr ), description, exception, payload )
+		this:reporters << add unexpected throw( label, Name Expr( test expr ), description, exception, Name Expr( payload ) )
 	);
 	add success = Method( {label, test expr, description, payload=Empty()},
-		this:reporters << add success( label, Name Expr( test expr ), description, payload )
+		this:reporters << add success( label, Name Expr( test expr ), description, Name Expr( payload ) )
 	);
 );
 
