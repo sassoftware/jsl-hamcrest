@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
  - Development addin that can be linked to a repository for easy updating (#66)
  - `ut valid xml` matcher (#56)
  - `UtJunitXMLReporter` (#56)
+ - `UtCompositeReporter` now available in base package (#90)
 
 ### Changed
  -JunitXMLReporter now reports failures per test case instead of per assertion (#87, #77).
