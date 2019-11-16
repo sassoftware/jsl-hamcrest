@@ -16,6 +16,6 @@ jobs:
         FOLDER: Docs/_html # The folder the action should deploy.
         BUILD_SCRIPT: # The build script the action should run prior to deploying.
             sudo apt-get install mono-complete
-            wget https://www.naturaldocs.org/download/natural_docs/2.0.2/Natural_Docs_2.0.2.zip -O /tmp/ND.zip
-            unzip /tmp/ND.zip -d /tmp
-            mono "/tmp/Natural Docs/NaturalDocs.exe" Docs
+            && wget https://www.naturaldocs.org/download/natural_docs/2.0.2/Natural_Docs_2.0.2.zip -O /tmp/ND.zip
+            && unzip /tmp/ND.zip -d /tmp
+            && mono "/tmp/Natural Docs/NaturalDocs.exe" Docs
