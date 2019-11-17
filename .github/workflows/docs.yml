@@ -9,7 +9,7 @@ jobs:
     - name: wget ND
       uses: wei/wget@v1
       with:
-        args: -O https://www.naturaldocs.org/download/natural_docs/2.0.2/Natural_Docs_2.0.2.zip -O ND.zip
+        args: https://www.naturaldocs.org/download/natural_docs/2.0.2/Natural_Docs_2.0.2.zip -O ND.zip
     - name: Unzip ND
       run: unzip ND.zip -d ./
     - name: Build and Deploy
