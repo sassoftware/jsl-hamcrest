@@ -1,5 +1,8 @@
 name: Build and Deploy Docs
-on: [push]
+on:
+  push:
+    branches:    
+      - master 
 jobs:
   build-and-deploy-docs:
     runs-on: ubuntu-latest
@@ -14,7 +17,7 @@ jobs:
       run: unzip ND.zip -d ./
     - name: Build Docs
       run: mono "./Natural Docs/NaturalDocs.exe" Docs
-    - name: Build and Deploy
+    - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@releases/v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
