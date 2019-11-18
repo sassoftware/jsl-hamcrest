@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("doc",["Variable"],[["documented",,[[,"ut documented functions",,,0,"File:Core/Utils.jsl:ut_documented_functions"],[,"ut should deploy documented functions",,,0,"File:Core/Utils.jsl:ut_should_deploy_documented_functions"]]]]);

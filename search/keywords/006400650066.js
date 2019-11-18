@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("def",["Variable"],[["default",,[[,"UtBufferingReporter:ut log bench default",,,0,"File:Core/TestCase.jsl:UtBufferingReporter.ut_log_bench_default","JSLClass:UtBufferingReporter:ut_log_bench_default"]]]]);
+NDSearch.OnPrefixDataLoaded("def",["Variable","Function"],[["default",,[[,"UtBufferingReporter:ut log bench default",,,0,"File:Core/TestCase.jsl:UtBufferingReporter.ut_log_bench_default","JSLClass:UtBufferingReporter:ut_log_bench_default"]]],["define",,[[,"ut define custom function",,,1,"File:Core/Utils.jsl:ut_define_custom_function"]]]]);

@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("JSLClass:UtIgnoringWhitespaceMatcher","UtIgnoringWhitespaceMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtIgnoringWhitespaceMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[255,0,0,"UtIgnoringWhitespaceMatcher"]]);
+NDFramePage.OnPageTitleLoaded("JSLClass:UtIgnoringWhitespaceMatcher","UtIgnoringWhitespaceMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtIgnoringWhitespaceMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[186,0,0,"UtIgnoringWhitespaceMatcher"]]);

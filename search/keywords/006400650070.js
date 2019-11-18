@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("dep",["Variable"],[["deploy",,[[,"ut should deploy documented functions",,,0,"File:Core/Utils.jsl:ut_should_deploy_documented_functions"]]]]);

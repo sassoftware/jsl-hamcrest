@@ -1,0 +1,1 @@
+NDSummary.OnToolTipsLoaded("File:DevAddin/ConfigureHome.jsl",{});

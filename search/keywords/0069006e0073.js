@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("ins",["Function"],[["instance",,[[,"UtInstanceOfMatcher:ut instance of",,,0,"File:Matchers/InstanceOf.jsl:UtInstanceOfMatcher.ut_instance_of","JSLClass:UtInstanceOfMatcher:ut_instance_of"]]]]);
+NDSearch.OnPrefixDataLoaded("ins",["Function"],[["instance",,[[,"ut instance of",,,0,"File:Matchers/InstanceOf.jsl:ut_instance_of"]]]]);

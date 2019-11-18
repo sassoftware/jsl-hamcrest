@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("sho",["Function"],[["show",,[[,"ut get show string",,,0,"File:Core/Utils.jsl:ut_get_show_string"]]]]);
+NDSearch.OnPrefixDataLoaded("sho",["Variable","Function"],[["should",,[[,"ut should deploy documented functions",,,0,"File:Core/Utils.jsl:ut_should_deploy_documented_functions"]]],["show",,[[,"ut get show string",,,1,"File:Core/Utils.jsl:ut_get_show_string"]]]]);

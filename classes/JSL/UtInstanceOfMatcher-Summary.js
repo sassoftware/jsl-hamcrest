@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("JSLClass:UtInstanceOfMatcher","UtInstanceOfMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtInstanceOfMatcher",[["JSL","JSL"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"]],[[260,0,0,"UtInstanceOfMatcher"],[261,0,2,"Functions","Functions"],[262,0,1,"ut instance of","ut_instance_of"]]);
+NDFramePage.OnPageTitleLoaded("JSLClass:UtInstanceOfMatcher","UtInstanceOfMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtInstanceOfMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[331,0,0,"UtInstanceOfMatcher"]]);

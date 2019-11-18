@@ -1,0 +1,1 @@
+NDSummary.OnToolTipsLoaded("JSLClass:UtValidXmlMatcher",{310:"<div class=\"NDToolTip TClass LJSL\"><div class=\"NDClassPrototype\" id=\"NDClassPrototype310\"><div class=\"CPEntry TClass Current\"><div class=\"CPName\">UtValidXmlMatcher</div></div></div><div class=\"TTSummary\">Checks if some given XML is valid XML.</div></div>"});

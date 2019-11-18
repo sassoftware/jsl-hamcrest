@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("cus",["Function"],[["custom",,[[,"ut define custom function",,,0,"File:Core/Utils.jsl:ut_define_custom_function"]]]]);

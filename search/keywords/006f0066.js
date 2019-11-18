@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("of",["Function"],[["of",,[[,"ut all of",,,0,"File:Matchers/AllOf.jsl:ut_all_of"],[,"ut any of",,,0,"File:Matchers/AnyOf.jsl:ut_any_of"],[,"UtInstanceOfMatcher:ut instance of",,,0,"File:Matchers/InstanceOf.jsl:UtInstanceOfMatcher.ut_instance_of","JSLClass:UtInstanceOfMatcher:ut_instance_of"]]]]);
+NDSearch.OnPrefixDataLoaded("of",["Function"],[["of",,[[,"ut all of",,,0,"File:Matchers/AllOf.jsl:ut_all_of"],[,"ut any of",,,0,"File:Matchers/AnyOf.jsl:ut_any_of"],[,"ut instance of",,,0,"File:Matchers/InstanceOf.jsl:ut_instance_of"]]]]);
