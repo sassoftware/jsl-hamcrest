@@ -150,14 +150,7 @@ Define Class(
 ut define documented function(
 	"ut test case",
 	Expr(Function({name},
-		{obj},
-		obj = New Object( UtTestCaseFixture( name ) );
-		
-		// Set a reference to itself.
-		obj:self = local:obj;
-		
-		// return the object
-		obj
+		ut new object( "UtTestCaseFixture", Eval List({name}) );
 	)),
 	"ut test case( test case name )",
 	"Used to isolate a test case from other code in the test file. Also prepends the name of the test and assert number to the beginning of the labels for ut assert that.",
