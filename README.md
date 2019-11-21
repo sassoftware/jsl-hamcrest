@@ -187,8 +187,7 @@ ut day of week = Function( {val},
     If( !Is Number( val ),
         Throw( "ut day of week() requires a numeric date value as the argument" ),
     );
-    obj = New Object( UtDayOfWeekMatcher( Name Expr( val ) ) );
-    obj:self = obj;
+    ut new object( "UtDayOfWeekMatcher", Eval List( {Name Expr( val )} ) );
 );
 ```
 

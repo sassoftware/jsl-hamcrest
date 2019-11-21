@@ -87,6 +87,13 @@ ut test( "Utils", "ExprLiteral", Expr(
     ut assert that( Expr( ut expr literal( Name Expr( add expr ) ) ), Expr( Expr( 5 + 5 ) ) );
 ));
 
+ut test( "Utils", "NewObject", Expr(
+	Define Class("Foo");
+	obj = ut new object("Foo");
+	ut assert value(obj, ut instance of("Foo"));
+	ut assert that(Expr(obj:self), obj, "Self is a reference to itself");
+));
+
 ut test( "Utils", "MoveToAnonymousNamespace", Expr(
     ns = New Namespace();
     ns:x = 5;

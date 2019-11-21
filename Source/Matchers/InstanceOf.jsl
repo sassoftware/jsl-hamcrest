@@ -58,8 +58,7 @@ ut matcher factory(
 		{obj},
 		If( !Is String( Name Expr( val ) ),
 			Throw( "argument to ut instance of() must be a string" ),
-			obj = New Object( UtInstanceOfMatcher( val ) );
-			obj:self = obj;
+			ut new object( "UtInstanceOfMatcher", Eval List({val}) );
 		);
 	)),
 	"ut instance of( value )",

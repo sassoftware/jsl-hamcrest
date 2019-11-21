@@ -53,8 +53,7 @@ ut matcher factory(
 	"ut message",
 	Expr(Function( {matcher, description, message},
 		{obj},
-		obj = New Object( UtMessageMatcher( ut ensure matcher( Name Expr( matcher ) ), description, message ) );
-		obj:self = obj;
+		ut new object( "UtMessageMatcher", Eval List( {ut ensure matcher( Name Expr( matcher ) ), description, message} ) );
 	)),
 	"ut message( matcher, description, message )",
 	"General message matcher factory. Mostly used in other factory functions, but can be used in tests if needed."

@@ -516,6 +516,30 @@ ut expr literal = Function( {an expr},
 	Insert( Expr( Expr() ), Name Expr( an expr ) )
 );
 
+/*	Function: ut new object
+		---Prototype---
+		ut new object( String class_name, List args = {} )
+		---------------
+		Creates a new object with a self reference.
+	
+	Arguments:
+		class_name - name of the JSL defined class to create
+		args - arguments passed to the constructor of the class
+	
+	Example:
+		---JSL---
+		Define Class("Foo", 
+			self = Empty();
+			_init_ = Method({x}, this:x = x);
+		);
+		obj = ut new object( "Foo", {5} );
+		---------
+*/
+ut new object = Function({class name, args={}}, {obj},
+	obj = New Object( class name, args );
+	obj:self = obj;
+);
+
 // Variable: ut concat test label sep
 ut concat test label sep = "⮚";
 

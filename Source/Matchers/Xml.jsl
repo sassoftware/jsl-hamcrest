@@ -42,6 +42,5 @@ Define Class(
 */
 ut matcher factory( "ut valid xml" );
 ut valid xml = Function( {},
-	obj = New Object("UtValidXmlMatcher");
-	obj:self = obj;	
+	ut new object("UtValidXmlMatcher");
 );
