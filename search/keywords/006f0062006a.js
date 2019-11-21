@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("obj",["Function"],[["object",,[[,"ut object supports message",,,0,"File:Core/Utils.jsl:ut_object_supports_message"]]]]);
+NDSearch.OnPrefixDataLoaded("obj",["Function"],[["object",,[[,"ut new object",,,0,"File:Core/Utils.jsl:ut_new_object"],[,"ut object supports message",,,0,"File:Core/Utils.jsl:ut_object_supports_message"]]]]);

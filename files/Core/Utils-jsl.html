@@ -14,7 +14,7 @@
 
 <a name="ut_matcher_factories"></a><a name="Topic139"></a><div class="CTopic TVariable LJSL">
  <div class="CTitle">ut matcher factories</div>
- <div class="CBody"><p>List of head expressions for all matcher functions.</p><p>Used by <a href="../../index.html#File:Core/Matchers/EqualTo.jsl:UtExpressionCompositeMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,62);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtExpressionCompositeMatcher</a></p></div>
+ <div class="CBody"><p>List of head expressions for all matcher functions.</p><p>Used by <a href="../../index.html#File:Core/Matchers/EqualTo.jsl:UtExpressionCompositeMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,69);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtExpressionCompositeMatcher</a></p></div>
 </div>
 
 <a name="ut_documented_functions"></a><a name="Topic140"></a><div class="CTopic TVariable LJSL">
@@ -64,7 +64,7 @@
 
 <a name="ut_unregister_matcher_factory"></a><a name="Topic149"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut unregister matcher factory</div>
- <div class="CBody"><p>Removes a matcher factory name from <a href="../../index.html#File:Core/Utils.jsl:ut_matcher_factories" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,139);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut matcher factories</a>.</p><p>This should be used when creating your own matcher outside of the Hamcrest package. Unregistering a matcher removes it from consideration in <a href="../../index.html#File:Core/Matchers/EqualTo.jsl:UtExpressionCompositeMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,62);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtExpressionCompositeMatcher</a>.</p></div>
+ <div class="CBody"><p>Removes a matcher factory name from <a href="../../index.html#File:Core/Utils.jsl:ut_matcher_factories" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,139);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut matcher factories</a>.</p><p>This should be used when creating your own matcher outside of the Hamcrest package. Unregistering a matcher removes it from consideration in <a href="../../index.html#File:Core/Matchers/EqualTo.jsl:UtExpressionCompositeMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,69);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtExpressionCompositeMatcher</a>.</p></div>
 </div>
 
 <a name="ut_with_reporter"></a><a name="Topic150"></a><div class="CTopic TFunction LJSL">
@@ -119,7 +119,7 @@
 
 <a name="ut_host_table_name_str"></a><a name="Topic160"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut host table name str</div>
- <div class="CBody"><p>Give it the windows table and get back a host specific data table name. (i.e. it appends &quot;.jmp&quot; on Mac to a given string)</p><p>For a matcher that uses this function, see <a href="../../index.html#File:Matchers/Host.jsl:ut_host_table_name" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,204);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut host table name</a></p></div>
+ <div class="CBody"><p>Give it the windows table and get back a host specific data table name. (i.e. it appends &quot;.jmp&quot; on Mac to a given string)</p><p>For a matcher that uses this function, see <a href="../../index.html#File:Matchers/Host.jsl:ut_host_table_name" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,205);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut host table name</a></p></div>
 </div>
 
 <a name="ut_as_expr"></a><a name="Topic161"></a><div class="CTopic TFunction LJSL">
@@ -132,63 +132,69 @@
  <div class="CBody"><p>Wraps the given literal value in an expression.</p></div>
 </div>
 
-<a name="Variables(2)"></a><a name="Topic163"></a><div class="CTopic TGroup LJSL">
+<a name="ut_new_object"></a><a name="Topic163"></a><div class="CTopic TFunction LJSL">
+ <div class="CTitle">ut new object</div>
+ <div id="NDPrototype163" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut <span class="SHKeyword">new</span> object(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">String&nbsp;</td><td class="PName">class_name,</td><td></td><td class="last"></td></tr><tr><td class="PType first">List&nbsp;</td><td class="PName">args&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last">{}</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Creates a new object with a self reference.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">class_name<div class="CDLParameterType">String</div></td><td class="CDLDefinition"><p>name of the JSL defined class to create</p></td></tr><tr><td class="CDLEntry">args<div class="CDLParameterType">List</div></td><td class="CDLDefinition"><p>arguments passed to the constructor of the class</p></td></tr></table><div class="CHeading">Example</div><pre>Define Class(<span class="SHString">&quot;Foo&quot;</span>,<br />    self = Empty();<br />    _init_ = Method({x}, <span class="SHKeyword">this</span>:x = x);<br />);<br />obj = ut <span class="SHKeyword">new</span> object( <span class="SHString">&quot;Foo&quot;</span>, {<span class="SHNumber">5</span>} );</pre></div>
+</div>
+
+<a name="Variables(2)"></a><a name="Topic164"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="ut_concat_test_label_sep"></a><a name="Topic164"></a><div class="CTopic TVariable LJSL">
+<a name="ut_concat_test_label_sep"></a><a name="Topic165"></a><div class="CTopic TVariable LJSL">
  <div class="CTitle">ut concat test label sep</div>
 </div>
 
-<a name="Functions(2)"></a><a name="Topic165"></a><div class="CTopic TGroup LJSL">
+<a name="Functions(2)"></a><a name="Topic166"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="ut_concat_test_label"></a><a name="Topic166"></a><div class="CTopic TFunction LJSL">
+<a name="ut_concat_test_label"></a><a name="Topic167"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut concat test label</div>
  <div class="CBody"><p>Concatenates values together for &lt;ut test&gt;</p></div>
 </div>
 
-<a name="ut_merge_expressions"></a><a name="Topic167"></a><div class="CTopic TFunction LJSL">
+<a name="ut_merge_expressions"></a><a name="Topic168"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut merge expressions</div>
  <div class="CBody"><p>Merges all expressions in a given list with a single glue expression.</p></div>
 </div>
 
-<a name="ut_move_to_anonymous_namespace"></a><a name="Topic168"></a><div class="CTopic TFunction LJSL">
+<a name="ut_move_to_anonymous_namespace"></a><a name="Topic169"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut move to anonymous namespace</div>
  <div class="CBody"><p>Takes a namespace and moves all args with values to a new anonymous namespace and removes them from the given namespace.</p></div>
 </div>
 
-<a name="ut_difference_between_lists"></a><a name="Topic169"></a><div class="CTopic TFunction LJSL">
+<a name="ut_difference_between_lists"></a><a name="Topic170"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut difference between lists</div>
  <div class="CBody"><p>Returns items in listB NOT in listA.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">listA</td><td class="CDLDefinition"><p>Potentially smaller list than listB. Probably a subset of listB</p></td></tr><tr><td class="CDLEntry">listB</td><td class="CDLDefinition"><p>List that might have items not in listA.</p></td></tr></table><div class="CHeading">Returns</div><p>Items in listB NOT in listA.</p></div>
 </div>
 
-<a name="ut_get_symbol_information"></a><a name="Topic170"></a><div class="CTopic TFunction LJSL">
+<a name="ut_get_symbol_information"></a><a name="Topic171"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut get symbol information</div>
  <div class="CBody"><div class="CHeading">Returns</div><p>An associative array with information</p><div class="CHeading">Author</div><p>juchil</p><div class="CHeading">History</div><table class="CDefinitionList"><tr><td class="CDLEntry">17may18</td><td class="CDLDefinition"><p>(juchil) Add windows and data tables.</p></td></tr></table></div>
 </div>
 
-<a name="ut_delete_symbols_difference"></a><a name="Topic171"></a><div class="CTopic TFunction LJSL">
+<a name="ut_delete_symbols_difference"></a><a name="Topic172"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut delete symbols difference</div>
  <div class="CBody"><p>Deletes symbols in after list not in before list</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">before</td><td class="CDLDefinition"><p>associative array of symbols/namespaces/classes defined before a test file was run.</p></td></tr><tr><td class="CDLEntry">after</td><td class="CDLDefinition"><p>associative array of symbols/namespaces/classes defined after a test file was run.</p></td></tr></table><div class="CHeading">Author</div><p>juchil</p><div class="CHeading">History</div><table class="CDefinitionList"><tr><td class="CDLEntry">17may18</td><td class="CDLDefinition"><p>(juchil) Add windows and data tables.</p></td></tr></table></div>
 </div>
 
-<a name="ut_include_jsl_files_recursively"></a><a name="Topic172"></a><div class="CTopic TFunction LJSL">
+<a name="ut_include_jsl_files_recursively"></a><a name="Topic173"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut include jsl files recursively</div>
  <div class="CBody"><p>Looks for files in a folder recursively and uses the Include() function to run them.</p></div>
 </div>
 
-<a name="Variables(3)"></a><a name="Topic173"></a><div class="CTopic TGroup LJSL">
+<a name="Variables(3)"></a><a name="Topic174"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="ut_nullptr"></a><a name="Topic174"></a><div class="CTopic TVariable LJSL">
+<a name="ut_nullptr"></a><a name="Topic175"></a><div class="CTopic TVariable LJSL">
  <div class="CTitle">ut nullptr</div>
  <div class="CBody"><p>Can be used to supress printing anything to the log when returning from a function</p></div>
 </div>
 
-<a name="ut_major_jmp_version"></a><a name="Topic175"></a><div class="CTopic TVariable LJSL last">
+<a name="ut_major_jmp_version"></a><a name="Topic176"></a><div class="CTopic TVariable LJSL last">
  <div class="CTitle">ut major jmp version</div>
 </div>
 

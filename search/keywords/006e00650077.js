@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("new",["Function"],[["new",,[[,"UtRunOnlyReporter:ut make new node",,,0,"File:Addin/Reporters.jsl:UtRunOnlyReporter.ut_make_new_node","JSLClass:UtRunOnlyReporter:ut_make_new_node"]]]]);
+NDSearch.OnPrefixDataLoaded("new",["Function"],[["new",,[[,"ut new object",,,0,"File:Core/Utils.jsl:ut_new_object"],[,"UtRunOnlyReporter:ut make new node",,,0,"File:Addin/Reporters.jsl:UtRunOnlyReporter.ut_make_new_node","JSLClass:UtRunOnlyReporter:ut_make_new_node"]]]]);
