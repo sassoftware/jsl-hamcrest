@@ -22,39 +22,44 @@ information on using pull requests.
 
 - Functions should start with `ut` and be lower space case. Local variables should
   also be lower space case.
-  ```
-  ut my function = Function({my arg},
+
+```jsl
+ut my function = Function({my arg},
     my local = 5;
     my arg + my local;
-  );
-  ```
+);
+```
+
 - Matcher class names should start with `Ut`, end with `Matcher` and use CamelCase.
-  ```
-  Define( "UtMyMatcher", ... );
-  ```
+
+```jsl
+    Define Class( "UtMyMatcher", ... );
+```
+
 - Documentation should be provided for all functions, variables, and classes.
   Below is an example of how to document a function. Only a description is
-  required but other parts like prototype, arguments, and examples are 
+  required but other parts like prototype, arguments, and examples are
   encouraged.
-  ```
-  /*    Function: ut my function
-            ---Prototype---
-            ut my function( x )
-            ---------------
-            Some useful, potentially multiple paragraph description.
-        
-        Arguments:
-            x - description of argument x
-        
-        Example:
-            This is an example
-            ---JSL---
-            x = 5;
-            ut my function( 5 );
-            ---------
-  */
-  ut my function({x}, ... );
-  ```
+
+```jsl
+/*  Function: ut my function
+        ---Prototype---
+        ut my function( x )
+        ---------------
+        Some useful, potentially multiple paragraph description.
+
+    Arguments:
+        x - description of argument
+    Example:
+        This is an example
+        ---JSL---
+        x = 5;
+        ut my function( 5 );
+        ---------
+*/
+ut my function({x}, ... );
+```
+
 ## Things to Know
 
 - Some matchers, especially ones that inherit funtionality from base classes
