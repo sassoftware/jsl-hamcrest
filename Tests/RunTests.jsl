@@ -35,9 +35,7 @@ Define Class("UtMockReporter",
 );
 
 ut mock reporter = Function({}, {obj},
-	obj = New Object("UtMockReporter");
-	obj:self = obj;
-	obj
+	ut new object("UtMockReporter");
 );
 
 ut include jsl files recursively( "UnitTests" );

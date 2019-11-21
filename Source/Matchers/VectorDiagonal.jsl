@@ -87,8 +87,7 @@ ut matcher factory(
 	"ut vec diag",
 	Expr(Function( {matcher},
 		{obj},
-		obj = New Object( UtVectorDiagonalMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
-		obj:self = obj;
+		ut new object( "UtVectorDiagonalMatcher", Eval List({ut ensure matcher( Name Expr( matcher ) )} ) );
 	)),
 	"ut vec diag( matcher )",
 	"Compare using Vec Diag() transformation for a given matrix. Does not assert that the matrix is a diagonal matrix. See ut diagonal for this.",
@@ -128,8 +127,7 @@ ut matcher factory(
 	"ut diagonal",
 	Expr(Function( {},
 		{obj},
-		obj = New Object( UtDiagonalMatcher() );
-		obj:self = obj;
+		ut new object( "UtDiagonalMatcher" );
 	)),
 	"ut diagonal()",
 	"Used to assert that a given matrix is diagonal, meaning it is a square matrix where all off-diagonal elements are zero. Asserts nothing about the diagonal. For example, a square all zero matrix is still considered diagonal.",
