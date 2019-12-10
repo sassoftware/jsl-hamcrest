@@ -55,8 +55,19 @@ Define Class(
 	);
 );
 
-// Function: ut file appending reporter
-//   Factory for <UtFileAppendingReporter>.
-ut file appending reporter = Function({},
-	New Object( "UtFileAppendingReporter" );
+/*  Function: ut file appending reporter
+      Reporter which appends failures as they happen to an output file.
+
+      Factory for <UtFileAppendingReporter>.
+   
+    Arguments:
+      file - filepath for output file 
+    
+    Example:
+    ---JSL---
+    ut global reporter = ut file appending reporter( "$DESKTOP/report.txt" );
+    ---------
+*/
+ut file appending reporter = Function({file},
+	New Object( "UtFileAppendingReporter"( file ) );
 );
