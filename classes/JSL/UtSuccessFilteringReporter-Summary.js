@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("JSLClass:UtSuccessFilteringReporter","UtSuccessFilteringReporter");NDSummary.OnSummaryLoaded("JSLClass:UtSuccessFilteringReporter",[["JSL","JSL"]],[["Classes","Class"]],[[115,0,0,"UtSuccessFilteringReporter"]]);
+NDFramePage.OnPageTitleLoaded("JSLClass:UtSuccessFilteringReporter","UtSuccessFilteringReporter");NDSummary.OnSummaryLoaded("JSLClass:UtSuccessFilteringReporter",[["JSL","JSL"]],[["Classes","Class"]],[[320,0,0,"UtSuccessFilteringReporter"]]);

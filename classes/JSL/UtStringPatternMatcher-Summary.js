@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("JSLClass:UtStringPatternMatcher","UtStringPatternMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtStringPatternMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[290,0,0,"UtStringPatternMatcher"]]);
+NDFramePage.OnPageTitleLoaded("JSLClass:UtStringPatternMatcher","UtStringPatternMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtStringPatternMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[67,0,0,"UtStringPatternMatcher"]]);

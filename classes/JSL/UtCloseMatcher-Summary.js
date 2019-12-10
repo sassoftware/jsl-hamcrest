@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("JSLClass:UtCloseMatcher","UtCloseMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtCloseMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[303,0,0,"UtCloseMatcher"]]);
+NDFramePage.OnPageTitleLoaded("JSLClass:UtCloseMatcher","UtCloseMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtCloseMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[38,0,0,"UtCloseMatcher"]]);

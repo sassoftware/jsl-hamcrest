@@ -8,42 +8,42 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="UtThrowsMatcher"></a><a name="Topic218"></a><div class="CTopic TClass LJSL first">
+<a name="UtThrowsMatcher"></a><a name="Topic196"></a><div class="CTopic TClass LJSL first">
  <div class="CTitle">UtThrowsMatcher</div>
- <div class="NDClassPrototype HasParents" id="NDClassPrototype218"><a class="CPEntry Parent TClass" href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,16);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">UtMatcher</div></a><div class="CPEntry TClass Current"><div class="CPName">UtThrowsMatcher</div></div></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype196"><a class="CPEntry Parent TClass" href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,223);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">UtMatcher</div></a><div class="CPEntry TClass Current"><div class="CPName">UtThrowsMatcher</div></div></div>
  <div class="CBody"><p>Matches if the expression under test throws and the text of that exception matches the inner matcher.</p></div>
 </div>
 
-<a name="Globals"></a><a name="Topic219"></a><div class="CTopic TSection LJSL">
+<a name="Globals"></a><a name="Topic197"></a><div class="CTopic TSection LJSL">
  <div class="CTitle">Globals</div>
 </div>
 
-<a name="Functions"></a><a name="Topic220"></a><div class="CTopic TGroup LJSL">
+<a name="Functions"></a><a name="Topic198"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="ut_throws"></a><a name="Topic221"></a><div class="CTopic TFunction LJSL">
+<a name="ut_throws"></a><a name="Topic199"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut throws</div>
- <div id="NDPrototype221" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut <span class="SHKeyword">throws</span>(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,16);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a>&nbsp;</td><td class="PName last">matcher&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Captures a thrown message from evaluating the actual expression.&nbsp; Inner matchers can be used to assert on the actual error message.&nbsp; The error message comes from the first argument in the exception_msg variable, and not from the log.</p><p>Factory function for <a href="../../index.html#File:Matchers/Throws.jsl:UtThrowsMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,218);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtThrowsMatcher</a>.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">matcher<div class="CDLParameterType"><a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,16);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a></div></td><td class="CDLDefinition"><p>any object</p></td></tr></table><div class="CHeading">Example</div><pre>ut assert that( Expr( Sin( &quot;a&quot; ) ), ut throws( &quot;Cannot convert argument to a number [or matrix]&quot; ) );<br />ut assert that( Expr( Sin( &quot;a&quot; ) ), ut throws( ut anything() ) );</pre></div>
+ <div id="NDPrototype199" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut <span class="SHKeyword">throws</span>(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,223);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a>&nbsp;</td><td class="PName last">matcher&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Captures a thrown message from evaluating the actual expression.&nbsp; Inner matchers can be used to assert on the actual error message.&nbsp; The error message comes from the first argument in the exception_msg variable, and not from the log.</p><p>Factory function for <a href="../../index.html#File:Matchers/Throws.jsl:UtThrowsMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,196);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtThrowsMatcher</a>.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">matcher<div class="CDLParameterType"><a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,223);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a></div></td><td class="CDLDefinition"><p>any object</p></td></tr></table><div class="CHeading">Example</div><pre>ut assert that( Expr( Sin( &quot;a&quot; ) ), ut throws( &quot;Cannot convert argument to a number [or matrix]&quot; ) );<br />ut assert that( Expr( Sin( &quot;a&quot; ) ), ut throws( ut anything() ) );</pre></div>
 </div>
 
-<a name="ut_throws_invalid_arg"></a><a name="Topic222"></a><div class="CTopic TFunction LJSL">
+<a name="ut_throws_invalid_arg"></a><a name="Topic200"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut throws invalid arg</div>
- <div id="NDPrototype222" class="NDPrototype NoParameterForm">ut <span class="SHKeyword">throws</span> invalid arg()</div>
- <div class="CBody"><p>Equivalent to ut throws( &quot;argument value is invalid&quot; )</p><p>Factory function for <a href="../../index.html#File:Matchers/Throws.jsl:UtThrowsMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,218);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtThrowsMatcher</a>.</p></div>
+ <div id="NDPrototype200" class="NDPrototype NoParameterForm">ut <span class="SHKeyword">throws</span> invalid arg()</div>
+ <div class="CBody"><p>Equivalent to ut throws( &quot;argument value is invalid&quot; )</p><p>Factory function for <a href="../../index.html#File:Matchers/Throws.jsl:UtThrowsMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,196);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtThrowsMatcher</a>.</p></div>
 </div>
 
-<a name="ut_throws_too_many_args"></a><a name="Topic223"></a><div class="CTopic TFunction LJSL">
+<a name="ut_throws_too_many_args"></a><a name="Topic201"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut throws too many args</div>
- <div id="NDPrototype223" class="NDPrototype NoParameterForm">ut <span class="SHKeyword">throws</span> too many args()</div>
- <div class="CBody"><p>Equivalent to ut throws( &quot;too many arguments&quot; )</p><p>Factory function for <a href="../../index.html#File:Matchers/Throws.jsl:UtThrowsMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,218);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtThrowsMatcher</a>.</p></div>
+ <div id="NDPrototype201" class="NDPrototype NoParameterForm">ut <span class="SHKeyword">throws</span> too many args()</div>
+ <div class="CBody"><p>Equivalent to ut throws( &quot;too many arguments&quot; )</p><p>Factory function for <a href="../../index.html#File:Matchers/Throws.jsl:UtThrowsMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,196);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtThrowsMatcher</a>.</p></div>
 </div>
 
-<a name="ut_throws_name_unresolved"></a><a name="Topic224"></a><div class="CTopic TFunction LJSL last">
+<a name="ut_throws_name_unresolved"></a><a name="Topic202"></a><div class="CTopic TFunction LJSL last">
  <div class="CTitle">ut throws name unresolved</div>
- <div id="NDPrototype224" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut <span class="SHKeyword">throws</span> name unresolved(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">String&nbsp;</td><td class="PName last">var&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Equivalent to ut throws( &quot;Name Unresolved: var&quot; )</p><p>Factory function for <a href="../../index.html#File:Matchers/Throws.jsl:UtThrowsMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,218);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtThrowsMatcher</a>.</p></div>
+ <div id="NDPrototype202" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut <span class="SHKeyword">throws</span> name unresolved(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">String&nbsp;</td><td class="PName last">var&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Equivalent to ut throws( &quot;Name Unresolved: var&quot; )</p><p>Factory function for <a href="../../index.html#File:Matchers/Throws.jsl:UtThrowsMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,196);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtThrowsMatcher</a>.</p></div>
 </div>
 
 </body></html>
