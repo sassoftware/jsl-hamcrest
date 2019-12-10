@@ -1,0 +1,20 @@
+
+FileAppendingReporterTests = ut test case("FileAppendingReporter") 
+  <<Setup(Expr(
+    reporter path = "$temp/fileAppendingReporter.txt";
+    Delete File(reporter path);
+    reporter = ut file appending reporter(reporter path);
+  ));
+
+ut test(FileAppendingReporterTests, "FactoryFunction", Expr(
+  ut assert value(reporter, ut instance of("UtFileAppendingReporter"));
+));
+
+ut test(FileAppendingReporterTests, "CreatesFile", Expr(
+  ut assert value(File Exists(reporter path), 1);
+));
+
+ut test(FileAppendingReporterTests, "AddsFailuresToFile", Expr(
+  reporter << Add Failure("label", "test expr", "description", "mismatch", Empty());
+  ut assert value(File Size(reporter path), ut greater than(10));
+));
