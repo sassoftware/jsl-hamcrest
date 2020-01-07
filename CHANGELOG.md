@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - Initializing the addin with an already configured `ut global reporter` will preserve that reporter (#83).
 - `ut expression matches` now supports strings with children (#88)
 - `ut file appending reporter` factory function now works properly (#96).
+- `ut test` now saves and restores the current row number to better isolate tests (#97).
 
 ## [1.1.0]
 

@@ -390,6 +390,8 @@ ut define documented function(
 		
 		// get the symbols defined before running the test case
 		_utTestNS:before symbols = ::ut get symbol information();
+		// get the current row before running the test case
+		_utTestNS:before row = Row();
 		
 		_utTestNS:n asserts = 0;
 		_utTestNS:results = {};
@@ -517,6 +519,8 @@ ut define documented function(
 		
 		// delete the symbols that were added during the test
 		::ut delete symbols difference( _utTestNS:before symbols, _utTestNS:after symbols, 1 /* Close Windows */ );
+		// restore the current row in case it was changed
+		Row() = _utTestNS:before row;
 		
 		// Return whether or not all asserts passed
 		First( All( _utTestNS:results ), Delete Namespaces( Force( 1 ), _utTestNS ) );

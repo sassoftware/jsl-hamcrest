@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 // TODO: 
@@ -32,3 +32,35 @@ test case rc = with noop reporter( Expr(
 	);
 ));
 ut assert that( Expr( test case rc ), 0 );
+
+
+// Reset Row() after test
+Row() = 0;
+assert rc = with noop reporter( Expr(
+	ut test( "Reset Row", "To Unset", Expr(
+		Row() = 5;
+		ut assert that( Expr( Row() ), 5 );
+	))
+));
+ut assert that( Expr( assert rc ), 1, "Row set within test" );
+ut assert that( Expr( Row() ), 0, "Row restored to unset" );
+
+Row() = 101;
+assert rc = with noop reporter( Expr(
+	ut test( "Reset Row", "To Unset", Expr(
+		Row() = 5;
+		ut assert that( Expr( Row() ), 5 );
+	))
+));
+ut assert that( Expr( assert rc ), 1, "Row set within test" );
+ut assert that( Expr( Row() ), 101, "Row restored to set" );
+
+Row() = 201;
+assert rc = with noop reporter( Expr(
+	ut test( "Reset Row", "To Unset", Expr(
+		Row() = 0;
+		ut assert that( Expr( Row() ), 0 );
+	))
+));
+ut assert that( Expr( assert rc ), 1, "Row unset within test" );
+ut assert that( Expr( Row() ), 201, "Row restored to set" );
