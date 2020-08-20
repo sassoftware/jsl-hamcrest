@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - JunitXMLReporter now reports failures per test case instead of per assertion (#87, #77).
+- `UtFileAppendingReporter` has an optional argument to write successes
 
 ### Fixed
 
