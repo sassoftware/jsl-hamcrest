@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("JSLClass:UtLogBenchmark","UtLogBenchmark");NDSummary.OnSummaryLoaded("JSLClass:UtLogBenchmark",[["JSL","JSL"]],[["Classes","Class"]],[[351,0,0,"UtLogBenchmark"]]);
+NDFramePage.OnPageTitleLoaded("JSLClass:UtLogBenchmark","UtLogBenchmark");NDSummary.OnSummaryLoaded("JSLClass:UtLogBenchmark",[["JSL","JSL"]],[["Classes","Class"]],[[76,0,0,"UtLogBenchmark"]]);

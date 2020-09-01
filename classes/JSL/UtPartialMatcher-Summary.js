@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("JSLClass:UtPartialMatcher","UtPartialMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtPartialMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[5,0,0,"UtPartialMatcher"]]);
+NDFramePage.OnPageTitleLoaded("JSLClass:UtPartialMatcher","UtPartialMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtPartialMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[218,0,0,"UtPartialMatcher"]]);
