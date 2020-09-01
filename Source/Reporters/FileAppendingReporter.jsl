@@ -15,8 +15,9 @@ Define Class(
 	
 	filepath = "";
 	
-	_init_ = Method({filepath},
+	_init_ = Method({filepath, write successes},
 		this:filepath = filepath;
+		this:write successes = write successes;
 		Save Text File( filepath, "" );
 	);
 
@@ -51,6 +52,15 @@ Define Class(
 	
 	// Function: add success
 	add success = Method( {label, test expr, description, payload=Empty()},
+		shortDescription = If( Length( description ) > 40,
+			Left( description, 30 ) || " ...",
+			description
+		);
+
+		If(this:write successes,
+			success = Eval Insert( "\!NSUCCESS: ^Name Expr(test expr)^ ^shortDescription^ (^label^)" );
+			Save Text File( filepath, success, Mode( "Append" ) );
+		);
 		1;
 	);
 );
@@ -61,13 +71,14 @@ Define Class(
       Factory for <UtFileAppendingReporter>.
    
     Arguments:
-      file - filepath for output file 
+	  file - filepath for output file
+	  write successes - 1 to write successes to the file, 0 otherwise (default)
     
     Example:
     ---JSL---
     ut global reporter = ut file appending reporter( "$DESKTOP/report.txt" );
     ---------
 */
-ut file appending reporter = Function({file},
-	New Object( "UtFileAppendingReporter"( file ) );
+ut file appending reporter = Function({file, write successes=0},
+	New Object( "UtFileAppendingReporter"( file, write successes ) );
 );
