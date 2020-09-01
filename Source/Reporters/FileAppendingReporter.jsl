@@ -15,7 +15,7 @@ Define Class(
 	
 	filepath = "";
 	
-	_init_ = Method({filepath, write successes=0},
+	_init_ = Method({filepath, write successes},
 		this:filepath = filepath;
 		this:write successes = write successes;
 		Save Text File( filepath, "" );
@@ -52,7 +52,7 @@ Define Class(
 	
 	// Function: add success
 	add success = Method( {label, test expr, description, payload=Empty()},
-		if(this:write successes,
+		If(this:write successes,
 			success = Eval Insert( "\!NSUCCESS: ^Name Expr(test expr)^ ^description^ (^label^)" );
 			Save Text File( filepath, success, Mode( "Append" ) );
 		);
@@ -75,5 +75,5 @@ Define Class(
     ---------
 */
 ut file appending reporter = Function({file, write successes=0},
-	New Object( "UtFileAppendingReporter"( file, write successes) );
+	New Object( "UtFileAppendingReporter"( file, write successes ) );
 );
