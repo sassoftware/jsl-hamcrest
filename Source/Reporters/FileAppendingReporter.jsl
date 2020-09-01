@@ -52,8 +52,13 @@ Define Class(
 	
 	// Function: add success
 	add success = Method( {label, test expr, description, payload=Empty()},
+		shortDescription = If( Length( description ) > 40,
+			Left( description, 30 ) || " ...",
+			description
+		);
+
 		If(this:write successes,
-			success = Eval Insert( "\!NSUCCESS: ^Name Expr(test expr)^ ^description^ (^label^)" );
+			success = Eval Insert( "\!NSUCCESS: ^Name Expr(test expr)^ ^shortDescription^ (^label^)" );
 			Save Text File( filepath, success, Mode( "Append" ) );
 		);
 		1;
