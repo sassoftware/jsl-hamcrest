@@ -144,7 +144,7 @@ ut make reporter gui = Function({position},
 	Insert Into(reporters, ut busy reporter(busy));
 	Insert Into(reporters, ut timing reporter(timing));
 	Insert Into(reporters, ut details tree reporter(details));
-	reporter = ut composite reporter(reporters);
+	reporter = ut composite run reporter(reporters);
 	reporter:position = position;
 	Eval List({box, reporter})
 );

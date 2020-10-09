@@ -57,6 +57,31 @@ ut summary reporter = Function({box},
 	New Object( "UtSummaryReporter"( box ) )
 );
 
+/*
+	Class: UtCompositeRunReporter
+		---Prototype----
+		class UtCompositeRunReporter inherits UtCompositeReporter
+		----------------
+
+		This is just like UtCompositeReporter but with additional
+		on run start and on run end messages.
+*/
+Define Class("UtCompositeRunReporter",
+	Base Class( "UtCompositeReporter" ),
+	on run start = Method( {},
+		this:reporters << on run start()
+	);
+	on run end = Method( {},
+		this:reporters << on run end()
+	)
+);
+
+// Function: ut composite run reporter
+// Factory for <UtCompositeRunReporter>
+ut composite run reporter = Function({reporters},
+	New Object( "UtCompositeRunReporter"( reporters ) )
+);
+
 /* 
 	Class: UtWindowDispatchingReporter
 		---Prototype---
