@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("JSLClass:UtCompositeRunReporter","UtCompositeRunReporter");NDSummary.OnSummaryLoaded("JSLClass:UtCompositeRunReporter",[["JSL","JSL"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"]],[[17,0,0,"UtCompositeRunReporter"],[18,0,2,"Functions","Functions"],[19,0,1,"ut composite run reporter","ut_composite_run_reporter"]]);
