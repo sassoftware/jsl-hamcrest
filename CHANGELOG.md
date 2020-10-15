@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ## [HEAD]
 
+## [1.2.0]
+
 ### Added
 
 - Custom functions for matcher, assertion, test, and test case functions with examples in the Scripting Index and hover help (#58 #64).
