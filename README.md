@@ -216,8 +216,8 @@ ut on thursday = Function( {},
 See [Semantic Versioning](semver.org) for details on version numbers.
 
 1. Check `CHANGELOG.md`, `addin.def`, and `Source/DevAddin/addin.def` for correct (current) version number.
-2. Build the documentation.
-3. Zip up the entire repository with `addin.def` at the root (don't include the `.git` folder).
+2. Build the documentation and remove `Working Data` folder.
+3. Zip up the entire repository with `addin.def` at the root (don't include the `.git` or `.github` folder).
 4. Rename the zip file as `JSL-Hamcrest-v<MAJOR>.<MINOR>.<PATCH>.jmpaddin`.
 5. Zip up the `Source/DevAddin` folder with its `addin.def` at the root.
 6. Rename the zip file as `JSL-Hamcrest-Dev-v<MAJOR>.<MINOR>.<PATCH>.jmpaddin`.
