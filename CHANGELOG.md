@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file.
 
 ## [HEAD]
 
+### Added
+
+- `ut localized` to enable localizing content using an associative array and language codes.
+
+### Changed
+
+- Convenience `ut throws` helper functions now use `ut localize` to assert using the current languages error message.
+
 ## [1.2.0]
 
 ### Added

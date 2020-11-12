@@ -120,3 +120,13 @@ ut test( "Utils", "DeleteSymbolsDifferenceDeletesNamespaces", Expr(
     after delete = ut get symbol information();
     ut assert that( Expr( after delete["namespaces"] ), ut not( ut contains( ns << Get Name ) ) );
 ));
+
+ut test( "Utils", "Localize", Expr(
+	aa = ["en" => "Hello", "es" => "Hola"];
+    ut assert that( Expr( ut localize(aa, "en") ), "Hello");
+    ut assert that( Expr( ut localize(aa, "es") ), "Hola");
+    ut assert that( Expr( ut localize(aa, "fr") ), "Hello");
+    ut assert that( Expr( ut localize([=>], "en") ), ut throws("\[Language "en" not found in [=>]]\"));
+    ut assert that( Expr( ut localize([=>], "fr") ), ut throws("\[Language "fr" and "en" not found in [=>]]\"));
+));
+
