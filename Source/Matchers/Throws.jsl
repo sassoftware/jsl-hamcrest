@@ -83,7 +83,7 @@ ut matcher factory(
 						 "es" => "El valor del argumento no es válido.",
 						 "fr" => "la valeur de l'argument est incorrecte",
 						 "it" => "il valore dell'argomento non è valido",
-						 "ja" => "引数の値が無効です。。",
+						 "ja" => "引数の値が無効です。",
 						 "ko" => "인수 값이 올바르지 않습니다.",
 						 "zh-CN" => "参数值无效"])
 		)))

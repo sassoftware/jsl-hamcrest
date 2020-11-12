@@ -695,8 +695,8 @@ ut delete symbols difference = Function({before, after, closeWindows=0},
 );
 
 // Variable: ut lang
-// Code for the current language (en, de, es, fr, it, ja, ko, zh-CN)
-ut lang = System Service(Get Language Code);
+// Expression to get the code for the current language (en, de, es, fr, it, ja, ko, zh-CN)
+ut lang = Expr(System Service(Get Language Code));
 
 /*	Function: ut localize
 		Returns a string from the input associative array
