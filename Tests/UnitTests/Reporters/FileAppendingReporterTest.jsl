@@ -2,7 +2,7 @@
 FileAppendingReporterTests = ut test case("FileAppendingReporter") 
   <<Setup(Expr(
     reporter path = "$temp/fileAppendingReporter.txt";
-    Delete File(reporter path);
+    Try(Delete File(reporter path));
     reporter = ut file appending reporter(reporter path);
   ));
 
