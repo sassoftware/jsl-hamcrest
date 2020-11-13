@@ -123,10 +123,10 @@ ut test( "Utils", "DeleteSymbolsDifferenceDeletesNamespaces", Expr(
 
 UtilsLocalizeTests = ut test case("UtilsLocalize")
 	<<Setup(Expr(
-		lang = ut lang;
+		lang = Name Expr(ut lang);
 		aa = ["en" => "Hello", "es" => "Hola"];
 	))
-	<<Teardown(Expr(ut lang = lang));
+	<<Teardown(Expr(ut lang = Name Expr(lang)));
 
 ut test( UtilsLocalizeTests, "ut lang", Expr(
     ut lang = "en";
