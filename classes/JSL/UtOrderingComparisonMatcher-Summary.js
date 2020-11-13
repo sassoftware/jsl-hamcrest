@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("JSLClass:UtOrderingComparisonMatcher","UtOrderingComparisonMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtOrderingComparisonMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[180,0,0,"UtOrderingComparisonMatcher"]]);
+NDFramePage.OnPageTitleLoaded("JSLClass:UtOrderingComparisonMatcher","UtOrderingComparisonMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtOrderingComparisonMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[72,0,0,"UtOrderingComparisonMatcher"]]);

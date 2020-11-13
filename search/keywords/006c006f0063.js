@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("loc",["Function"],[["localize",,[[,"ut localize",,,0,"File:Core/Utils.jsl:ut_localize"]]]]);

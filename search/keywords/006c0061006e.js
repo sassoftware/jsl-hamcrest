@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("lan",["Variable"],[["lang",,[[,"ut lang",,,0,"File:Core/Utils.jsl:ut_lang"]]]]);
