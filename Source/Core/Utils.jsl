@@ -699,8 +699,20 @@ ut delete symbols difference = Function({before, after, closeWindows=0},
 ut lang = Expr(System Service(Get Language Code));
 
 /*	Function: ut localize
+	---Prototype---
+	ut localize( AssociativeArray aa, String lang ) 
+	---------------
 		Returns a string from the input associative array
 		based on the current language code
+	
+	Arguments:
+		aa - associative array with mappings from language code to value.
+		lang - language code to get. defaults to current language code.
+	
+	Example:
+	---JSL---
+	ut localize(["en" => "Hello", "es" => "Hola"]);
+	---------
 */
 ut localize = Function({aa, lang = ut lang},
 	If(!(aa << Contains(lang)), 
