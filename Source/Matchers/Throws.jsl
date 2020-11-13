@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here( 0 );
@@ -77,7 +77,16 @@ ut matcher factory(
 ut matcher factory( 
 	"ut throws invalid arg",
 	Expr(Function({},
-		New Object( UtThrowsMatcher( ut equal to( "argument value is invalid" ) ) )
+		New Object( UtThrowsMatcher( ut equal to( 
+			ut localize(["en" => "argument value is invalid", 
+						 "de" => "Argumentwert ist ungültig", 
+						 "es" => "El valor del argumento no es válido.",
+						 "fr" => "la valeur de l'argument est incorrecte",
+						 "it" => "il valore dell'argomento non è valido",
+						 "ja" => "引数の値が無効です。",
+						 "ko" => "인수 값이 올바르지 않습니다.",
+						 "zh-CN" => "参数值无效"])
+		)))
 	)),
 	"ut throws invalid arg()",
 	"\[Equivalent to ut throws( "argument value is invalid" )]\"
@@ -95,7 +104,16 @@ ut matcher factory(
 ut matcher factory( 
 	"ut throws too many args",
 	Expr(Function({},
-		New Object( UtThrowsMatcher( ut equal to( "too many arguments" ) ) )
+		New Object( UtThrowsMatcher( ut equal to( 
+			ut localize(["en" => "too many arguments", 
+						 "de" => "Zu viele Argumente", 
+						 "es" => "demasiados argumentos",
+						 "fr" => "trop d'arguments",
+						 "it" => "troppi argomenti",
+						 "ja" => "引数が多すぎます。",
+						 "ko" => "인수가 너무 많습니다.",
+						 "zh-CN" => "参数过多"])
+		)))
 	)),
 	"ut throws too many args()",
 	"\[Equivalent to ut throws( "too many arguments" )]\"
@@ -113,7 +131,16 @@ ut matcher factory(
 ut matcher factory( 
 	"ut throws name unresolved",
 	Expr(Function({var},
-		New Object( UtThrowsMatcher( ut equal to( "Name Unresolved: " || var ) ) )
+		New Object( UtThrowsMatcher( ut equal to( 
+			ut localize(["en" => "Name Unresolved: ", 
+						 "de" => "Name nicht aufgelöst: ", 
+						 "es" => "No se puede resolver el nombre: ",
+						 "fr" => "Nom non résolu : ",
+						 "it" => "Nome non risolto: ",
+						 "ja" => "名前が解決できません: ",
+						 "ko" => "확인되지 않은 이름: ",
+						 "zh-CN" => "未解析名称: "]) || var
+		)))
 	)),
 	"ut throws name unresolved( variable name )",
 	"\[Equivalent to ut throws( "Name Unresolved: var" )]\",

@@ -120,3 +120,30 @@ ut test( "Utils", "DeleteSymbolsDifferenceDeletesNamespaces", Expr(
     after delete = ut get symbol information();
     ut assert that( Expr( after delete["namespaces"] ), ut not( ut contains( ns << Get Name ) ) );
 ));
+
+UtilsLocalizeTests = ut test case("UtilsLocalize")
+	<<Setup(Expr(
+		lang = Name Expr(ut lang);
+		aa = ["en" => "Hello", "es" => "Hola"];
+	))
+	<<Teardown(Expr(ut lang = Name Expr(lang)));
+
+ut test( UtilsLocalizeTests, "ut lang", Expr(
+    ut lang = "en";
+    ut assert that( Expr( ut localize(aa) ), "Hello");
+    ut lang = "es";
+    ut assert that( Expr( ut localize(aa) ), "Hola");
+    ut lang = "fr";
+    ut assert that( Expr( ut localize(aa) ), "Hello");
+));
+
+ut test( UtilsLocalizeTests, "lang arg", Expr(
+    ut assert that( Expr( ut localize(aa, "en") ), "Hello"); 
+    ut assert that( Expr( ut localize(aa, "es") ), "Hola");
+    ut assert that( Expr( ut localize(aa, "fr") ), "Hello");
+));
+
+ut test( "UtilsLocalize", "not found error", Expr(
+    ut assert that( Expr( ut localize([=>], "en") ), ut throws("\[Language "en" not found in [=>]]\"));
+    ut assert that( Expr( ut localize([=>], "fr") ), ut throws("\[Language "fr" and "en" not found in [=>]]\"));
+));
