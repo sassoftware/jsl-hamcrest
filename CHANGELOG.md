@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - `ut localized` to enable localizing content using an associative array and language codes.
+- `ut mock function`, `ut expect call`, and `ut verify mock` for testing callbacks
 
 ### Changed
 
