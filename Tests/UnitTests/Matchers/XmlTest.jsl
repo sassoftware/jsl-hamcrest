@@ -18,13 +18,35 @@ ut test( ValidXmlMatcher, "Describe", Expr(
 ut test( ValidXmlMatcher, "ClosingWithoutOpeningIsDetected", Expr(
 	mi = m << Matches("<foo></bar>");
 	ut assert that( Expr( mi:success ), 0);
-	ut assert that( Expr( mi:mismatch ), ut ignoring whitespace("was invalid with Invalid XML: Non-matching end tag encountered."));
+	ut assert that( Expr( mi:mismatch ), 
+		ut ignoring whitespace("was invalid with " || 
+			ut localize(["en" => "Invalid XML: Non-matching end tag encountered.",
+					     "de" => "XML ungültig: Nicht übereinstimmendes Ende-Tag.",
+					     "es" => "XML no válido: Se ha encontrado una etiqueta final no coincidente.",
+					     "fr" => "XML incorrect : Balise de fin incohérente détectée.",
+					     "it" => "XML non valido: Trovato tag finale non corrispondente.",
+					     "ja" => "無効なXML: 終了タグがマッチしません。",
+					     "ko" => "올바르지 않은 XML: 매칭되지 않는 종료 태그가 있습니다.",
+					     "zh-CN" => "无效的 XML: 遇到不匹配项结束标记。"])
+		)			     	
+	);
 ));
 
 ut test( ValidXmlMatcher, "MalformedAttributeIsDetected", Expr(
 	mi = m << Matches("<foo a></foo>");
 	ut assert that( Expr( mi:success ), 0);
-	ut assert that( Expr( mi:mismatch ), ut ignoring whitespace("was invalid with Invalid XML: Missing \!"=\!"."));
+	ut assert that( Expr( mi:mismatch ), 
+		ut ignoring whitespace("was invalid with " || 
+			ut localize(["en" => "Invalid XML: Missing \!"=\!".",
+					     "de" => "XML ungültig: „=“ fehlt.",
+					     "es" => "XML no válido: Falta \!"=\!".",
+					     "fr" => "XML incorrect : \!"=\!" manquant.",
+					     "it" => "XML non valido: \!"=\!" mancante.",
+					     "ja" => "無効なXML: \!"=\!"がありません。",
+					     "ko" => "올바르지 않은 XML: \!"=\!"가 없습니다.",
+					     "zh-CN" => "无效的 XML: 缺失“=”。"])
+		)			     	
+	);
 ));
 
 ut test( ValidXmlMatcher, "XmlCanHaveAttributes", Expr(
