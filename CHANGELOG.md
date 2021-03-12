@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ## [HEAD]
 
+### Changed
+
+- Avoid potential collision with builtin functions in `UtSizeMatcher` (#109)
+
 ## [1.2.0]
 
 ### Added
