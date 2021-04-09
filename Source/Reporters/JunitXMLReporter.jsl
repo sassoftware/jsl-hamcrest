@@ -49,6 +49,19 @@ Define Class(
   // Variable: n unexpected throws
   n unexpected throws = 0;
 
+  base dir = "";
+
+  _init_ = Method({base dir},
+    
+    this:base dir = If( length(base dir) != 1,
+                        // Remove any separators
+                        Substitute( base dir, "\", "", "/", "" )
+                      , // special case for "/" or "\" to get a full path
+                        base dir
+                    );
+
+  );
+
   /*
   Method: add to hash
 
@@ -75,6 +88,33 @@ Define Class(
     );
   );
 
+  /*
+  Method: get file path
+
+  ---Prototype---
+  get file path()
+  ---------------
+  Gets the file path that the test came from.
+  The path will be relative to the base dir if provided.
+  */
+  get file path = Method( {},
+    full path = Convert File Path( Include File List()[1] );
+    If( this:base dir == "/" | this:base dir == "\",
+      Return(full path)
+    );
+    dirs = Words( full path, "/\");
+    path start = Contains( dirs, this:base dir );
+    If( path start,
+      path = dirs[path start];
+      For( i = path start + 1, i <= NItems(dirs), i++,
+        path ||= "/" || dirs[i]
+      );
+      Return( path );
+    ,
+      Return( Word( -1, full path, "/\" ) );
+    );
+  );
+
   // Function: add expression failure
   add expression failure = Method( {label, payload=Empty()},
       add failure( label, "test expr", "is an expression", "was not an expression", Empty(), Name Expr( payload ) );
@@ -86,7 +126,6 @@ Define Class(
       Char( Name Expr( test expr ) ),
       Char( test expr )
     ) || " ";
-    file_name = Word( -1, Include File List()[1], "/\"); // TODO: get file name relative to some base directory (optional)
     parsed_label = this:parse_label(label);
     curr_suite = parsed_label[1];
     curr_test = parsed_label[2];
@@ -94,7 +133,7 @@ Define Class(
     fail_msg ||= "But: " || mismatch || "\!n" ;
     fail_msg = Trim(fail_msg);
     fail_hash = Associative Array(Eval List({"failure"}), Eval List({fail_msg}));
-    fail_hash["@file"] = file_name;
+    fail_hash["@file"] = get file path();
     this:add to hash(curr_suite, curr_test, fail_hash);
     this:n failures++;
     0;
@@ -106,7 +145,6 @@ Define Class(
       Char( Name Expr( test expr ) ),
       Char( test expr )
     ) || " ";
-    file_name = Word( -1, Include File List()[1], "/\");
     parsed_label = this:parse_label(label);
     curr_suite = parsed_label[1];
     curr_test = parsed_label[2];
@@ -117,7 +155,7 @@ Define Class(
     );
     throw_msg = Trim(throw_msg);
     throw_hash = Associative Array(Eval List({"failure"}), Eval List({throw_msg}));
-    throw_hash["@file"] = file_name;
+    throw_hash["@file"] = get file path();
     this:add to hash(curr_suite, curr_test, throw_hash);
     this:n unexpected throws++;
     0;
@@ -125,13 +163,12 @@ Define Class(
 
   // Function: add success
   add success = Method( {label, test expr, description, payload=Empty()},
-    file_name = Word( -1, Include File List()[1], "/\");
     parsed_label = this:parse_label(label);
     curr_suite = parsed_label[1];
     curr_test = parsed_label[2];
     // empty for a success
     success_hash = Associative Array();
-    success_hash["@file"] = file_name;
+    success_hash["@file"] = get file path();
     this:add to hash(curr_suite, curr_test, success_hash);
     this:n successes++;
     1;
@@ -338,8 +375,22 @@ Define Class(
   );
 );
 
-// Function: ut JunitXML reporter
-//  Factory for <UtJunitXMLReporter>.
-ut junit xml reporter = Function({},
-  New Object( "UtJunitXMLReporter" );
+/*  Function: ut junit xml reporter
+      Reporter which appends failures as they happen to an output file.
+
+      Factory for <UtJUnitXMLReporter>.
+
+    Arguments:
+      base dir - Directory that the test file names will be relative to
+                 in the file attribute of testcase tags.
+
+    Example:
+    With test files in test/A/ and test/B/
+    ---JSL---
+    ut global reporter = ut junit xml reporter( "test/" );
+    ---------
+    will give file attributes like "test/A/A_test1.jsl", "test/B/B_test1.jsl", etc.
+*/
+ut junit xml reporter = Function({ base path="" },
+  New Object( "UtJunitXMLReporter"( base path ) );
 );
