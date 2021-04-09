@@ -33,7 +33,104 @@ Example of JunitXML format:
 
 Define Class(
   "UtJunitXMLReporter",
-  Base Class( UtCollectingReporter ),
+  Base Class( "UtReporter" ),
+
+  // Variable: hash_results
+  // associative array of the test results
+  // test suite => test case => successes, failures, throws
+  hash_results = [=>Associative Array()];
+
+  // Variable: n successes
+  n successes = 0;
+
+  // Variable: n failures
+  n failures = 0;
+
+  // Variable: n unexpected throws
+  n unexpected throws = 0;
+
+  /*
+  Method: add to hash
+
+  ---Prototype---
+  add to hash(curr_suite, curr_test, result)
+  ---------------
+  Adds the result of a test to hash_results
+
+  Arguments:
+    curr_suite - the name of the test suite
+    curr_test - the name of the test
+    result - the result of the test
+  */
+  add to hash = Method({curr_suite, curr_test, result},
+    If(Contains(this:hash_results << get keys, curr_suite),
+      If(Contains(this:hash_results[curr_suite] << get keys, curr_test),
+        Insert Into(this:hash_results[curr_suite][curr_test], result);
+        ,
+        this:hash_results[curr_suite][curr_test] = Eval List({result});
+      )
+      ,
+      result_list = Eval List({result});
+      this:hash_results[curr_suite] = Associative Array(Eval List({curr_test}), Eval List({result_list}));
+    );
+  );
+
+  // Function: add expression failure
+  add expression failure = Method( {label, payload=Empty()},
+      add failure( label, "test expr", "is an expression", "was not an expression", Empty(), Name Expr( payload ) );
+  );
+
+  // Function: add failure
+  add failure = Method( {label, test expr, description, mismatch, lre, payload=Empty()},
+    char test expr = If( Is Expr( Name Expr( test expr ) ),
+      Char( Name Expr( test expr ) ),
+      Char( test expr )
+    ) || " ";
+
+    parsed_label = this:parse_label(label);
+    curr_suite = parsed_label[1];
+    curr_test = parsed_label[2];
+    fail_msg = "Expected: " || char test expr || description || "\!n";
+    fail_msg ||= "But: " || mismatch || "\!n" ;
+    fail_msg = Trim(fail_msg);
+    fail_hash = Associative Array(Eval List({"failure"}), Eval List({fail_msg}));
+    this:add to hash(curr_suite, curr_test, fail_hash);
+    this:n failures++;
+    0;
+  );
+
+  // Function: add unexpected throw
+  add unexpected throw = Method( {label, test expr, description, exception, payload=Empty()},
+    char test expr = If( Is Expr( Name Expr( test expr ) ),
+      Char( Name Expr( test expr ) ),
+      Char( test expr )
+    ) || " ";
+    parsed_label = this:parse_label(label);
+    curr_suite = parsed_label[1];
+    curr_test = parsed_label[2];
+    throw_msg = "  Expected: " || char test expr || description || "\!n";
+    If( Is Empty( exception ),
+      throw_msg ||= "But: " || "unexpectedly threw nothing\!n",
+      throw_msg ||= "But: " || "unexpectedly threw \!"" || exception || "\!"\!n";
+    );
+    throw_msg = Trim(throw_msg);
+    throw_hash = Associative Array(Eval List({"failure"}), Eval List({throw_msg}));
+    this:add to hash(curr_suite, curr_test, throw_hash);
+    this:n unexpected throws++;
+    0;
+  );
+
+  // Function: add success
+  add success = Method( {label, test expr, description, payload=Empty()},
+    parsed_label = this:parse_label(label);
+    curr_suite = parsed_label[1];
+    curr_test = parsed_label[2];
+    // empty for a success
+    success_hash = Associative Array();
+    this:add to hash(curr_suite, curr_test, success_hash);
+    this:n successes++;
+    1;
+  );
 
   /*
   Method: generate_xml_tag
@@ -175,8 +272,8 @@ Define Class(
     props = Associative Array();
     date = today();
     props["id"] = format(date, "yyyymmdd" ) || "_" || Char(Hour(date)) || Char(Minute(date)) || Char(Second(date));
-    props["tests"] = Char(Nitems(this:successes) + NItems(this:failures) + NItems(this:unexpected throws));
-    props["failures"] = Char(NItems(this:failures) + NItems(this:unexpected throws));
+    props["tests"] = Char(this:n successes + this:n failures + this:n unexpected throws);
+    props["failures"] = Char(this:n failures + this:n unexpected throws);
 
     xml_result = start_line || this:generate_xml_tag("testsuites", trim(content), props, 0);
     Return(xml_result);
@@ -188,16 +285,14 @@ Define Class(
   //
   // Arguments: 
   //  label - A label separated by a separator
-  //  hash_results - Associative Array with test suites as keys and associative arrays with test cases as keys as values
   // 
   // Results:
   //  The label split by the separator. The second and third values will be joined by an _
   //  The first element will be the suite name and the second will be the test name
   //  If the given label is "", current suite is named "Anonymous_Test_Suite",
   //  and the test will be the given label or "Anonymous_Test_Name"
-  //  with one higher than the latest number found in the hash_results
 
-  parse_label = Method({label, hash_results},
+  parse_label = Method({label},
     list_label = words(label, ::ut concat test label sep);
 
     // set to anonymous test name if missing
@@ -216,104 +311,18 @@ Define Class(
       1,
       curr_suite = "Anonymous_Test_Suite";
       curr_test = list_label[1];
-
-      // need to increase the number
-      anonymous_test_suite = hash_results["Anonymous_Test_Suite"];
-      anonymous_test_cases = anonymous_test_suite << get keys;
     );
     Return(Eval List(List(curr_suite, curr_test)));
   );
-  
+
   // Method: get report
   //
   // Get a report detailing all the successes and
   // failures for each test in JunitXML format shown in the comments at the top.
   get report = Method( {},
-    num successes = Length( this:successes );
-    num failures = Length( this:failures );
-    num unexpected throws = Length( this:unexpected throws );
-    hash_results = [=>Associative Array()];
-
-    For( i = 1, i <= num successes, i++,
-      char test expr = If( Is Expr( Name Expr( this:successes[i][2] ) ),
-        Char( Name Expr( this:successes[i][2] ) ),
-        Char( this:successes[i][2] )
-      ) || " ";
-      parsed_label = this:parse_label(this:successes[i][1], hash_results);
-      curr_suite = parsed_label [1];
-      curr_test = parsed_label[2];
-      // empty for a success
-      success_hash = Associative Array();
-      If(Contains(hash_results << get keys, curr_suite),
-        If(Contains(hash_results[curr_suite] << get keys, curr_test),
-          Insert Into(hash_results[curr_suite][curr_test], success_hash);
-          ,
-          hash_results[curr_suite][curr_test] = Eval List({success_hash});
-        )
-        ,
-        success_hash_list = Eval List({success_hash});
-        hash_results[curr_suite] = Associative Array(Eval List({curr_test}), Eval List({success_hash_list}));
-      );
-    );
-
-    // associative array of the test results
-    // test suite => test case => successes, failures, throws
-    
-    For( i = 1, i <= num failures, i++,
-      char test expr = If( Is Expr( Name Expr( this:failures[i][2] ) ),
-        Char( Name Expr( this:failures[i][2] ) ),
-        Char( this:failures[i][2] )
-      ) || " ";
-
-      parsed_label = this:parse_label(this:failures[i][1], hash_results);
-      curr_suite = parsed_label [1];
-      curr_test = parsed_label[2];
-      fail_msg = "Expected: " || char test expr || this:failures[i][3] || "\!n";
-      fail_msg ||= "But: " || this:failures[i][4] || "\!n" ;
-      fail_msg = Trim(fail_msg);
-      fail_hash = Associative Array(Eval List({"failure"}), Eval List({fail_msg}));
-      If(Contains(hash_results << get keys, curr_suite),
-        If(Contains(hash_results[curr_suite] << get keys, curr_test),
-          Insert Into(hash_results[curr_suite][curr_test], fail_hash);
-          ,
-          hash_results[curr_suite][curr_test] = Eval List({fail_hash});
-        )
-        ,
-        fail_hash_list = Eval List({fail_hash});
-        hash_results[curr_suite] = Associative Array(Eval List({curr_test}), Eval List({fail_hash_list}));
-      );
-    );
-
-    For( i = 1, i <= num unexpected throws, i++,
-      char test expr = If( Is Expr( Name Expr( this:unexpected throws[i][2] ) ),
-        Char( Name Expr( this:unexpected throws[i][2] ) ),
-        Char( this:unexpected throws[i][2] )
-      ) || " ";
-      parsed_label = this:parse_label(this:unexpected throws[i][1], hash_results);
-      curr_suite = parsed_label [1];
-      curr_test = parsed_label[2];
-      throw_msg = "  Expected: " || char test expr || this:unexpected throws[i][3] || "\!n";
-      If( Is Empty( this:unexpected throws[i][4] ),
-        throw_msg ||= "But: " || "unexpectedly threw nothing\!n",
-        throw_msg ||= "But: " || "unexpectedly threw \!"" || this:unexpected throws[i][4] || "\!"\!n";
-      );
-      throw_msg = Trim(throw_msg);
-      throw_hash = Associative Array(Eval List({"failure"}), Eval List({throw_msg}));
-      If(Contains(hash_results << get keys, curr_suite),
-        If(Contains(hash_results[curr_suite] << get keys, curr_test),
-          Insert Into(hash_results[curr_suite][curr_test], throw_hash);
-          ,
-          hash_results[curr_suite][curr_test] = Eval List({throw_hash});
-        )
-        ,
-        throw_hash_list = Eval List({ throw_hash});
-        hash_results[curr_suite] = Associative Array(Eval List({curr_test}), Eval List({ throw_hash_list}));
-      );
-
-    );
-    this:get_xml_report(hash_results);
+    this:get_xml_report(this:hash_results)
   );
-  
+
   // Method: show report
   //
   // Dump a report to the log detailing all the successes and

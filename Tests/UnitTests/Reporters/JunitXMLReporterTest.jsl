@@ -148,7 +148,7 @@ ut test( JunitXMLReporters, "JunitXMLReporter one simple passing", Expr(
 	     ut assert that(Expr(1+1), ut equal to (2));
 	   ));
 	));
-	ut assert that(Expr(reporter << successes), ut equal to ({{"Simple Pass ⮚ One plus one equals two ⮚ 1", 1 + 1, "equal to 2", Empty()}}));
+	ut assert that(Expr(reporter << n successes), ut equal to (1));
 	pattern = 
 	"\[<\?xml version="1.0" encoding="UTF-8" \?>
 	<testsuites failures="0" id="\d+_\d+" tests="1">
@@ -179,7 +179,7 @@ ut test( JunitXMLReporters, "JunitXMLReporter one simple failing", Expr(
 	    ));
 	));
 	
-	ut assert that(Expr(reporter << failures), ut equal to ({{"Simple Fail ⮚ One plus one equals one ⮚ 1", 1 + 1, "equal to 1", "was 2", 0, Empty()}}));
+	ut assert that(Expr(reporter << n failures), ut equal to (1));
 	
 	pattern = 
 	"\[<\?xml version="1.0" encoding="UTF-8" \?>
