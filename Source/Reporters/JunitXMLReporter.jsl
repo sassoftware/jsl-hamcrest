@@ -257,6 +257,7 @@ Define Class(
 
         );
         props = Associative Array();
+        props["classname"] = test_suites[i];
         props["name"] = test_case_names[k];
         test_case_xml ||= this:generate_xml_tag("testcase", trim(test_case_content), props, 0);
         
