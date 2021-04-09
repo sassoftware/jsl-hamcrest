@@ -86,7 +86,7 @@ Define Class(
       Char( Name Expr( test expr ) ),
       Char( test expr )
     ) || " ";
-
+    file_name = Word( -1, Include File List()[1], "/\"); // TODO: get file name relative to some base directory (optional)
     parsed_label = this:parse_label(label);
     curr_suite = parsed_label[1];
     curr_test = parsed_label[2];
@@ -94,6 +94,7 @@ Define Class(
     fail_msg ||= "But: " || mismatch || "\!n" ;
     fail_msg = Trim(fail_msg);
     fail_hash = Associative Array(Eval List({"failure"}), Eval List({fail_msg}));
+    fail_hash["@file"] = file_name;
     this:add to hash(curr_suite, curr_test, fail_hash);
     this:n failures++;
     0;
@@ -105,6 +106,7 @@ Define Class(
       Char( Name Expr( test expr ) ),
       Char( test expr )
     ) || " ";
+    file_name = Word( -1, Include File List()[1], "/\");
     parsed_label = this:parse_label(label);
     curr_suite = parsed_label[1];
     curr_test = parsed_label[2];
@@ -115,6 +117,7 @@ Define Class(
     );
     throw_msg = Trim(throw_msg);
     throw_hash = Associative Array(Eval List({"failure"}), Eval List({throw_msg}));
+    throw_hash["@file"] = file_name;
     this:add to hash(curr_suite, curr_test, throw_hash);
     this:n unexpected throws++;
     0;
@@ -122,11 +125,13 @@ Define Class(
 
   // Function: add success
   add success = Method( {label, test expr, description, payload=Empty()},
+    file_name = Word( -1, Include File List()[1], "/\");
     parsed_label = this:parse_label(label);
     curr_suite = parsed_label[1];
     curr_test = parsed_label[2];
     // empty for a success
     success_hash = Associative Array();
+    success_hash["@file"] = file_name;
     this:add to hash(curr_suite, curr_test, success_hash);
     this:n successes++;
     1;
@@ -238,27 +243,27 @@ Define Class(
       num_successes = 0;
       For(k=1, k<=NItems(test_case_names), k++,
 
-        info_types = test_case_info[k] << get keys;
-        
         test_case_content = "";
         For(l=1, l<=NItems(test_case_info[k]), l++,
           num_tests += 1;
-          info_types = test_case_info[k][l] << get keys;
-          // case for a success
-          If(Nitems(info_types) == 0,
+          results = test_case_info[k][l];
+          // TODO: add error case
+          If(contains(results, "failure"),
+            result = "failure"
+          , // case for a success
             num_successes += 1;
             Continue();
           );
-          info_type = info_types[1];
           props = Associative Array();
-          props["type"] = info_type;
-          failure_content = this:generate_xml_tag("failure", test_case_info[k][l][info_type], props);
+          props["type"] = result; // TODO: should be type of assert/ type of error
+          failure_content = this:generate_xml_tag(result, test_case_info[k][l][result], props);
           test_case_content ||= failure_content;
 
         );
         props = Associative Array();
         props["classname"] = test_suites[i];
         props["name"] = test_case_names[k];
+        props["file"] = test_case_info[k][1]["@file"]; // File is same across asserts so get 1st one
         test_case_xml ||= this:generate_xml_tag("testcase", trim(test_case_content), props, 0);
         
       );
