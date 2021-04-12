@@ -154,7 +154,7 @@ Define Class(
       throw_msg ||= "But: " || "unexpectedly threw \!"" || exception || "\!"\!n";
     );
     throw_msg = Trim(throw_msg);
-    throw_hash = Associative Array(Eval List({"failure"}), Eval List({throw_msg}));
+    throw_hash = Associative Array(Eval List({"error"}), Eval List({throw_msg}));
     throw_hash["@file"] = get file path();
     this:add to hash(curr_suite, curr_test, throw_hash);
     this:n unexpected throws++;
@@ -284,15 +284,16 @@ Define Class(
         For(l=1, l<=NItems(test_case_info[k]), l++,
           num_tests += 1;
           results = test_case_info[k][l];
-          // TODO: add error case
-          If(contains(results, "failure"),
-            result = "failure"
+          If( Contains( results, "failure" ),
+              result = "failure";
+          , Contains( results, "error" ),
+              result = "error";
           , // case for a success
-            num_successes += 1;
-            Continue();
+              num_successes += 1;
+              Continue();
           );
           props = Associative Array();
-          props["type"] = result; // TODO: should be type of assert/ type of error
+          props["type"] = result;
           failure_content = this:generate_xml_tag(result, test_case_info[k][l][result], props);
           test_case_content ||= failure_content;
 
