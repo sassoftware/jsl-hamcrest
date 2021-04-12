@@ -107,10 +107,7 @@ Define Class(
     dirs = Words( full path, "/\");
     path start = Contains( dirs, this:base dir );
     If( path start,
-      path = dirs[path start];
-      For( i = path start + 1, i <= NItems(dirs), i++,
-        path ||= "/" || dirs[i]
-      );
+      Return( Concat Items( dirs[path start::NItems(dirs)], "/" ) );
       Return( path );
     ,
       Return( Word( -1, full path, "/\" ) );
