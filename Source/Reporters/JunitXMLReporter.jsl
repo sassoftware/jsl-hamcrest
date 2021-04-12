@@ -277,7 +277,8 @@ Define Class(
       test_case_info = test_cases << get values;
       test_case_xml = "";
       num_tests = 0;
-      num_successes = 0;
+      num_failures = 0;
+      num_errors = 0;
       For(k=1, k<=NItems(test_case_names), k++,
 
         test_case_content = "";
@@ -286,10 +287,11 @@ Define Class(
           results = test_case_info[k][l];
           If( Contains( results, "failure" ),
               result = "failure";
+              num_failures += 1
           , Contains( results, "error" ),
               result = "error";
+              num_errors += 1
           , // case for a success
-              num_successes += 1;
               Continue();
           );
           props = Associative Array();
@@ -308,7 +310,8 @@ Define Class(
       props = Associative Array();
       props["name"] = test_suites[i];
       props["tests"] = Char(num_tests);
-      props["failures"] = Char(num_tests-num_successes);
+      props["failures"] = Char(num_failures);
+      props["errors"] = Char(num_errors);
       test_suite_tag = this:generate_xml_tag("testsuite", trim(test_case_xml), props, 0);
       content ||= test_suite_tag;
     );
@@ -317,7 +320,8 @@ Define Class(
     date = today();
     props["id"] = format(date, "yyyymmdd" ) || "_" || Char(Hour(date)) || Char(Minute(date)) || Char(Second(date));
     props["tests"] = Char(this:n successes + this:n failures + this:n unexpected throws);
-    props["failures"] = Char(this:n failures + this:n unexpected throws);
+    props["failures"] = Char(this:n failures);
+    props["errors"] = Char(this:n unexpected throws);
 
     xml_result = start_line || this:generate_xml_tag("testsuites", trim(content), props, 0);
     Return(xml_result);
