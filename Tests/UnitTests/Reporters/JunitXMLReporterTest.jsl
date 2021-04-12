@@ -15,6 +15,8 @@
 // 11.0 Assertion with 4 part label works
 // 12.0 Multiple successes and failure report as expected
 // 13.0 Unexpected throws are treated as failures
+// 14.0 get file path relative to base dir
+// 14.1 JunitXMLReporter throws with bad base dir
 
 // uncomment to reinitialize and reinclude source file
 //init_framework = convert file path("$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\InitializeFramework.jsl");
@@ -58,7 +60,9 @@ setup_expr = Expr(
 	
 JunitXMLReporters = ut test case("JunitXMLReporters")
 	<< Setup(Expr(setup_expr));
-	
+
+JunitXMLReportersBaseDir = ut test case("JunitXMLReportersBaseDir");
+
 // 1.0 Factory return correct type
 
 ut test(JunitXMLReporters, "Factory return correct type", Expr(
@@ -435,4 +439,21 @@ ut test(JunitXMLReporters, "Unexpected throws are treated as errors", Expr(
 	
 	ut assert that(Expr(match), ut length(1));
 	ut assert that(Expr(match[1]), ut equal to(report));
+));
+
+// 14.0 get file path relative to base dir
+
+ut test(JunitXMLReportersBaseDir, "get file path relative to base dir", Expr(
+	reporter = ut junit xml reporter("Tests");
+	ut assert that(Expr(reporter << get file path),
+		"Tests/UnitTests/Reporters/JunitXMLReporterTest.jsl"
+	);
+));
+
+// 14.1 JunitXMLReporter throws with bad base dir
+
+ut test(JunitXMLReportersBaseDir, "reporter throws with bad base dir", Expr(
+	ut assert that(Expr(ut junit xml reporter("Tests/UnitTests")),
+		ut throws("UtJunitXMLReporter requires base dir to be a single directory's name.")
+	);
 ));

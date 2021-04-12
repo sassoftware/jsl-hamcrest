@@ -52,8 +52,10 @@ Define Class(
   base dir = "";
 
   _init_ = Method({base dir},
-    
-    this:base dir = If( length(base dir) != 1,
+    If( NItems( Words(base dir, "/\") ) > 1,
+      Throw( "UtJunitXMLReporter requires base dir to be a single directory's name." );
+    );
+    this:base dir = If( Length(base dir) != 1,
                         // Remove any separators
                         Substitute( base dir, "\", "", "/", "" )
                       , // special case for "/" or "\" to get a full path
