@@ -15,6 +15,8 @@
 // 11.0 Assertion with 4 part label works
 // 12.0 Multiple successes and failure report as expected
 // 13.0 Unexpected throws are treated as failures
+// 14.0 get file path relative to base dir
+// 14.1 JunitXMLReporter throws with bad base dir
 
 // uncomment to reinitialize and reinclude source file
 //init_framework = convert file path("$ADDIN_HOME(com.jmp.jslhamcrest)\Source\Addin\Actions\InitializeFramework.jsl");
@@ -28,6 +30,11 @@ n root tests = Function({xml}, {out = .},
 
 n root failures = Function({xml}, {out = .},
 	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Num(Xml Attr("failures")))));
+	local:out
+);
+
+n root errors = Function({xml}, {out = .},
+	Parse XML(xml, On Element("testsuites", Start Tag(local:out = Num(Xml Attr("errors")))));
 	local:out
 );
 
@@ -53,7 +60,9 @@ setup_expr = Expr(
 	
 JunitXMLReporters = ut test case("JunitXMLReporters")
 	<< Setup(Expr(setup_expr));
-	
+
+JunitXMLReportersBaseDir = ut test case("JunitXMLReportersBaseDir");
+
 // 1.0 Factory return correct type
 
 ut test(JunitXMLReporters, "Factory return correct type", Expr(
@@ -131,12 +140,13 @@ ut test(JunitXMLReporters, "Counts are correct at root", Expr(
 		));
 		ut test("B", "b", Expr(
 			ut assert value(7, 7);
-			ut assert value(8, 0);
+			ut assert value(8 + "a", 0);
 		));
 	));
 
 	ut assert that( Expr(n root tests(report)), 8 );
-	ut assert that( Expr(n root failures(report)), 4 );
+	ut assert that( Expr(n root failures(report)), 3 );
+	ut assert that( Expr(n root errors(report)), 1 );
 	ut assert that( Expr(suite names(report)), {"A", "Anonymous_Test_Suite", "B"} );
 ));
 
@@ -148,12 +158,12 @@ ut test( JunitXMLReporters, "JunitXMLReporter one simple passing", Expr(
 	     ut assert that(Expr(1+1), ut equal to (2));
 	   ));
 	));
-	ut assert that(Expr(reporter << successes), ut equal to ({{"Simple Pass ⮚ One plus one equals two ⮚ 1", 1 + 1, "equal to 2", Empty()}}));
+	ut assert that(Expr(reporter << n successes), ut equal to (1));
 	pattern = 
 	"\[<\?xml version="1.0" encoding="UTF-8" \?>
-	<testsuites failures="0" id="\d+_\d+" tests="1">
-	  <testsuite failures="0" name="Simple Pass" tests="1">
-		<testcase name="One plus one equals two">
+	<testsuites errors="0" failures="0" id="\d+_\d+" tests="1">
+	  <testsuite errors="0" failures="0" name="Simple Pass" tests="1">
+		<testcase classname="Simple Pass" file="JunitXMLReporterTest\.jsl" name="One plus one equals two">
 		</testcase>
 	  </testsuite>
 	</testsuites>
@@ -179,13 +189,13 @@ ut test( JunitXMLReporters, "JunitXMLReporter one simple failing", Expr(
 	    ));
 	));
 	
-	ut assert that(Expr(reporter << failures), ut equal to ({{"Simple Fail ⮚ One plus one equals one ⮚ 1", 1 + 1, "equal to 1", "was 2", 0, Empty()}}));
+	ut assert that(Expr(reporter << n failures), ut equal to (1));
 	
 	pattern = 
 	"\[<\?xml version="1.0" encoding="UTF-8" \?>
-	<testsuites failures="1" id="\d+_\d+" tests="1">
-	  <testsuite failures="1" name="Simple Fail" tests="1">
-		<testcase name="One plus one equals one">
+	<testsuites errors="0" failures="1" id="\d+_\d+" tests="1">
+	  <testsuite errors="0" failures="1" name="Simple Fail" tests="1">
+		<testcase classname="Simple Fail" file="JunitXMLReporterTest\.jsl" name="One plus one equals one">
 		  <failure type="failure">
 			Expected: 1 \+ 1 equal to 1
 			But: was 2
@@ -216,9 +226,9 @@ ut test(JunitXMLReporters, "Assertion with 4 part label works", Expr(
 	ut assert that( Expr(report), ut valid xml() );
 	
 	pattern = "<\?xml version=\!"1.0\!" encoding=\!"UTF-8\!" \?>
-	<testsuites failures=\!"1\!" id=\!"\d+_\d+\!" tests=\!"1\!">
-	  <testsuite failures=\!"1\!" name=\!"A\!" tests=\!"1\!">
-		<testcase name=\!"a_extra info\!">
+	<testsuites errors=\!"0\!" failures=\!"1\!" id=\!"\d+_\d+\!" tests=\!"1\!">
+	  <testsuite errors=\!"0\!" failures=\!"1\!" name=\!"A\!" tests=\!"1\!">
+		<testcase classname=\!"A\!" file=\!"JunitXMLReporterTest\.jsl\!" name=\!"a_extra info\!">
 		  <failure type=\!"failure\!">
 			Expected: Expr\(1\) equal to 0
 			But: was 1
@@ -339,15 +349,15 @@ ut test(JunitXMLReporters, "Multiple successes and failure report as expected", 
 	ut assert that( Expr(report), ut valid xml() );
 	
 	pattern ="<?xml version=\!"1.0\!" encoding=\!"UTF-8\!" ?>
-	<testsuites failures=\!"6\!" id=\!"\d+_\d+\!" tests=\!"10\!">
-	  <testsuite failures=\!"4\!" name=\!"Example Tests\!" tests=\!"6\!">
-		<testcase name=\!"Test1\!">
+	<testsuites errors=\!"0\!" failures=\!"6\!" id=\!"\d+_\d+\!" tests=\!"10\!">
+	  <testsuite errors=\!"0\!" failures=\!"4\!" name=\!"Example Tests\!" tests=\!"6\!">
+		<testcase classname=\!"Example Tests\!" file=\!"JunitXMLReporterTest\.jsl\!" name=\!"Test1\!">
 		  <failure type=\!"failure\!">
 			Expected: add_nums(1, 1) equal to 3
 			But: was 2
 		  </failure>
 		</testcase>
-		<testcase name=\!"Test2\!">
+		<testcase classname=\!"Example Tests\!" file=\!"JunitXMLReporterTest\.jsl\!" name=\!"Test2\!">
 		  <failure type=\!"failure\!">
 			Expected: add_nums(3, 5) equal to 7
 			But: was 8
@@ -357,27 +367,27 @@ ut test(JunitXMLReporters, "Multiple successes and failure report as expected", 
 			But: was 8
 		  </failure>
 		</testcase>
-		<testcase name=\!"Test3\!">
+		<testcase classname=\!"Example Tests\!" file=\!"JunitXMLReporterTest\.jsl\!" name=\!"Test3\!">
 		</testcase>
-		<testcase name=\!"Test4\!">
+		<testcase classname=\!"Example Tests\!" file=\!"JunitXMLReporterTest\.jsl\!" name=\!"Test4\!">
 		  <failure type=\!"failure\!">
 			Expected: add_nums(3, 5) equal to 9
 			But: was 8
 		  </failure>
 		</testcase>
 	  </testsuite>
-	  <testsuite failures=\!"2\!" name=\!"Example Tests 2\!" tests=\!"4\!">
-		<testcase name=\!"Test1\!">
+	  <testsuite errors=\!"0\!" failures=\!"2\!" name=\!"Example Tests 2\!" tests=\!"4\!">
+		<testcase classname=\!"Example Tests 2\!" file=\!"JunitXMLReporterTest\.jsl\!" name=\!"Test1\!">
 		</testcase>
-		<testcase name=\!"Test2\!">
+		<testcase classname=\!"Example Tests 2\!" file=\!"JunitXMLReporterTest\.jsl\!" name=\!"Test2\!">
 		  <failure type=\!"failure\!">
 			Expected: add_nums(3, 5) equal to 7
 			But: was 8
 		  </failure>
 		</testcase>
-		<testcase name=\!"Test3\!">
+		<testcase classname=\!"Example Tests 2\!" file=\!"JunitXMLReporterTest\.jsl\!" name=\!"Test3\!">
 		</testcase>
-		<testcase name=\!"Test4\!">
+		<testcase classname=\!"Example Tests 2\!" file=\!"JunitXMLReporterTest\.jsl\!" name=\!"Test4\!">
 		  <failure type=\!"failure\!">
 			Expected: add_nums(3, 5) equal to 9
 			But: was 8
@@ -397,17 +407,53 @@ ut test(JunitXMLReporters, "Multiple successes and failure report as expected", 
 	ut assert that(Expr(match[1]), ut equal to(report));
 ));
 
-// 13.0 Unexpected throws are treated as failures
+// 13.0 Unexpected throws are treated as errors
 
-ut test(JunitXMLReporters, "Unexpected throws are treated as failures", Expr(
-	// There may be some room for improvement here. I think there may be a
-	// separate mechanism for reporting these.
+ut test(JunitXMLReporters, "Unexpected throws are treated as errors", Expr(
 	with junit reporter(Expr(
 		ut test("A", "a", Expr(
 			Throw("I am unexpected!");
 		));
 	));
+
 	ut assert that( Expr(report), ut valid xml() );
 	ut assert that( Expr(n root tests(report)), 1 );
-	ut assert that( Expr(n root failures(report)), 1 );
+	ut assert that( Expr(n root errors(report)), 1 );
+
+	pattern = "<\?xml version=\!"1.0\!" encoding=\!"UTF-8\!" \?>
+	<testsuites errors=\!"1\!" failures=\!"0\!" id=\!"\d+_\d+\!" tests=\!"1\!">
+	  <testsuite errors=\!"1\!" failures=\!"0\!" name=\!"A\!" tests=\!"1\!">
+		<testcase classname=\!"A\!" file=\!"JunitXMLReporterTest\.jsl\!" name=\!"a\!">
+		  <error type=\!"error\!">
+			Expected: Throw\(\!"I am unexpected!\!"\) test does not throw outside of an assertion
+			But: unexpectedly threw \!"I am unexpected!\!"
+		  </error>
+		</testcase>
+	  </testsuite>
+	</testsuites>
+	";
+
+	//replace tabs and carriage returns used for easier readability
+	Substitute Into(pattern, "\!N", ".+", "\!r", ".+", "\!t", "");
+	match = Regex Match(report, pattern);
+	
+	ut assert that(Expr(match), ut length(1));
+	ut assert that(Expr(match[1]), ut equal to(report));
+));
+
+// 14.0 get file path relative to base dir
+
+ut test(JunitXMLReportersBaseDir, "get file path relative to base dir", Expr(
+	reporter = ut junit xml reporter("Tests");
+	ut assert that(Expr(reporter << get file path),
+		"Tests/UnitTests/Reporters/JunitXMLReporterTest.jsl"
+	);
+));
+
+// 14.1 JunitXMLReporter throws with bad base dir
+
+ut test(JunitXMLReportersBaseDir, "reporter throws with bad base dir", Expr(
+	ut assert that(Expr(ut junit xml reporter("Tests/UnitTests")),
+		ut throws("UtJunitXMLReporter requires base dir to be a single directory's name.")
+	);
 ));

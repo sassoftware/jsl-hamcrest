@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Convenience `ut throws` helper functions now use `ut localize` to assert using the current languages error message.
+- `UtJunitXMLReporter` reports file and classname attributes for testcases and treats throws differently from failures.
 
 ### Fixed
 
