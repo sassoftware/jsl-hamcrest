@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("xml",["Function"],[["xml",,[[,"ut valid xml",,,0,"File:Matchers/Xml.jsl:ut_valid_xml"]]]]);
+NDSearch.OnPrefixDataLoaded("xml",["Function"],[["xml",,[[,"ut valid xml",,,0,"File:Matchers/Xml.jsl:ut_valid_xml"],[,"UtJunitXMLReporter:ut junit xml reporter",,,0,"File:Reporters/JunitXMLReporter.jsl:UtJunitXMLReporter.ut_junit_xml_reporter","JSLClass:UtJunitXMLReporter:ut_junit_xml_reporter"]]]]);

@@ -8,34 +8,34 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="UtVectorDiagonalMatcher"></a><a name="Topic82"></a><div class="CTopic TClass LJSL first">
+<a name="UtVectorDiagonalMatcher"></a><a name="Topic93"></a><div class="CTopic TClass LJSL first">
  <div class="CTitle">UtVectorDiagonalMatcher</div>
- <div class="NDClassPrototype HasParents" id="NDClassPrototype82"><a class="CPEntry Parent TClass" href="../../index.html#File:Core/Matchers/Typed.jsl:UtTypedMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,204);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">UtTypedMatcher</div></a><div class="CPEntry TClass Current"><div class="CPName">UtVectorDiagonalMatcher</div></div></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype93"><a class="CPEntry Parent TClass" href="../../index.html#File:Core/Matchers/Typed.jsl:UtTypedMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,215);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">UtTypedMatcher</div></a><div class="CPEntry TClass Current"><div class="CPName">UtVectorDiagonalMatcher</div></div></div>
 </div>
 
-<a name="UtDiagonalMatcher"></a><a name="Topic83"></a><div class="CTopic TClass LJSL">
+<a name="UtDiagonalMatcher"></a><a name="Topic94"></a><div class="CTopic TClass LJSL">
  <div class="CTitle">UtDiagonalMatcher</div>
- <div class="NDClassPrototype HasParents" id="NDClassPrototype83"><a class="CPEntry Parent TClass" href="../../index.html#File:Core/Matchers/Typed.jsl:UtTypedMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,204);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">UtTypedMatcher</div></a><div class="CPEntry TClass Current"><div class="CPName">UtDiagonalMatcher</div></div></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype94"><a class="CPEntry Parent TClass" href="../../index.html#File:Core/Matchers/Typed.jsl:UtTypedMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,215);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">UtTypedMatcher</div></a><div class="CPEntry TClass Current"><div class="CPName">UtDiagonalMatcher</div></div></div>
 </div>
 
-<a name="Globals"></a><a name="Topic84"></a><div class="CTopic TSection LJSL">
+<a name="Globals"></a><a name="Topic95"></a><div class="CTopic TSection LJSL">
  <div class="CTitle">Globals</div>
 </div>
 
-<a name="Functions"></a><a name="Topic85"></a><div class="CTopic TGroup LJSL">
+<a name="Functions"></a><a name="Topic96"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="ut_vec_diag"></a><a name="Topic86"></a><div class="CTopic TFunction LJSL">
+<a name="ut_vec_diag"></a><a name="Topic97"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut vec diag</div>
- <div id="NDPrototype86" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut vec diag(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,223);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a>&nbsp;</td><td class="PName last">matcher&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Compare using Vec Diag() transformation for a given matrix.</p><p>Does not assert that the matrix is a diagonal matrix. See <a href="../../index.html#File:Matchers/VectorDiagonal.jsl:ut_diagonal" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,87);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut diagonal</a> for this.</p><p>Factory function for <a href="../../index.html#File:Matchers/VectorDiagonal.jsl:UtVectorDiagonalMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,82);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtVectorDiagonalMatcher</a>.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">matcher<div class="CDLParameterType"><a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,223);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a></div></td><td class="CDLDefinition"><p>any object</p></td></tr></table><div class="CHeading">Examples</div><pre>m = [<span class="SHNumber">1 0 0</span>, <span class="SHNumber">0 2 0</span>, <span class="SHNumber">0 0 3</span>];<br />ut assert that( Expr( m ), ut vec diag( [<span class="SHNumber">1</span>, <span class="SHNumber">2</span>, <span class="SHNumber">3</span>] ) );<br /><br />m = [<span class="SHNumber">1 0 0</span>, <span class="SHNumber">0 1 0</span>, <span class="SHNumber">0 0 1</span>];<br />ut assert that( Expr( m ), ut vec diag( ut every item( <span class="SHNumber">1</span> ) ) );</pre></div>
+ <div id="NDPrototype97" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut vec diag(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,234);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a>&nbsp;</td><td class="PName last">matcher&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Compare using Vec Diag() transformation for a given matrix.</p><p>Does not assert that the matrix is a diagonal matrix. See <a href="../../index.html#File:Matchers/VectorDiagonal.jsl:ut_diagonal" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,98);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut diagonal</a> for this.</p><p>Factory function for <a href="../../index.html#File:Matchers/VectorDiagonal.jsl:UtVectorDiagonalMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,93);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtVectorDiagonalMatcher</a>.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">matcher<div class="CDLParameterType"><a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,234);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a></div></td><td class="CDLDefinition"><p>any object</p></td></tr></table><div class="CHeading">Examples</div><pre>m = [<span class="SHNumber">1 0 0</span>, <span class="SHNumber">0 2 0</span>, <span class="SHNumber">0 0 3</span>];<br />ut assert that( Expr( m ), ut vec diag( [<span class="SHNumber">1</span>, <span class="SHNumber">2</span>, <span class="SHNumber">3</span>] ) );<br /><br />m = [<span class="SHNumber">1 0 0</span>, <span class="SHNumber">0 1 0</span>, <span class="SHNumber">0 0 1</span>];<br />ut assert that( Expr( m ), ut vec diag( ut every item( <span class="SHNumber">1</span> ) ) );</pre></div>
 </div>
 
-<a name="ut_diagonal"></a><a name="Topic87"></a><div class="CTopic TFunction LJSL last">
+<a name="ut_diagonal"></a><a name="Topic98"></a><div class="CTopic TFunction LJSL last">
  <div class="CTitle">ut diagonal</div>
- <div id="NDPrototype87" class="NDPrototype NoParameterForm">ut diagonal()</div>
- <div class="CBody"><p>Used to assert that a given matrix is diagonal, meaning it is a square matrix where all off-diagonal elements are zero.</p><p>Note: Asserts nothing about the diagonal. For example, a square all zero matrix is still considered diagonal.</p><p>Factory function for <a href="../../index.html#File:Matchers/VectorDiagonal.jsl:UtDiagonalMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,83);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtDiagonalMatcher</a>.</p><div class="CHeading">Examples</div><pre>m = [<span class="SHNumber">1 0 0</span>, <span class="SHNumber">0 2 0</span>, <span class="SHNumber">0 0 3</span>];<br />ut assert that( Expr( m ), ut diagonal() );</pre></div>
+ <div id="NDPrototype98" class="NDPrototype NoParameterForm">ut diagonal()</div>
+ <div class="CBody"><p>Used to assert that a given matrix is diagonal, meaning it is a square matrix where all off-diagonal elements are zero.</p><p>Note: Asserts nothing about the diagonal. For example, a square all zero matrix is still considered diagonal.</p><p>Factory function for <a href="../../index.html#File:Matchers/VectorDiagonal.jsl:UtDiagonalMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,94);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtDiagonalMatcher</a>.</p><div class="CHeading">Examples</div><pre>m = [<span class="SHNumber">1 0 0</span>, <span class="SHNumber">0 2 0</span>, <span class="SHNumber">0 0 3</span>];<br />ut assert that( Expr( m ), ut diagonal() );</pre></div>
 </div>
 
 </body></html>

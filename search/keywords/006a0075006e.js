@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("jun",["Function"],[["JunitXML",,[[,"UtJunitXMLReporter:ut JunitXML reporter",,,0,"File:Reporters/JunitXMLReporter.jsl:UtJunitXMLReporter.ut_JunitXML_reporter","JSLClass:UtJunitXMLReporter:ut_JunitXML_reporter"]]]]);
+NDSearch.OnPrefixDataLoaded("jun",["Function"],[["junit",,[[,"UtJunitXMLReporter:ut junit xml reporter",,,0,"File:Reporters/JunitXMLReporter.jsl:UtJunitXMLReporter.ut_junit_xml_reporter","JSLClass:UtJunitXMLReporter:ut_junit_xml_reporter"]]]]);
