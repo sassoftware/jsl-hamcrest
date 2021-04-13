@@ -38,7 +38,7 @@ Define Class(
   // Variable: hash_results
   // associative array of the test results
   // test suite => test case => successes, failures, throws
-  hash_results = [=>Associative Array()];
+  hash_results = [=>[=>]];
 
   // Variable: n successes
   n successes = 0;
@@ -110,10 +110,9 @@ Define Class(
     dirs = Words( full path, "/\");
     path start = Contains( dirs, this:base dir );
     If( path start,
-      Return( Concat Items( dirs[path start::NItems(dirs)], "/" ) );
-      Return( path );
+      Concat Items( dirs[path start::NItems(dirs)], "/" )
     ,
-      Return( Word( -1, full path, "/\" ) );
+      Word( -1, full path, "/\" )
     );
   );
 
