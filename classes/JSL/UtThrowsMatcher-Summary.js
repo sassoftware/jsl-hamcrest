@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("JSLClass:UtThrowsMatcher","UtThrowsMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtThrowsMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[174,0,0,"UtThrowsMatcher"]]);
+NDFramePage.OnPageTitleLoaded("JSLClass:UtThrowsMatcher","UtThrowsMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtThrowsMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[148,0,0,"UtThrowsMatcher"]]);
