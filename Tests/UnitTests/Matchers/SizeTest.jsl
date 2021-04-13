@@ -1,0 +1,6 @@
+
+ut test("SizeTests", "Avoids name collisions", Expr(
+	dt = New Table("A Table", Add Rows(1));
+	n rows = 5;
+	ut assert that(Expr(dt), ut n rows(1));
+));

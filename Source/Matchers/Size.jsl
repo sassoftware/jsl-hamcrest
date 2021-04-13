@@ -18,7 +18,7 @@ Define Class(
 	transform description = "";
 	_init_ = Method( {inner, transform function, transform description},
 		this:inner = inner;
-		this:transform function = Parse( transform function );
+		this:transform function = Parse( "Builtin:" || transform function );
 		this:transform description = transform description;
 	);
 	matches = Method( {test expr},

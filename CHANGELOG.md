@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file.
 
 - Convenience `ut throws` helper functions now use `ut localize` to assert using the current languages error message.
 
+### Fixed
+
+- Avoid potential collision with builtin functions in `UtSizeMatcher` (#109)
+
 ## [1.2.0]
 
 ### Added
