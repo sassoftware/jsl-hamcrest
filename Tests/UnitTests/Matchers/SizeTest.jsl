@@ -15,8 +15,10 @@ ut test("SizeTests", "Length", expr(
 	ut assert value("ABC", ut length(3))
 ));
 
-ut test("SizeTests", "Evaluation delayed until inner matcher", Expr(
-	ut assert that(Expr({1, 2, 3}), ut n rows(ut throws("NRow or NCol argument must be a Matrix or Data Table")));
+ut test("SizeTests", "Evaluation happens before inner matcher", Expr(
+	m = ut n rows(ut throws(ut anything()));
+	// N Rows({1, 2}) will throw before we reach the ut throws matcher
+	ut assert that(Expr(m << Matches({1, 2})), ut throws("NRow or NCol argument must be a Matrix or Data Table"));
 ));
 
 ut test("SizeTests", "Mismatch", Expr(
