@@ -23,7 +23,7 @@ Define Class(
 	);
 	matches = Method( {test expr},
 		actual = test expr;
-		match info = this:inner:matches( Eval( Insert( Name Expr(this:transform function), Name Expr( actual ) ) ) );
+		match info = this:inner << matches( Eval( Insert( Name Expr(this:transform function), Name Expr( actual ) ) ) );
 		If( !match info:success,
 			match info:mismatch = Eval Insert( "^Head Name( this:transform function )^( ^ut get show string( Name Expr( actual ) )^ ) ^match info:mismatch^" );
 		);
