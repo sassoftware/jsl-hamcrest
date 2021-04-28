@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here( 0 );
@@ -18,14 +18,14 @@ Define Class(
 	transform description = "";
 	_init_ = Method( {inner, transform function, transform description},
 		this:inner = inner;
-		this:transform function = Parse( "Builtin:" || transform function );
+		this:transform function = Parse( transform function || "()" );
 		this:transform description = transform description;
 	);
 	matches = Method( {test expr},
 		actual = test expr;
-		match info = this:inner:matches( this:transform function( Name Expr( actual ) ) );
+		match info = this:inner:matches( Insert( Name Expr(this:transform function), Name Expr( actual ) ) );
 		If( !match info:success,
-			match info:mismatch = Eval Insert( "^Char( Name Expr( this:transform function ) )^( ^ut get show string( Name Expr( actual ) )^ ) ^match info:mismatch^" );
+			match info:mismatch = Eval Insert( "^Head Name( this:transform function )^( ^ut get show string( Name Expr( actual ) )^ ) ^match info:mismatch^" );
 		);
 		match info;
 	);
