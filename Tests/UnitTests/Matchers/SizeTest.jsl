@@ -1,6 +1,32 @@
+﻿// Copyright © 2021, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 
 ut test("SizeTests", "Avoids name collisions", Expr(
 	dt = New Table("A Table", Add Rows(1));
 	n rows = 5;
 	ut assert that(Expr(dt), ut n rows(1));
+));
+
+ut test("SizeTests", "N Items", expr(
+	ut assert that(Expr({1,2,3}), ut n items(3))
+));
+
+ut test("SizeTests", "Length", expr(
+	ut assert value("ABC", ut length(3))
+));
+
+ut test("SizeTests", "Evaluation happens before inner matcher", Expr(
+	m = ut n rows(ut throws(ut anything()));
+	// N Rows({1, 2}) will throw before we reach the ut throws matcher
+	ut assert that(Expr(m << Matches({1, 2})), ut throws("NRow or NCol argument must be a Matrix or Data Table"));
+));
+
+ut test("SizeTests", "Mismatch", Expr(
+	mi = ut n items(ut greater than(3)) << Matches({1, 2});
+	ut assert that(Expr(mi:mismatch), "N Items( {1, 2} ) was 2");
+));
+
+ut test("SizeTests", "Describe", Expr(
+	m = ut n items(ut greater than(3));
+	ut assert that(Expr(m << Describe), "n items greater than 3");
 ));

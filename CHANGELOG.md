@@ -17,7 +17,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- Avoid potential collision with builtin functions in `UtSizeMatcher` (#109)
+- Avoid potential collision with builtin functions in `UtSizeMatcher` (#109, #111)
 
 ## [1.2.0]
 
