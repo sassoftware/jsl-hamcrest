@@ -1,0 +1,172 @@
+﻿// Copyright © 2020, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+ut test("Mock Function", "Passthrough Return", Expr(
+	mock = ut mock function({x}, Expr(x*10));
+	ut assert that(Expr(with noop reporter(Expr(mock:fn(5)))), 50);
+));
+
+ut test("Mock Function", "Allows Throw", Expr(
+	mock = ut mock function({x}, Expr(Throw(Char(x))));
+	ut assert that(Expr(with noop reporter(Expr(mock:fn(5)))), ut throws("5"));
+));
+
+ut test("Mock Function", "Passthrough Multiple Arguments", Expr(
+	mock = ut mock function({x, y}, Expr(x + y*10));
+	ut assert that(Expr(with noop reporter(Expr(mock:fn(5, 6)))), 65);
+));
+
+ut test("Mock Function", "Arguments Not Evaluated", Expr(
+	mock = ut mock function({e}, Expr(Name Expr(e)));
+	ut assert that(Expr(with noop reporter(Expr(mock:fn(Expr(1 + 2))))), Expr(1 + 2));
+));
+
+ut test("Mock Function", "Passthrough No Arguments", Expr(
+	mock = ut mock function({}, Expr(33));
+	ut assert that(Expr(with noop reporter(Expr(mock:fn))), 33);
+));
+
+ut test("Mock Function", "Body can have glue", Expr(
+	mock = ut mock function({}, Expr(local:x = 33; local:x));
+	ut assert that(Expr(with noop reporter(Expr(mock:fn))), 33);
+));
+
+ut test("Mock Function", "List allowed as body", Expr(
+	mock = ut mock function({x}, Expr({1}));
+	ut assert that(Expr(with noop reporter(Expr(mock:fn(5)))), {1});
+));
+
+ut test("Mock Function", "First argument isn't validated until call", Expr(
+	mock = ut mock function(., Expr(1 + 1));
+	ut assert that(Expr(mock:fn), ut throws("argument should be list"));
+));
+
+ut test("Mock Function", "Local block works", Expr(
+	Delete Symbols(b);
+	mock = ut mock function({a}, {b=10}, Expr(b=100; a + b));
+	ut assert that(Expr(with noop reporter(Expr(mock:fn(5)))), 105);
+	ut assert that(Expr(Namespace("global") << Get Keys), ut not(ut contains("b")))
+));
+
+with reporter = Function( {ex},
+    ut with reporter( reporter, Name Expr( ex ) );
+);
+
+// Note that we are using ut mock reporter to test ut mock function. They
+// are two different things that share a common idea. Hopefully, their
+// similarity doesn't make the tests too confusing.
+Mock Function = ut test case("Mock Function")
+	<<Setup(Expr(
+		reporter = ut mock reporter();
+	))
+	<<Teardown(Expr(
+		reporter << verify expectations;
+	));
+
+ut test(Mock Function, "Adds failure with no expect", Expr(
+	mock = ut mock function({x}, Expr(.));
+	reporter << Expect Call(Expr(add failure(ut starts with("Mock Function"), ut wild, "called 0 times", "called 1 times, most recently with {7}", ut wild, ut wild)));
+	with reporter(Expr(mock:fn(7)));
+));
+
+ut test(Mock Function, "Adds success with matching expect", Expr(
+	mock = ut mock function({x}, Expr(.));
+	ut expect call(mock, {ut greater than(4)});
+	reporter << Expect Call(Expr(add success(ut wild, ut wild, ut wild, ut wild)));
+	with reporter(Expr(mock:fn(4 + 1)));
+));
+
+ut test(Mock Function, "Adds failure with non-matching expect", Expr(
+	mock = ut mock function({x}, Expr(.));
+	ut expect call(mock, {ut greater than(4)});
+	reporter << Expect Call(Expr(add failure(ut wild, ut wild, "equal to {ut greater than(4)}", "during call 1, arg /{}[1] was 4 but expected greater than 4 within {4}", ut wild, ut wild)));
+	with reporter(Expr(mock:fn(4 + 0)));
+));
+
+ut test(Mock Function, "Accounts for more than one argument", Expr(
+	mock = ut mock function({x, y}, Expr(.));
+	ut expect call(mock, {ut greater than(4), ut less than(10)});
+	ut expect call(mock, {ut greater than(4), ut less than(10)});
+	ut expect call(mock, {ut greater than(4), ut less than(10)});
+	ut expect call(mock, {ut greater than(4), ut less than(10)});
+	reporter << Expect Call(Expr(add failure(ut wild, ut wild, "equal to {ut greater than(4), ut less than(10)}", "during call 1, arg /{}[2] was 11 but expected less than 10 within {5, 11}", ut wild, ut wild)));
+	reporter << Expect Call(Expr(add failure(ut wild, ut wild, "equal to {ut greater than(4), ut less than(10)}", "during call 2, arg /{}[1] was 3 but expected greater than 4 within {3, 9}", ut wild, ut wild)));
+	reporter << Expect Call(Expr(add failure(ut wild, ut wild, "equal to {ut greater than(4), ut less than(10)}", "during call 3, arg /{}[1] was 3 but expected greater than 4 within {3, 11}", ut wild, ut wild)));
+	reporter << Expect Call(Expr(add success(ut wild, ut wild, ut wild, ut wild)));
+	with reporter(Expr(
+		mock:fn(5, 11);
+		mock:fn(3, 9);
+		mock:fn(3, 11);
+		mock:fn(5, 9);
+	));
+));
+
+ut test(Mock Function, "Expectations can change for each call", Expr(
+	mock = ut mock function({x, y}, Expr(.));
+	ut expect call(mock, {0, 1});
+	ut expect call(mock, {2, 3});
+	reporter << Expect Call(Expr(add success(ut wild, ut wild, ut wild, ut wild)));
+	reporter << Expect Call(Expr(add success(ut wild, ut wild, ut wild, ut wild)));
+	with reporter(Expr(
+		mock:fn(0, 1);
+		mock:fn(2, 3);
+	));
+));
+
+ut test(Mock Function, "Adds failure with fewer expects", Expr(
+	mock = ut mock function({x}, Expr(.));
+	ut expect call(mock, {7});
+	reporter << Expect Call(Expr(add success(ut wild, ut wild, ut wild, ut wild)));
+	reporter << Expect Call(Expr(add failure(ut wild, ut wild, "called 1 times", "called 2 times, most recently with {8}", ut wild, ut wild)));
+	with reporter(Expr(
+		mock:fn(7);
+		mock:fn(8);
+	));
+));
+
+ut test(Mock Function, "Can expect no arguments", Expr(
+	mock = ut mock function({}, Expr(.));
+	ut expect call(mock, {});
+	reporter << Expect Call(Expr(add success(ut wild, ut wild, ut wild, ut wild)));
+	with reporter(Expr(mock:fn));
+));
+
+ut test(Mock Function, "Verify mock add success on more calls than expects", Expr(
+	// So we don't issue too many redundant failures
+	mock = ut mock function({}, Expr(.));
+	with noop reporter(Expr(mock:fn));
+	reporter << Expect Call(Expr(add success(ut wild, ut wild, ut wild, ut wild)));
+	with reporter(Expr(ut verify mock(mock)));
+));
+
+ut test(Mock Function, "Verify mock add success matching calls and expects", Expr(
+	// So we don't issue too many redundant failures
+	mock = ut mock function({}, Expr(.));
+	ut expect call(mock, {});
+	with noop reporter(Expr(mock:fn));
+	reporter << Expect Call(Expr(add success(ut wild, ut wild, ut wild, ut wild)));
+	with reporter(Expr(ut verify mock(mock)));
+));
+
+ut test(Mock Function, "Verify mock add failure on more expects than calls", Expr(
+	// So we don't issue too many redundant failures
+	mock = ut mock function({}, Expr(.));
+	ut expect call(mock, {});
+	ut expect call(mock, {});
+	with noop reporter(Expr(mock:fn));
+	reporter << Expect Call(Expr(add failure(ut wild, ut wild, "called 2 times", "called 1 times", ut wild, ut wild)));
+	with reporter(Expr(ut verify mock(mock)));
+));
+
+ut test(Mock Function, "Assumes ut equal to", Expr(
+	mock = ut mock function({x}, Expr(.));
+	ut expect call(mock, {5});
+	reporter << Expect Call(Expr(add success(ut wild, ut wild, ut wild, ut wild)));
+	with reporter(Expr(mock:fn(5)));
+));
+
+ut test(Mock Function, "Orig Fn is not instrumented", Expr(
+	mock = ut mock function({x}, Expr(.));
+	ut expect call(mock, {ut greater than(4)});
+	with reporter(Expr(mock:orig fn(4 + 1)));
+));

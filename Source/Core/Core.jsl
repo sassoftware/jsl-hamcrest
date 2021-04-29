@@ -15,6 +15,7 @@ ut include jsl files recursively( "Reporters" );
 
 // Requires UtReporter (Reporters/Reporter) and ut ensure matcher (Utils)
 Include( "TestCase.jsl" );
+Include( "Mock.jsl" );
 
 // Section: Globals
 

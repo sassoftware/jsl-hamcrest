@@ -1,0 +1,220 @@
+﻿// Copyright © 2020, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+// Section: Globals
+
+// This is a partially complete class used to hold a mock function. This includes its original function, its
+// instrumented function, its expectations, and its current expectation. Part of the class is here and the rest is
+// added dynamically by ut mock function. A class is used rather than a namespace so it cleans up after itself.
+Define Class("UtMockFunction",
+	n calls = 0;
+	expectations = {};
+);
+
+/* 
+	Function: ut mock function
+		---Prototype---
+		ut mock function( {args}, <{locals}>, Expr(body) )
+		---------------
+		Used to test expectations on callbacks and the like.
+
+		Creates a mock function that creates a function from the pieces provided and decorates it.
+		Returns an object (called obj in this document) with the decorated function accessible via obj:fn.
+		You can then use ut expect call(obj, ...) with a list of matchers to set expectations. You should call
+		this once for each time you expect your function to be called. This should be done before the calls to
+		your function. As your function is called, these expectations are checked one by one. Then, after you
+		test body is over, call ut verify mock(obj). This will make sure you got the correct number of calls.
+
+		Note, it is /extremely/ important that you ensure that ut verify mock is called. Otherwise, your test
+		will *silently pass* even if you didn't get all the calls you expected. The easiest way to ensure this
+		is to call it in the Teardown of a ut test case.
+
+		Users of other mock frameworks may notice that this is a little more than a mock since we are
+		instrumenting an arbitrary function. However, this was the easiest way to supply both the signature and
+		return to the ut mock function factory. And it gives us some extra flexibility. So hopefully you'll
+		forgive me stretching the definition. Also, it doesn't have the capability (yet) to change the body
+		of the function for each expectation. However, this is something I hope to add.
+
+		Another difference from other mock frameworks is that this verifies the expectations eagerly in the
+		instrumented function. This is useful when the arguments may not live past the callback call and they
+		can not be cloned. One common example of this is Display Boxes.
+
+		Use obj:fn(...) to call the instrumented function. And use obj:orig fn(...) to call the uninstrumented
+		function.
+		
+		When calling ut mock function, you can omit the locals list if desired.
+
+	Arguments:
+		args - args list
+		locals - locals list
+		body - an expression using args and locals 
+
+	Example:
+		---JSL---
+		Button Box Test = ut test case("Button Box")
+		    << Setup(Expr(mock = ut mock function({this}, Expr(.))))
+		    << Teardown(Expr(ut verify mock(mock)));
+		ut test(Button Box Test, "Calls Callback", Expr(
+		    ut expect call(mock, {ut enabled(1)});
+		    New Window("", btn = Button Box("Hi", << Set Function(Function({this}, mock:fn(this)))));
+		    btn << Click;
+		));
+		---------
+*/
+ut define documented function(
+	"ut mock function",
+	Expr(Function({fnarg1, fnarg2, fnarg3="NOT PROVIDED"}, {obj, body},
+		// Juggle the args into a standardized form
+		// Now fnarg1 is always args, fnarg2 is always local block, fnarg3 is always expression body
+		If(Name Expr(fnarg3) == "NOT PROVIDED",
+			fnarg3 = Name Expr(fnarg2);
+			fnarg2 = {}
+		);
+		
+		// Store the original function
+		obj = New Object("UtMockFunction");
+		obj:orig fn = Eval Expr(Function(
+			Expr(fnarg1),
+			Expr(fnarg2),
+			Expr(Name Expr(fnarg3))
+		));
+		// Now instrument it avoiding nested Glue().
+		// Notice we are putting the parameter names in here, when ut verify mock call is actually called
+		// we will be inside the function call and these will resolve to locals with the actual argument values.
+		If(!Is Expr(Name Expr(fnarg3)), fnarg3 = ut as expr(fnarg3));
+		body = ut merge expressions(EvalExpr({ut verify mock call(Expr(obj), Expr(fnarg1)), Expr(Name Expr(fnarg3))}));
+		// Reconstruct an instrumented version of the function
+		obj:fn = Eval Expr(Function(
+			Expr(fnarg1),
+			Expr(fnarg2),
+			Expr(Name Expr(body))
+		));
+		obj;
+	)),
+	"ut mock function( {args}, <{locals}>, Expr(body) )",
+	"Creates a mock wrapping the given function pieces. Use with ut expect call and ut verify mock to test that the function is called some number of times with matching arguments.",
+	{{"Simple", mock = ut mock function({x}, Expr(.)); ut expect call(mock, {ut greater than(6)}); mock:fn(5); ut verify mock(mock);}}
+);
+
+// Called by ut verify mock to ensure that the mock has been called AT LEAST as many times as it has expectations.
+// If called more times, we don't issue a failure. This is because a failure has already been eagerly issued at the
+// time of the offending call and we don't want to spam the user with redundant failure information. This matcher
+// MUST be run the enforce that the mock recieved the correct number of calls.
+Define Class("UtMockFunctionEnoughCallsMatcher",
+	Base Class("UtMatcher"),
+	mock = Empty();
+	_init_ = Method({mock},
+		this:mock = mock;
+	);
+	matches = Method({_},
+		If(mock:n calls < N Items(mock:expectations),
+			ut match info failure( Eval Insert( "called ^Char(mock:n calls)^ times" ) ),
+			ut match info success()
+		)
+	);
+	describe = Method({},
+		Eval Insert("called ^Char(N Items(mock:expectations))^ times");
+	);
+);
+
+// Called eagerly during each mock function invocation. Match the args for this invocation with the current
+// expectation. If they fail to match, manipulate the failure info to add a little more context about the
+// mock call number. Issue a distinct failure if there aren't enough expectations. Description also changes
+// in this case.
+Define Class("UtMockFunctionCalledWithArgsMatcher",
+	Base Class("UtMatcher"),
+	mock = Empty();
+	args = {};
+	_init_ = Method({mock, args},
+		this:mock = mock;
+		this:args = args;
+	);
+	matches = Method({_},
+		If(mock:n calls <= N Items(mock:expectations),
+			out = ut expression matches(mock:expectations[mock:n calls]) << matches(args);
+			If(!(out << is success),
+				out:mismatch = Eval Insert("during call ^Char(mock:n calls)^, arg ^out:mismatch^");
+			);
+			out
+		,
+			ut match info failure( Eval Insert( "called ^Char(mock:n calls)^ times, most recently with ^Char(args)^" ) )
+		)
+	);
+	describe = Method({},
+		If(mock:n calls <= N Items(mock:expectations),
+			ut expression matches(mock:expectations[mock:n calls]) << describe,
+			Eval Insert("called ^Char(N Items(mock:expectations))^ times")
+		)
+	);
+);
+
+// Injected into the mock function to keep track of the current expectation and to eagerly test the
+// args against the current expectation. Note that this uses dynamic scoping to look at the args as
+// they are just the arg names at this point. See UtMockFunctionCalledWithArgsMatcher _init_.
+ut verify mock call = Function({mock, args}, {},
+	mock:n calls++;
+	// Eval List(args) uses dynamic scoping
+	ut assert value(Name Expr(mock:orig fn), New Object("UtMockFunctionCalledWithArgsMatcher"(mock, Eval List(args))))
+);
+
+/* 
+	Function: ut expect call
+		---Prototype---
+		ut expect call( mock, {arg1 matcher, arg2 matcher, ...} )
+		---------------
+		Use with ut mock function to define expectations for mocked functions.
+
+		Must be given a list of values or matchers. These represent a single call to the mock function.
+		They are appended to a list of expectations and matched when the mock function has been called
+		the appropriate number of times. If the number of matchers doesn't match or any matcher fails,
+		the call expectation fails.
+
+		This is a function to avoid class member lookup rules and enable syntax highlighting and
+		Scripting Index help.
+    
+	Arguments:
+		mock - any mock
+		call - list of matchers
+*/
+ut expect call = Expr(Function({mock, arg matchers},
+	Insert Into(mock:expectations, Eval List({Name Expr(arg matchers)}))
+));
+ut define documented function(
+	"ut expect call",
+	Name Expr(ut expect call),
+	"ut expect call( mock, {arg1 matcher, arg2 matcher, ...} )",
+	"Defines expectations for a mock function. Must be called before the actual call to the mock.",
+	{{"Simple", mock = ut mock function(Function({x}, .)); ut expect call(mock, {ut greater than(6)}); mock:fn(5)}}
+);
+
+
+/* 
+	Function: ut verify mock
+		---Prototype---
+		ut verify mock( mock )
+		---------------
+		Use with ut mock function to test that a mock function has been called the expected number of times.
+
+		If this function is not called, you will only be testing that the calls (actually done) to the mock
+		match the expectations and that there were at least as many expectations as calls. But you won't
+		catch the case where the mock isn't called enough times. For instance, you wouldn't catch the common
+		failure case of NO calls to the mock even though you had expected some. Be sure to call this function
+		for all your mocks.
+
+		This is a function rather than a message so we get syntax highlighting and Scripting Index help.
+
+	Arguments:
+		mock - any mock
+*/
+ut verify mock = Expr(Function({mock}, {},
+	ut assert value(Name Expr(mock:orig fn), New Object("UtMockFunctionEnoughCallsMatcher"(mock)))
+));
+ut define documented function(
+	"ut verify mock",
+	Name Expr(ut verify mock),
+	"ut verify mock( mock )",
+	"Tests that a mock function has been called the expected number of times. Should be called after other testing is complete.",
+	{{"Simple", mock = ut mock function({}, Expr(.)); mock:fn(5); ut verify mock(mock)}}
+);
