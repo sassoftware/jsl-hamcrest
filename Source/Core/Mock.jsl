@@ -63,41 +63,36 @@ Define Class("UtMockFunction",
 		));
 		---------
 */
-ut mock function = Expr(Function({fnarg1, fnarg2, fnarg3="NOT PROVIDED"}, {obj, body},
-	// Juggle the args into a standardized form
-	// Now fnarg1 is always args, fnarg2 is always local block, fnarg3 is always expression body
-	If(Name Expr(fnarg3) == "NOT PROVIDED",
-		fnarg3 = Name Expr(fnarg2);
-		fnarg2 = {}
-	);
-	
-	// Store the original function
-	obj = New Object("UtMockFunction");
-	obj:orig fn = Eval Expr(Function(
-		Expr(fnarg1),
-		Expr(fnarg2),
-		Expr(Name Expr(fnarg3))
-	));
-	// Now instrument it
-	// Avoid nested Glue (just doesn't read nicely in output)
-	body = Name Expr(fnarg3);
-	body = If(Head(Name Expr(body)) == Expr(Glue()), Name Expr(body), Insert(Expr(Glue()), Name Expr(body)));
-	Insert Into(body, Eval Expr(
-		// Notice we are putting the parameter names in here, when ut verify mock call is actually called
-		// we will be inside the function call and these will resolve to locals with the actual argument values.
-		ut verify mock call(Expr(obj), Expr(fnarg1)); // Prepend args onto given function body
-	), 1); // First thing as soon as the function is called
-	// Reconstruct an instrumented version of the function
-	obj:fn = Eval Expr(Function(
-		Expr(fnarg1),
-		Expr(fnarg2),
-		Expr(Name Expr(body))
-	));
-	obj;
-));
 ut define documented function(
 	"ut mock function",
-	Name Expr(ut mock function),
+	Expr(Function({fnarg1, fnarg2, fnarg3="NOT PROVIDED"}, {obj, body},
+		// Juggle the args into a standardized form
+		// Now fnarg1 is always args, fnarg2 is always local block, fnarg3 is always expression body
+		If(Name Expr(fnarg3) == "NOT PROVIDED",
+			fnarg3 = Name Expr(fnarg2);
+			fnarg2 = {}
+		);
+		
+		// Store the original function
+		obj = New Object("UtMockFunction");
+		obj:orig fn = Eval Expr(Function(
+			Expr(fnarg1),
+			Expr(fnarg2),
+			Expr(Name Expr(fnarg3))
+		));
+		// Now instrument it avoiding nested Glue().
+		// Notice we are putting the parameter names in here, when ut verify mock call is actually called
+		// we will be inside the function call and these will resolve to locals with the actual argument values.
+		If(!Is Expr(Name Expr(fnarg3)), fnarg3 = ut as expr(fnarg3));
+		body = ut merge expressions(EvalExpr({ut verify mock call(Expr(obj), Expr(fnarg1)), Expr(Name Expr(fnarg3))}));
+		// Reconstruct an instrumented version of the function
+		obj:fn = Eval Expr(Function(
+			Expr(fnarg1),
+			Expr(fnarg2),
+			Expr(Name Expr(body))
+		));
+		obj;
+	)),
 	"ut mock function( {args}, <{locals}>, Expr(body) )",
 	"Creates a mock wrapping the given function pieces. Use with ut expect call and ut verify mock to test that the function is called some number of times with matching arguments.",
 	{{"Simple", mock = ut mock function({x}, Expr(.)); ut expect call(mock, {ut greater than(6)}); mock:fn(5); ut verify mock(mock);}}

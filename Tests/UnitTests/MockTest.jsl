@@ -26,6 +26,11 @@ ut test("Mock Function", "Passthrough No Arguments", Expr(
 	ut assert that(Expr(with noop reporter(Expr(mock:fn))), 33);
 ));
 
+ut test("Mock Function", "Body can have glue", Expr(
+	mock = ut mock function({}, Expr(local:x = 33; local:x));
+	ut assert that(Expr(with noop reporter(Expr(mock:fn))), 33);
+));
+
 ut test("Mock Function", "List allowed as body", Expr(
 	mock = ut mock function({x}, Expr({1}));
 	ut assert that(Expr(with noop reporter(Expr(mock:fn(5)))), {1});
