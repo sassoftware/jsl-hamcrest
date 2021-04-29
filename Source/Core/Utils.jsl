@@ -68,9 +68,9 @@ ut define documented function = Function({name, function decl, prototype, descri
 			// A string can be used for an example to preserve
 			// whitespace and comments.
 			If( Is String( examples[i][2] ),
-				cf << Example( "Names Default To Here( 0 );\!nut global reporter = ut streaming log reporter();\!n" || examples[i][2], examples[i][1] );
+				cf << Example( "Names Default To Here( 0 );\!nut global reporter = ut streaming log reporter with skip();\!n" || examples[i][2], examples[i][1] );
 			,
-				cf << Example( ut merge expressions( Eval List( {Expr(Names Default To Here( 0 ); ut global reporter = ut streaming log reporter(); ), examples[i][2]} ) ), examples[i][1] );
+				cf << Example( ut merge expressions( Eval List( {Expr(Names Default To Here( 0 ); ut global reporter = ut streaming log reporter with skip(); ), examples[i][2]} ) ), examples[i][1] );
 			);
 		);
 		Insert Into( ut documented functions, cf );
@@ -99,20 +99,33 @@ ut is a matcher = Function( {maybe matcher},
 	)
 );
 
+ut ensure matcher default denylist = {"UtGenuineSkipMatcher"};
+
 /*	Function: ut ensure matcher
 		Conditionally wraps its argument so that the output is always
 		a matcher. Does nothing if the argument is already a matcher.
 		Wraps with the <Ut Equal To Matcher> otherwise. Often used
 		in matcher factory functions.
+		
+		Accepts an optional denylist which disallows certain matchers
+		from being accepted as maybe matcher. This is mainly to prevent
+		matchers that don't make much sense from being used as inner
+		matchers in maatcher factories. Some matchers are denied by
+		default. If you want to allow everything, pass in an explicit {}.
+		This function throws when a denylist matcher is provided.
 
 		Returns:
 			A matcher (pass-through or simply wrapped)
 
 		Parameters:
 			maybe matcher - any object
+			denylist - a list of class names
+			
 */
-ut ensure matcher = Function( {maybe matcher},
+ut ensure matcher = Function( {maybe matcher, denylist=ut ensure matcher default denylist},
 	If( ut is a matcher( Name Expr( maybe matcher ) ),
+		If(Contains(denylist, maybe matcher << Get Name),
+			Throw(Eval Insert("Invalid inner matcher ^maybe matcher << Get Name^")));
 		Name Expr( maybe matcher ),
 		ut equal to( Name Expr( maybe matcher ) )
 	)

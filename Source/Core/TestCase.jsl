@@ -17,10 +17,15 @@ Define Class( "UtTestCaseFixture",
 	// Variable: name
 	// Name of the test case
 	name = "";
-	// Variable:setup expr
+	// Variable: setup expr
 	setup expr = Empty();
 	// Variable: teardown expr 
 	teardown expr = Empty();
+	// Variable: skip flag
+	skip expr = Expr(0);
+	// Variable: skip description
+	skip description = "";
+
 	/*
 		Method: _init_
 			Constructor for ut test case
@@ -74,6 +79,35 @@ Define Class( "UtTestCaseFixture",
 	// Method: Get Teardown
 	Get Teardown = Method({}, Name Expr( this:teardown expr ) );
 	
+	/* 
+		Method: Skip If
+			Determines if all tests under this test case should be skipped. The skip expr
+			should eval to a 0 or 1. It is evaled before each test is started. When the skip expr
+			returns 1, the skip description will be used when reporting the skip for each test.
+			If the skip description is not provided, the character representation of the expr will
+			be used instead.
+			
+			If you need this to skip only some of the tests under a test case, I would recommend making
+			a separate test case for these rather than try to make the skip expr more dynamic.
+		
+		Arguments: 
+			skip expr - determine if all cases should be skipped (eval delayed until ut test)
+			skip description - human-readable description of the reason for skip (used if skipped)
+			
+		Returns:
+			Reference to this object
+	*/
+	Skip If = Method({skip expr, skip description=Empty()},
+		this:skip expr = Name Expr( skip expr );
+		this:skip description = If(Is Empty(skip description), Char(Name Expr(skip expr)), skip description);
+		this:self;
+	);
+	
+	// Method: Get Skip If
+	Get Skip If = Method({}, Name Expr( this:skip expr ) );
+	
+	// Method: Get Skip Description
+	Get Skip Description = Method({}, this:skip description );
 );
 
 /* 
@@ -189,6 +223,17 @@ ut define documented function(
 					ut assert that( Expr( 5 - 5 ), 0, "my assert level comment" ); 
 				)
 			);
+		},
+		{
+			"Skip If",
+			test case = ut test case( "Sample test case" )
+				<< Skip If( Expr( Num(Regex(JMP Version(), "(\d+)", "\1")) > 15 ), "JMP Version > 15" );
+				
+			ut test( test case, "test level comment",
+				Expr(
+					ut assert that( Expr( 1 + 1 ), 2 );
+				)
+			);
 		}
 	}
 );
@@ -217,6 +262,11 @@ Define Class("UtSuccessFilteringReporter",
 		this:inner << add unexpected throw( label, Name Expr( test expr ), description, exception, Name Expr( payload ) )
 	);
 	add success = Method( {label, test expr, description, payload=Empty()},
+		.
+	);
+	add skip = Method( {label, test expr, description, skip description, payload=Empty()},
+		// Counted as a success for now.
+		// This is used for the log benchmarking which has an independent skipping mechanism. 
 		.
 	);
 	release = Method({},
@@ -284,6 +334,19 @@ Define Class(
 					Expr( label ),
 					Expr( ut expr literal( Name Expr( test expr ) ) ),
 					Expr( description ),
+					Expr( ut expr literal( Name Expr( payload ) ) )
+				)
+			)
+		)
+	);
+	add skip = Method( {label, test expr, description, skip description, payload=Empty()},
+		Insert Into( buffer,
+			Eval Expr(
+				this:inner << add skip(
+					Expr( label ),
+					Expr( ut expr literal( Name Expr( test expr ) ) ),
+					Expr( description ),
+					Expr( skip description ),
 					Expr( ut expr literal( Name Expr( payload ) ) )
 				)
 			)
@@ -468,8 +531,56 @@ ut define documented function(
 			);
 		);
 		
-		// Get Do Log Bench() < 0 means don't capture
-		If( _utTestNS:log benchmark << Get Do Log Bench() >= 0,
+		// evaluate the skip if expression
+		_utTestNS:skip? =
+			Try(
+				First(
+					Eval( _utTestNS:test case << Get Skip If() ),
+					Names Default to Here( 0 )
+				)
+			,
+				Names Default to Here( 0 );
+				ut global reporter << Add Unexpected Throw( 
+					ut concat test label(
+						_utTestNS:test case << Get Test Case Name(),
+						_utTestNS:test name,
+						"Skip If"
+					),
+					ut get exception expression( exception_msg ),
+					"test case skip if does not throw",
+					::ut get exception message( exception_msg );
+				);
+				0 // Don't skip (fairly arbitrary choice)
+			);
+			
+		If(!Is Number(Name Expr(_utTestNS:skip?)) | Is Missing(_utTestNS:skip?),
+			ut global reporter << Add Unexpected Throw( 
+				ut concat test label(
+					_utTestNS:test case << Get Test Case Name(),
+					_utTestNS:test name,
+					"Skip If"
+				),
+				Name Expr(_utTestNS:test case << Get Skip If() ),
+				"test case skip returns non-missing number",
+				Eval Insert("returned ^ut get show string(Name Expr(_utTestNS:skip?))^")
+			);
+		);
+		
+		If( _utTestNS:skip?,
+			ut global reporter << Add Skip( 
+				ut concat test label(
+					_utTestNS:test case << Get Test Case Name(),
+					_utTestNS:test name,
+					"Skip"
+				),
+				Empty(), /*Empty for entire test skip*/
+				"", /*Empty for entire test skip*/
+				_utTestNS:test case << Get Skip Description()
+			);
+		,
+			// Get Do Log Bench() < 0 means don't capture
+			_utTestNS:log benchmark << Get Do Log Bench() >= 0
+		,
 			// Replace reporter so event handlers don't happen under Log Capture
 			_utTestNS:buffering reporter = New Object("UtBufferingReporter"(ut global reporter));
 			ut global reporter = _utTestNS:buffering reporter;
@@ -507,6 +618,7 @@ ut define documented function(
 				)
 			)
 		,
+			// Else
 			_utTestNS:setup success = Eval( _utTestNS << Get Value( "run setup expr" ) );
 			If( _utTestNS:setup success,
 				Eval( _utTestNS << Get Value("run test expr") );
@@ -653,6 +765,8 @@ ut test assertion decorator = Function( {function name, args},
 /*	Function: ut expand test
 		Accepts same arguments as <ut test>, but returns you an expression with 
 		all parts expanded. Might be useful for debugging your script.
+		
+		Note, this currently does not include the Skip If expression.
 	
 		-------------Prototype-------------
 		ut expand test(

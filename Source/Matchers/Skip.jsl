@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here( 0 );
@@ -30,42 +30,79 @@ Define Class(
 	);
 );
 
+/*
+	Class: UtGenuineSkipMatcher
+		---Prototype---
+		class UtGenuineSkipMatcher inherits UtMatcher
+		---------------
+*/
+Define Class(
+	"UtGenuineSkipMatcher",
+	Base Class( UtMatcher ),
+	inner = Empty();
+	why = "";
+	_init_ = Method( {inner, why=""},
+		this:inner = inner;
+		this:why = If(Length(why) > 0, why, "unknown reason");
+	);
+	matches = Method( {test expr},
+		// We are abusing UtMatchInfo here. This will be treated
+		// as a success by everyone that doesn't know about this.
+		mi = ut match info success();
+		mi:skip = 1;
+		mi:skip description = this:why;
+		mi;
+	);
+	describe = Method( {},
+		this:inner << Describe();
+	);
+);
+
 // Section: Globals
 
 /* 
 	Function: ut skip
 		---Prototype---
-		ut skip( UtMatcher matcher = ut anything() )
+		ut skip( UtMatcher matcher = ut anything(), why = "" )
 		---------------
 		Used to mark an expression you want to skip. Instead a success
-		is reported.
+		is reported. Usually, you want to give a reason why you are
+		skipping.
 		
-		Factory function for <UtSkipMatcher>.
+		In addiition, this is mostly useful as an outer matcher. Most
+		transformational matchers will treat this as a success when using
+		ut skip as an inner matcher. For example, ut n items(ut skip()) is
+		basically the same as ut n items(ut anything()). For this reason,
+		ut skip is usually disallowed as an inner matcher (see denylist in
+		ut ensure matcher).
+		
+		Factory function for <UtGenuineSkipMatcher>.
 
 	Arguments:
 		matcher - any object
+		why - a string saying why we are skipping
 
 	Example:
 		---JSL---
 		// If you wanted to skip this assertion but leave it in the
 		// script for some reason, you could prevent it running by
 		// wrapping the expected value/matcher with ut skip()
-		ut assert that( Expr( 1 + 1 ), ut skip( ut equal to( 2 ) ) );
+		ut assert that( Expr( 1 + 1 ), ut skip( ut equal to( 2 ), "issue #1784" ) );
 		---------
 */
 ut matcher factory( "ut skip",
-	Expr(Function( {matcher=ut anything()},
-		New Object( UtSkipMatcher( ut ensure matcher( Name Expr( matcher ) ), 0 ) )
+	Expr(Function( {matcher=ut anything(), why=""},
+		New Object( "UtGenuineSkipMatcher"( ut ensure matcher( Name Expr( matcher ) ), why ) )
 	)),
-	"ut skip()",
-	"Used to mark an expression you want to skip. Instead a success is reported.",
+	"ut skip(<matcher>, <why>)",
+	"Used to mark an expression you want to skip. And provide an optional reason for the skip.",
 	{{
 		"Simple",
 		"\[
 // If you wanted to skip this assertion but leave it in the
 // script for some reason, you could prevent it running by
 // wrapping the expected value/matcher with ut skip()
-ut assert that( Expr( 1 + 1 ), ut skip( ut equal to( 2 ) ) );
+ut assert that( Expr( 1 + 1 ), ut skip( ut equal to( 2 ), "issue #1784" ) );
 ]\"
 	}}
 );
@@ -87,7 +124,7 @@ ut assert that( Expr( 1 + 1 ), ut skip( ut equal to( 2 ) ) );
 		---JSL---
 		// If you wanted to skip this assertion but leave it in the
 		// script for some reason, you could prevent it running by
-		// wrapping the expected value/matcher with ut skip()
+		// wrapping the expected value/matcher with ut skip failing()
 		ut assert that( Expr( 1 + 1 ), ut skip failing( ut equal to( 2 ) ) );
 		---------
 */
@@ -96,7 +133,7 @@ ut matcher factory(
 	Expr(Function( {matcher=ut anything()},
 		New Object( UtSkipMatcher( ut ensure matcher( Name Expr( matcher ) ), 1, "skipped test marked failing" ) )
 	)),
-	"ut skip failing()",
+	"ut skip failing(<matcher>)",
 	"Used to mark an expression you want to skip. Instead a failure is reported.",
 	{{
 		"Simple",
@@ -105,6 +142,45 @@ ut matcher factory(
 // script failing, you could prevent it running by
 // wrapping the expected value/matcher with ut skip failing()
 ut assert that( Expr( 1 + 1 ), ut skip failing( ut equal to( 2 ) ) );
+]\"
+	}}
+);
+
+/* 
+	Function: ut skip succeeding
+		---Prototype---
+		ut skip succeeding( UtMatcher matcher = ut anything() )
+		---------------
+		Used to mark an expression you want to skip. Instead a success
+		is reported.
+		
+		Factory function for <UtSkipMatcher>.
+
+	Arguments:
+		matcher - any object
+
+	Example:
+		---JSL---
+		// If you wanted to skip this assertion but leave it in the
+		// script for some reason, you could prevent it running by
+		// wrapping the expected value/matcher with ut skip succeeding()
+		ut assert that( Expr( 1 + 1 ), ut skip succeeding( ut equal to( 2 ) ) );
+		---------
+*/
+ut matcher factory( 
+	"ut skip succeeding",
+	Expr(Function( {matcher=ut anything()},
+		New Object( UtSkipMatcher( ut ensure matcher( Name Expr( matcher ) ), 0 ) )
+	)),
+	"ut skip succeeding(<matcher>)",
+	"Used to mark an expression you want to skip. Instead a sucess is reported.",
+	{{
+		"Simple",
+		"\[
+// If you wanted to skip this assertion but leave it in the
+// script failing, you could prevent it running by
+// wrapping the expected value/matcher with ut skip succeeding()
+ut assert that( Expr( 1 + 1 ), ut skip succeeding( ut equal to( 2 ) ) );
 ]\"
 	}}
 );

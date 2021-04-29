@@ -28,7 +28,7 @@ Local({reporter name, fallback reporter},
 		Include( "../Reporters.jsl" );
 		Include( "../TestRunner.jsl" );
 		Include( "../TestRunnerPreferences.jsl" );
-		fallback reporter = If(reporter name != "UtReporter", ::ut global reporter, ut streaming log reporter());
+		fallback reporter = If(reporter name != "UtReporter", ::ut global reporter, ut streaming log reporter with skip());
 		::ut global reporter = ut window dispatching reporter(fallback reporter);
 	);
 );

@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here( 0 );
@@ -67,6 +67,19 @@ Define Class(
 	//    payload - any object which can used to send other information about the test
 	//
 	add success = Method( {label, test expr, description, payload=Empty()}, 1 );
+	
+	// Method: add skip
+	//
+	// To be used when a test is skipped (not run) for some reason.
+	//
+	// Parameters:
+	//    label - any extra information about test
+	//    test expr - object or expression under test
+	//    description - what was being tested
+	//    skip description - why was this test skipped?
+	//    payload - any object which can be used to send other information about the test
+	//
+	add skip = Method( {label, test expr, description, skip description, payload=Empty()}, 1 );
 );
 
 // Function: ut reporter

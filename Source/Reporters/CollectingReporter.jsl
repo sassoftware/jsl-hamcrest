@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here( 0 );
@@ -22,6 +22,9 @@ Define Class(
 	
 	// Variable: unexpected throws
 	unexpected throws = {};
+	
+	// Variable: skips
+	skips = {};
 
 	// Function: add expression failure
 	add expression failure = Method( {label, payload=Empty()},
@@ -49,6 +52,12 @@ Define Class(
 		1;
 	);
 	
+	add skip = Method( {label, test expr, description, skip description, payload=Empty()},
+		record = Eval List( {label, Name Expr( test expr ), description, skip description, Name Expr( payload )} );
+		Insert Into( this:skips, Eval List( {record} ) );
+		1;
+	);
+	
 	// Function: N successes
 	N successes = Method( {},
 		Length( this:successes )
@@ -62,6 +71,11 @@ Define Class(
 	// Function: N unexpected throws
 	N unexpected throws = Method( {},
 		Length( this:unexpected throws )
+	);
+	
+	// Function: N skips
+	N skips = Method( {},
+		Length( this:skips )
 	);
 	
 	// Function: N total failures
@@ -79,10 +93,12 @@ Define Class(
 		num successes = Length( this:successes );
 		num failures = Length( this:failures );
 		num unexpected throws = Length( this:unexpected throws );
+		num skips = Length( this:skips );
 		Write( "\!n\!n=============== Report ===============" );
 		Write( "\!nsuccesses         : " || Char( num successes ) );
 		Write( "\!nfailures          : " || Char( num failures ) );
 		Write( "\!nunexpected throws : " || Char( num unexpected throws ) );
+		Write( "\!nskips             : " || Char( num skips ) );
 		Write( "\!n------------- Successes --------------" );
 		For( i = 1, i <= num successes, i++,
 			char test expr = If( Is Expr( Name Expr( this:successes[i][2] ) ),
@@ -114,6 +130,16 @@ Define Class(
 				Write( "  But: " || "unexpectedly threw nothing\!n" ),
 				Write( "  But: " || "unexpectedly threw \!"" || this:unexpected throws[i][4] || "\!"\!n" )
 			);
+		);
+		Write( "\!n--------- Skips ----------------------" );
+		For( i = 1, i <= num skips, i++,
+			char test expr = If( Is Expr( Name Expr( this:skips[i][2] ) ),
+				Char( Name Expr( this:skips[i][2] ) ),
+				Char( this:skips[i][2] )
+			) || " ";
+			Write( "\!n  Label: " || this:skips[i][1] || "\!n" );
+			Write( "  Expected: " || char test expr || this:skips[i][3] || "\!n" );
+			Write( "  Skipped: " || this:skips[i][4] || "\!n");
 		);
 	);
 );

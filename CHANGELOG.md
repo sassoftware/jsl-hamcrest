@@ -10,11 +10,15 @@ All notable changes to this project will be documented in this file.
 
 - `ut localized` to enable localizing content using an associative array and language codes.
 - `ut mock function`, `ut expect call`, and `ut verify mock` for testing callbacks
+- Extended reporting API to support skipped tests and assertions.
+  Use the `ut test case` `<<Skip If` message for skipping entire tests.
+  Use the `ut skip` matcher for skipping assertions.
 
 ### Changed
 
 - Convenience `ut throws` helper functions now use `ut localize` to assert using the current languages error message.
 - `UtJunitXMLReporter` reports file and classname attributes for testcases and treats throws differently from failures.
+- The `ut skip` matcher now issues a `skip` rather than a `success`. The `ut skip succeeding` matcher has the old behavior.
 
 ### Fixed
 

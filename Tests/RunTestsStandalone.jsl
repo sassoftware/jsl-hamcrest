@@ -8,6 +8,6 @@ Include( "../Source/All.jsl" );
 Include( "../Source/Addin/Reporters.jsl" );
 Include( "../Source/Addin/TestRunner.jsl" );
 Include( "../Source/Addin/TestRunnerPreferences.jsl" );
-ut with reporter( ut streaming log reporter(), Expr( 
+ut with reporter( ut streaming log reporter with skip(), Expr( 
 	Include( "RunTests.jsl" )
 ));

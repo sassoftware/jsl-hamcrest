@@ -18,12 +18,13 @@ Define Class("UtSummaryReporter",
 	Base Class(UtReporter),
 	n success = 0;
 	n failure = 0;
+	n skip = 0;
 	box = Empty();
 	_init_ = Method( {box},
 		this:box = box
 	);
 	update view = Method({},
-		this:box << Set Text( "✓ " || Char( this:n success ) || " ✗ " || Char( this:n failure ) )
+		this:box << Set Text( "✓ " || Char( this:n success ) || " ✗ " || Char( this:n failure ) || " ✱ " || Char( this:n skip ) )
 	);
 	add expression failure = Method( {label, payload=Empty()},
 		this:n failure++;
@@ -41,9 +42,14 @@ Define Class("UtSummaryReporter",
 		this:n success++;
 		this:update view()
 	);
+	add skip = Method( {label, test expr, description, skip description, payload=Empty()},
+		this:n skip++;
+		this:update view()
+	);
 	on run start = Method( {},
 		this:n success = 0;
 		this:n failure = 0;
+		this:n skip = 0;
 		this:box << Set Text("");
 	);
 	on run end = Method( {},
@@ -139,6 +145,7 @@ Define Class("UtRunOnlyReporter",
 	add failure = Method( {label, test expr, description, mismatch, lre, payload=Empty()}, .);
 	add unexpected throw = Method( {label, test expr, description, exception, payload=Empty()}, .);
 	add success = Method( {label, test expr, description, payload=Empty()}, .);
+	add skip = Method( {label, test expr, description, skip description, payload=Empty()}, .);
 );
 
 // Function: ut make new node
@@ -166,7 +173,10 @@ ut format node entry = Function({data}, {short desc, label details, str},
 			0, "<b>SUCCESS</b>  ^Xml Encode(Char(Name Expr(data[3])))^ ^Xml Encode(Char(short desc))^ ^label details^\!N    <i>Expected:</i> ^Xml Encode(Char(data[4]))^",
 			1, "<b>EXPRESSION FAILURE</b>  ^label details^",
 			2, "<b>FAILURE</b>  ^Xml Encode(Char(Name Expr(data[3])))^ ^Xml Encode(Char(short desc))^ ^label details^\!N    <i>Actual:</i> ^Xml Encode(Char(data[5]))^\!N    <i>Expected:</i> ^Xml Encode(Char(data[4]))^",
-			3, "<b>FAILURE</b>  ^Xml Encode(Char(Name Expr(data[3])))^ ^Xml Encode(Char(short desc))^ ^label details^\!N    <i>Actual:</i> threw &quot;^Xml Encode(Char(data[5]))^&quot;\!N    <i>Expected:</i> ^Xml Encode(Char(data[4]))^"
+			3, "<b>FAILURE</b>  ^Xml Encode(Char(Name Expr(data[3])))^ ^Xml Encode(Char(short desc))^ ^label details^\!N    <i>Actual:</i> threw &quot;^Xml Encode(Char(data[5]))^&quot;\!N    <i>Expected:</i> ^Xml Encode(Char(data[4]))^",
+		   -1, If(Is Empty(data[3]) & Length(data[4]) == 0,
+					"<b>SKIPPED</b>  Entire test ^label details^\!N    <i>Skipped</i>: ^Xml Encode(Char(data[5]))^",
+					"<b>SKIPPED</b>  ^Xml Encode(Char(Name Expr(data[3])))^ ^Xml Encode(Char(short desc))^ ^label details^\!N    <i>Skipped</i>: ^Xml Encode(Char(data[5]))^\!N    <i>Expected</i>: ^Xml Encode(Char(data[4]))^");
 		);
 		If(2 == data[1] & !Is Missing(data[6]),
 			str ||= "\!N    <i>LRE:</i> ^Xml Encode(Char(data[6]))^"
@@ -177,7 +187,10 @@ ut format node entry = Function({data}, {short desc, label details, str},
 			0, "SUCCESS  ^Name Expr(data[3])^ ^short desc^ ^label details^\!N    Expected: ^data[4]^",
 			1, "EXPRESSION FAILURE  ^label details^",
 			2, "FAILURE  ^Name Expr(data[3])^ ^short desc^ ^label details^\!N    Actual: ^data[5]^\!N    Expected: ^data[4]^",
-			3, "FAILURE  ^Name Expr(data[3])^ ^short desc^ ^label details^\!N    Actual: threw \!"^data[5]^\!"\!N    Expected: ^data[4]^"
+			3, "FAILURE  ^Name Expr(data[3])^ ^short desc^ ^label details^\!N    Actual: threw \!"^data[5]^\!"\!N    Expected: ^data[4]^",
+		   -1, If(Is Empty(data[3]) & Length(data[4]) == 0,
+					"SKIPPED  Entire test ^label details^\!N    Skipped: ^data[5]^",
+					"SKIPPED  ^Name Expr(data[3])^ ^short desc^ ^label details^\!N    Skipped: ^data[5]^\!N    Expected: ^data[4]^");
 		);
 		If(2 == data[1] & !Is Missing(data[6]),
 			str ||= "\!N    LRE: ^data[6]^"
@@ -231,7 +244,8 @@ Define Class("UtDetailsTreeReporter",
 		                       0, ut icon("success-32px"),
 		                       1, ut icon("exprfailure-32px"),
 		                       2, ut icon("failure-32px"),
-		                       3, ut icon("throw-32px")));
+		                       3, ut icon("throw-32px"),
+		                      -1, ut icon("skip-32px")));
 		If(final type == 0,	this:box << Collapse(node),	this:box << Expand(node));
 	);
 	process test case event = Method({event type, full label, case label, test label, assertion label, assertion id, payload},
@@ -284,6 +298,9 @@ Define Class("UtDetailsTreeReporter",
 	);
 	add success = Method( {label, test expr, description, payload=Empty()},
 		this:process event(0, label, Eval List({Name Expr(test expr), description}));
+	);
+	add skip = Method( {label, test expr, description, skip description, payload=Empty()},
+		this:process event(-1, label, Eval List({Name Expr(test expr), description, skip description}));
 	);
 	on run start = Method( {},
 		default = ut make new node("Default");

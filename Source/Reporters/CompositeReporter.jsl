@@ -23,6 +23,9 @@ Define Class("UtCompositeReporter",
 	add success = Method( {label, test expr, description, payload=Empty()},
 		this:reporters << add success( label, Name Expr( test expr ), description, Name Expr( payload ) )
 	);
+	add skip = Method( {label, test expr, description, skip description, payload=Empty()},
+		this:reporters << add skip( label, Name Expr( test expr ), description, skip description, Name Expr( payload ) )
+	);
 );
 
 // Function: ut composite reporter

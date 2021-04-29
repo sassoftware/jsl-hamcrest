@@ -27,6 +27,21 @@ ut test( "Utils", "EnsureMatcherPreservesMatcher", Expr(
     ut assert that( Expr( ut ensure matcher( ut contains( 5 ) ) ), ut instance of( "UtContainsMatcher" ) );
 ));
 
+ut test( "Utils", "EnsureMatcherEmptyDenyList", Expr(
+    ut assert that( Expr( ut ensure matcher( ut skip(5), {} ) ), ut no throw() );
+));
+
+ut test( "Utils", "EnsureMatcherDefaultDenyList", Expr(
+    ut assert that( Expr( ut ensure matcher( ut skip(5) ) ), ut throws("Invalid inner matcher UtGenuineSkipMatcher") );
+));
+
+ut test( "Utils", "EnsureMatcherCustomDenyList", Expr(
+	dlist = {"UtMissingMatcher", "UtTypedAsMatcher"};
+    ut assert that( Expr( ut ensure matcher( ut missing(), dlist ) ), ut throws("Invalid inner matcher UtMissingMatcher") );
+    ut assert that( Expr( ut ensure matcher( ut typed as("foo"), dlist ) ), ut throws("Invalid inner matcher UtTypedAsMatcher") );
+    ut assert that( Expr( ut ensure matcher( ut skip(5), {} ) ), ut no throw() );
+));
+
 ut test( "Utils", "EnsureMatcherList", Expr(
     ut assert that( 
         Expr( ut ensure matcher list( {5, ut contains( 5 )} ) ),
