@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("moc",["Function"],[["mock",,[[,"ut mock function",,,0,"File:Core/Mock.jsl:ut_mock_function"],[,"ut verify mock",,,0,"File:Core/Mock.jsl:ut_verify_mock"]]]]);

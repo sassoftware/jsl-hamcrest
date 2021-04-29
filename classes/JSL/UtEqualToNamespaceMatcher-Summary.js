@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("JSLClass:UtEqualToNamespaceMatcher","UtEqualToNamespaceMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtEqualToNamespaceMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[222,0,0,"UtEqualToNamespaceMatcher"]]);
+NDFramePage.OnPageTitleLoaded("JSLClass:UtEqualToNamespaceMatcher","UtEqualToNamespaceMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtEqualToNamespaceMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[230,0,0,"UtEqualToNamespaceMatcher"]]);

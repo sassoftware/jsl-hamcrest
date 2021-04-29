@@ -1,1 +1,1 @@
-NDSearch.OnPrefixDataLoaded("ver",["Variable"],[["version",,[[,"ut major jmp version",,,0,"File:Core/Utils.jsl:ut_major_jmp_version"]]]]);
+NDSearch.OnPrefixDataLoaded("ver",["Function","Variable"],[["verify",,[[,"ut verify mock",,,0,"File:Core/Mock.jsl:ut_verify_mock"]]],["version",,[[,"ut major jmp version",,,1,"File:Core/Utils.jsl:ut_major_jmp_version"]]]]);
