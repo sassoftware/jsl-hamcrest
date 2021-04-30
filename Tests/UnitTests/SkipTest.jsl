@@ -64,6 +64,16 @@ ut test(Skip If Tests, "Accepts custom skip description", Expr(
 	));
 ));
 
+ut test(Skip If Tests, "Custom skip description can be empty string", Expr(
+	case << Skip If(1, "");
+	reporter << Expect Call(Expr(add skip("case ⮚ name ⮚ Skip", Empty(), "", "", Empty())));
+	ut with reporter(reporter, Expr(
+		ut test(case, "name", Expr(
+			ut assert that(Expr(1 + 1), 3)
+		))
+	));
+));
+
 ut test(Skip If Tests, "No setup or teardown when skipping", Expr(
 	case << Skip If(1)
 	     << Setup(Expr(::setup run? = 1))
@@ -122,4 +132,9 @@ ut test(Skip Tests, "Forwards for description", Expr(
 ut test(Skip Tests, "Default skip description", Expr(
 	mi = ut skip(3) << matches(Expr( 1 + 1 ));
 	ut assert that(Expr(mi:skip description), "unknown reason");
+));
+
+ut test(Skip Tests, "Default skip description can be empty string", Expr(
+	mi = ut skip(3, "") << matches(Expr( 1 + 1 ));
+	ut assert that(Expr(mi:skip description), "");
 ));

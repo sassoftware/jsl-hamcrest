@@ -22,7 +22,7 @@ Define Class( "UtTestCaseFixture",
 	// Variable: teardown expr 
 	teardown expr = Empty();
 	// Variable: skip flag
-	skip expr = Expr(0);
+	skip expr = 0;
 	// Variable: skip description
 	skip description = "";
 
@@ -266,7 +266,7 @@ Define Class("UtSuccessFilteringReporter",
 	);
 	add skip = Method( {label, test expr, description, skip description, payload=Empty()},
 		// Counted as a success for now.
-		// This is used for the log benchmarking which has an independent skipping mechanism. 
+		// This reporter is used for the log benchmarking which has an independent skipping mechanism. 
 		.
 	);
 	release = Method({},
@@ -532,26 +532,25 @@ ut define documented function(
 		);
 		
 		// evaluate the skip if expression
-		_utTestNS:skip? =
-			Try(
-				First(
-					Eval( _utTestNS:test case << Get Skip If() ),
-					Names Default to Here( 0 )
-				)
-			,
-				Names Default to Here( 0 );
-				ut global reporter << Add Unexpected Throw( 
-					ut concat test label(
-						_utTestNS:test case << Get Test Case Name(),
-						_utTestNS:test name,
-						"Skip If"
-					),
-					ut get exception expression( exception_msg ),
-					"test case skip if does not throw",
-					::ut get exception message( exception_msg );
-				);
-				0 // Don't skip (fairly arbitrary choice)
+		_utTestNS:skip? = Try(
+			First(
+				Eval( _utTestNS:test case << Get Skip If() ),
+				Names Default to Here( 0 )
+			)
+		,
+			Names Default to Here( 0 );
+			ut global reporter << Add Unexpected Throw( 
+				ut concat test label(
+					_utTestNS:test case << Get Test Case Name(),
+					_utTestNS:test name,
+					"Skip If"
+				),
+				ut get exception expression( exception_msg ),
+				"test case skip if does not throw",
+				::ut get exception message( exception_msg );
 			);
+			0 // Don't skip (fairly arbitrary choice)
+		);
 			
 		If(!Is Number(Name Expr(_utTestNS:skip?)) | Is Missing(_utTestNS:skip?),
 			ut global reporter << Add Unexpected Throw( 

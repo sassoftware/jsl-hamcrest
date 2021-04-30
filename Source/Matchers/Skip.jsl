@@ -41,9 +41,9 @@ Define Class(
 	Base Class( UtMatcher ),
 	inner = Empty();
 	why = "";
-	_init_ = Method( {inner, why=""},
+	_init_ = Method( {inner, why},
 		this:inner = inner;
-		this:why = If(Length(why) > 0, why, "unknown reason");
+		this:why = why;
 	);
 	matches = Method( {test expr},
 		// We are abusing UtMatchInfo here. This will be treated
@@ -69,7 +69,7 @@ Define Class(
 		is reported. Usually, you want to give a reason why you are
 		skipping.
 		
-		In addiition, this is mostly useful as an outer matcher. Most
+		In addition, this is mostly useful as an outer matcher. Most
 		transformational matchers will treat this as a success when using
 		ut skip as an inner matcher. For example, ut n items(ut skip()) is
 		basically the same as ut n items(ut anything()). For this reason,
@@ -91,8 +91,8 @@ Define Class(
 		---------
 */
 ut matcher factory( "ut skip",
-	Expr(Function( {matcher=ut anything(), why=""},
-		New Object( "UtGenuineSkipMatcher"( ut ensure matcher( Name Expr( matcher ) ), why ) )
+	Expr(Function( {matcher=ut anything(), why=Empty()},
+		New Object( "UtGenuineSkipMatcher"( ut ensure matcher( Name Expr( matcher ) ), If(Is Empty(why), "unknown reason", why) ) )
 	)),
 	"ut skip(<matcher>, <why>)",
 	"Used to mark an expression you want to skip. And provide an optional reason for the skip.",
