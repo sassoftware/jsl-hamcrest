@@ -175,8 +175,8 @@ ut format node entry = Function({data}, {short desc, label details, str},
 			2, "<b>FAILURE</b>  ^Xml Encode(Char(Name Expr(data[3])))^ ^Xml Encode(Char(short desc))^ ^label details^\!N    <i>Actual:</i> ^Xml Encode(Char(data[5]))^\!N    <i>Expected:</i> ^Xml Encode(Char(data[4]))^",
 			3, "<b>FAILURE</b>  ^Xml Encode(Char(Name Expr(data[3])))^ ^Xml Encode(Char(short desc))^ ^label details^\!N    <i>Actual:</i> threw &quot;^Xml Encode(Char(data[5]))^&quot;\!N    <i>Expected:</i> ^Xml Encode(Char(data[4]))^",
 		   -1, If(Is Empty(data[3]) & Length(data[4]) == 0,
-					"<b>SKIPPED</b>  Entire test ^label details^\!N    <i>Skipped</i>: ^Xml Encode(Char(data[5]))^",
-					"<b>SKIPPED</b>  ^Xml Encode(Char(Name Expr(data[3])))^ ^Xml Encode(Char(short desc))^ ^label details^\!N    <i>Skipped</i>: ^Xml Encode(Char(data[5]))^\!N    <i>Expected</i>: ^Xml Encode(Char(data[4]))^");
+				"<b>SKIPPED</b>  Entire test ^label details^\!N    <i>Skipped</i>: ^Xml Encode(Char(data[5]))^",
+				"<b>SKIPPED</b>  ^Xml Encode(Char(Name Expr(data[3])))^ ^Xml Encode(Char(short desc))^ ^label details^\!N    <i>Skipped</i>: ^Xml Encode(Char(data[5]))^\!N    <i>Expected</i>: ^Xml Encode(Char(data[4]))^");
 		);
 		If(2 == data[1] & !Is Missing(data[6]),
 			str ||= "\!N    <i>LRE:</i> ^Xml Encode(Char(data[6]))^"
@@ -189,8 +189,8 @@ ut format node entry = Function({data}, {short desc, label details, str},
 			2, "FAILURE  ^Name Expr(data[3])^ ^short desc^ ^label details^\!N    Actual: ^data[5]^\!N    Expected: ^data[4]^",
 			3, "FAILURE  ^Name Expr(data[3])^ ^short desc^ ^label details^\!N    Actual: threw \!"^data[5]^\!"\!N    Expected: ^data[4]^",
 		   -1, If(Is Empty(data[3]) & Length(data[4]) == 0,
-					"SKIPPED  Entire test ^label details^\!N    Skipped: ^data[5]^",
-					"SKIPPED  ^Name Expr(data[3])^ ^short desc^ ^label details^\!N    Skipped: ^data[5]^\!N    Expected: ^data[4]^");
+				"SKIPPED  Entire test ^label details^\!N    Skipped: ^data[5]^",
+				"SKIPPED  ^Name Expr(data[3])^ ^short desc^ ^label details^\!N    Skipped: ^data[5]^\!N    Expected: ^data[4]^");
 		);
 		If(2 == data[1] & !Is Missing(data[6]),
 			str ||= "\!N    LRE: ^data[6]^"
