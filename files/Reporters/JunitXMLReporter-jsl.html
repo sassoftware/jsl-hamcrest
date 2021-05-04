@@ -8,95 +8,95 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="UtJunitXMLReporter"></a><a name="Topic377"></a><div class="CTopic TClass LJSL first">
+<a name="UtJunitXMLReporter"></a><a name="Topic389"></a><div class="CTopic TClass LJSL first">
  <div class="CTitle">UtJunitXMLReporter</div>
- <div class="NDClassPrototype HasParents" id="NDClassPrototype377"><a class="CPEntry Parent TClass" href="../../index.html#File:Core/Reporters/Reporter.jsl:UtReporter" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,243);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">UtReporter</div></a><div class="CPEntry TClass Current"><div class="CPName">UtJunitXMLReporter</div></div></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype389"><a class="CPEntry Parent TClass" href="../../index.html#File:Core/Reporters/Reporter.jsl:UtReporter" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,245);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">UtReporter</div></a><div class="CPEntry TClass Current"><div class="CPName">UtJunitXMLReporter</div></div></div>
  <div class="CBody"><p>Collect failure information about test cases.&nbsp; Then issue a report in JUnitXML format on demand.</p><p>Example of JunitXML format:</p><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;<br />&lt;testsuites id=&quot;20140612_170519&quot; name=&quot;New_configuration (14/06/12 17:05:19)&quot; tests=&quot;225&quot; failures=&quot;1262&quot; time=&quot;0.001&quot;&gt;<br />  &lt;testsuite id=&quot;codereview.cobol.analysisProvider&quot; name=&quot;COBOL Code Review&quot; tests=&quot;45&quot; failures=&quot;17&quot; time=&quot;0.001&quot;&gt;<br />    &lt;testcase id=&quot;codereview.cobol.rules.ProgramIdRule&quot; name=&quot;Use a program name that matches the source file name&quot; time=&quot;0.001&quot;&gt;<br />      &lt;failure message=&quot;PROGRAM.cbl:2 Use a program name that matches the source file name&quot; type=&quot;WARNING&quot;&gt;<br />        WARNING: Use a program name that matches the source file name<br />        Category: COBOL Code Review – Naming Conventions<br />        File: /project/PROGRAM.cbl<br />        Line: 2<br />      &lt;/failure&gt;<br />    &lt;/testcase&gt;<br />  &lt;/testsuite&gt;<br />&lt;/testsuites&gt;</pre></div>
 </div>
 
-<a name="UtJunitXMLReporter.Variables"></a><a name="Topic378"></a><div class="CTopic TGroup LJSL">
+<a name="UtJunitXMLReporter.Variables"></a><a name="Topic390"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="UtJunitXMLReporter.hash_results"></a><a name="Topic379"></a><div class="CTopic TVariable LJSL">
+<a name="UtJunitXMLReporter.hash_results"></a><a name="Topic391"></a><div class="CTopic TVariable LJSL">
  <div class="CTitle">hash_results</div>
  <div class="CBody"><p>associative array of the test results test suite =&gt; test case =&gt; successes, failures, throws</p></div>
 </div>
 
-<a name="UtJunitXMLReporter.n_successes"></a><a name="Topic380"></a><div class="CTopic TVariable LJSL">
+<a name="UtJunitXMLReporter.n_successes"></a><a name="Topic392"></a><div class="CTopic TVariable LJSL">
  <div class="CTitle">n successes</div>
 </div>
 
-<a name="UtJunitXMLReporter.n_failures"></a><a name="Topic381"></a><div class="CTopic TVariable LJSL">
+<a name="UtJunitXMLReporter.n_failures"></a><a name="Topic393"></a><div class="CTopic TVariable LJSL">
  <div class="CTitle">n failures</div>
 </div>
 
-<a name="UtJunitXMLReporter.n_unexpected_throws"></a><a name="Topic382"></a><div class="CTopic TVariable LJSL">
+<a name="UtJunitXMLReporter.n_unexpected_throws"></a><a name="Topic394"></a><div class="CTopic TVariable LJSL">
  <div class="CTitle">n unexpected throws</div>
 </div>
 
-<a name="UtJunitXMLReporter.Functions"></a><a name="Topic383"></a><div class="CTopic TGroup LJSL">
+<a name="UtJunitXMLReporter.Functions"></a><a name="Topic395"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="UtJunitXMLReporter.add_to_hash"></a><a name="Topic384"></a><div class="CTopic TFunction LJSL">
+<a name="UtJunitXMLReporter.add_to_hash"></a><a name="Topic396"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">add to hash</div>
- <div id="NDPrototype384" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">add to hash(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PName first last">curr_suite,</td></tr><tr><td class="PName first last">curr_test,</td></tr><tr><td class="PName first last">result</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype396" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">add to hash(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PName first last">curr_suite,</td></tr><tr><td class="PName first last">curr_test,</td></tr><tr><td class="PName first last">result</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Adds the result of a test to hash_results</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">curr_suite</td><td class="CDLDefinition"><p>the name of the test suite</p></td></tr><tr><td class="CDLEntry">curr_test</td><td class="CDLDefinition"><p>the name of the test</p></td></tr><tr><td class="CDLEntry">result</td><td class="CDLDefinition"><p>the result of the test</p></td></tr></table></div>
 </div>
 
-<a name="UtJunitXMLReporter.get_file_path"></a><a name="Topic385"></a><div class="CTopic TFunction LJSL">
+<a name="UtJunitXMLReporter.get_file_path"></a><a name="Topic397"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">get file path</div>
- <div id="NDPrototype385" class="NDPrototype NoParameterForm"><span class="SHKeyword">get</span> file path()</div>
+ <div id="NDPrototype397" class="NDPrototype NoParameterForm"><span class="SHKeyword">get</span> file path()</div>
  <div class="CBody"><p>Gets the file path that the test came from.&nbsp; The path will be relative to the base dir if provided.</p></div>
 </div>
 
-<a name="UtJunitXMLReporter.add_expression_failure"></a><a name="Topic386"></a><div class="CTopic TFunction LJSL">
+<a name="UtJunitXMLReporter.add_expression_failure"></a><a name="Topic398"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">add expression failure</div>
 </div>
 
-<a name="UtJunitXMLReporter.add_failure"></a><a name="Topic387"></a><div class="CTopic TFunction LJSL">
+<a name="UtJunitXMLReporter.add_failure"></a><a name="Topic399"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">add failure</div>
 </div>
 
-<a name="UtJunitXMLReporter.add_unexpected_throw"></a><a name="Topic388"></a><div class="CTopic TFunction LJSL">
+<a name="UtJunitXMLReporter.add_unexpected_throw"></a><a name="Topic400"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">add unexpected throw</div>
 </div>
 
-<a name="UtJunitXMLReporter.add_success"></a><a name="Topic389"></a><div class="CTopic TFunction LJSL">
+<a name="UtJunitXMLReporter.add_success"></a><a name="Topic401"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">add success</div>
 </div>
 
-<a name="UtJunitXMLReporter.generate_xml_tag"></a><a name="Topic390"></a><div class="CTopic TFunction LJSL">
+<a name="UtJunitXMLReporter.generate_xml_tag"></a><a name="Topic402"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">generate_xml_tag</div>
- <div id="NDPrototype390" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">generate_xml_tag(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PNamePrefix first">&lt;</td><td class="PName last">tag&gt;,</td></tr><tr><td class="PNamePrefix first">&lt;</td><td class="PName last">content&gt;,</td></tr><tr><td class="PNamePrefix first">&lt;</td><td class="PName last">properties&gt;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype402" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">generate_xml_tag(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PNamePrefix first">&lt;</td><td class="PName last">tag&gt;,</td></tr><tr><td class="PNamePrefix first">&lt;</td><td class="PName last">content&gt;,</td></tr><tr><td class="PNamePrefix first">&lt;</td><td class="PName last">properties&gt;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Takes in a tag as a string and content, puts the content into the tag in xml format</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">tag</td><td class="CDLDefinition"><p>String that the tag should be</p></td></tr><tr><td class="CDLEntry">content</td><td class="CDLDefinition"><p>Content that goes inside the string [string]</p></td></tr><tr><td class="CDLEntry">properties</td><td class="CDLDefinition"><p>Associative array with properties as keys and the values</p></td></tr><tr><td class="CDLEntry">escape_content_flag</td><td class="CDLDefinition"><p>1 if content should have &amp;, &lt; and &gt; escaped, 0 otherwise</p></td></tr></table><div class="CHeading">Example</div><pre>test = generate_xml_tag(<span class="SHString">&quot;test&quot;</span>, <span class="SHString">&quot;content&quot;</span>, [<span class="SHString">&quot;prop&quot;</span>=&gt;<span class="SHNumber">1</span>]);</pre><pre>Expected Return:<br />  &lt;test prop=&quot;1&quot;&gt;<br />    content<br />  &lt;/test&gt;</pre></div>
 </div>
 
-<a name="UtJunitXMLReporter.get_xml_report"></a><a name="Topic391"></a><div class="CTopic TFunction LJSL">
+<a name="UtJunitXMLReporter.get_xml_report"></a><a name="Topic403"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">get_xml_report</div>
- <div id="NDPrototype391" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">get_xml_report(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PNamePrefix first">&lt;</td><td class="PName last">xml_results&gt;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype403" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">get_xml_report(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PNamePrefix first">&lt;</td><td class="PName last">xml_results&gt;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Takes a hash which should have test suites as keys, returns the JunitXML format</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">xml_result</td><td class="CDLDefinition"><p>Associative array where keys should be the test suites.</p></td></tr></table><p>Values will be associative arrays with test cases as keys.&nbsp; The values of those associative arrays will be failure messages with &quot;failure&quot; as the key.</p><div class="CHeading">Example</div><pre>xml_results = [<span class="SHString">&quot;Example Tests&quot;</span> =&gt;<br />                [<span class="SHString">&quot;Test1&quot;</span> =&gt;<br />                  {[<span class="SHString">&quot;failure&quot;</span> =&gt;<br />                    <span class="SHString">&quot;Expected: add_nums(1, 1) equal to 3</span><br /><span class="SHString">                    But: was 2&quot;</span><br />                  ]}<br />                ]<br />              ];<br /><br />get_xml_report(xml_results);</pre><pre>Expected Return:<br />  &lt;testsuites failures=&quot;1&quot; id=&quot;20191011_175324&quot; tests=&quot;1&quot;&gt;<br />    &lt;testsuite failures=&quot;1&quot; name=&quot;Example Tests&quot; tests=&quot;1&quot;&gt;<br />      &lt;testcase name=&quot;Test1&quot;&gt;<br />        &lt;failure type=&quot;failure&quot;&gt;<br />          Expected: add_nums(1, 1) equal to 3<br />          But: was 2<br />        &lt;/failure&gt;<br />      &lt;/testcase&gt;<br />    &lt;/testsuite&gt;<br />  &lt;/testsuites&gt;</pre></div>
 </div>
 
-<a name="UtJunitXMLReporter.parse_label"></a><a name="Topic392"></a><div class="CTopic TFunction LJSL">
+<a name="UtJunitXMLReporter.parse_label"></a><a name="Topic404"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">parse_label</div>
  <div class="CBody"><p>Parses a label into test suite, test name, and case</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">label</td><td class="CDLDefinition"><p>A label separated by a separator</p></td></tr></table><div class="CHeading">Results</div><p>The label split by the separator. The second and third values will be joined by an _ The first element will be the suite name and the second will be the test name If the given label is &quot;&quot;, current suite is named &quot;Anonymous_Test_Suite&quot;, and the test will be the given label or &quot;Anonymous_Test_Name&quot;</p></div>
 </div>
 
-<a name="UtJunitXMLReporter.get_report"></a><a name="Topic393"></a><div class="CTopic TFunction LJSL">
+<a name="UtJunitXMLReporter.get_report"></a><a name="Topic405"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">get report</div>
  <div class="CBody"><p>Get a report detailing all the successes and failures for each test in JunitXML format shown in the comments at the top.</p></div>
 </div>
 
-<a name="UtJunitXMLReporter.show_report"></a><a name="Topic394"></a><div class="CTopic TFunction LJSL">
+<a name="UtJunitXMLReporter.show_report"></a><a name="Topic406"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">show report</div>
  <div class="CBody"><p>Dump a report to the log detailing all the successes and failures for each test in JunitXML format shown in the comments at the top.</p></div>
 </div>
 
-<a name="UtJunitXMLReporter.ut_junit_xml_reporter"></a><a name="Topic395"></a><div class="CTopic TFunction LJSL last">
+<a name="UtJunitXMLReporter.ut_junit_xml_reporter"></a><a name="Topic407"></a><div class="CTopic TFunction LJSL last">
  <div class="CTitle">ut junit xml reporter</div>
- <div class="CBody"><p>Reporter which appends failures as they happen to an output file.</p><p>Factory for <a href="../../index.html#File:Reporters/JunitXMLReporter.jsl:UtJunitXMLReporter" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,377);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtJUnitXMLReporter</a>.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">base dir</td><td class="CDLDefinition"><p>Directory that the test file names will be relative to in the file attribute of testcase tags.</p></td></tr></table><div class="CHeading">Example</div><p>With test files in test/A/ and test/B/</p><pre>ut global reporter = ut junit xml reporter( <span class="SHString">&quot;test/&quot;</span> );</pre><p>will give file attributes like &quot;test/A/A_test1.jsl&quot;, &quot;test/B/B_test1.jsl&quot;, etc.</p></div>
+ <div class="CBody"><p>Reporter which appends failures as they happen to an output file.</p><p>Factory for <a href="../../index.html#File:Reporters/JunitXMLReporter.jsl:UtJunitXMLReporter" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,389);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtJUnitXMLReporter</a>.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">base dir</td><td class="CDLDefinition"><p>Directory that the test file names will be relative to in the file attribute of testcase tags.</p></td></tr></table><div class="CHeading">Example</div><p>With test files in test/A/ and test/B/</p><pre>ut global reporter = ut junit xml reporter( <span class="SHString">&quot;test/&quot;</span> );</pre><p>will give file attributes like &quot;test/A/A_test1.jsl&quot;, &quot;test/B/B_test1.jsl&quot;, etc.</p></div>
 </div>
 
 </body></html>
