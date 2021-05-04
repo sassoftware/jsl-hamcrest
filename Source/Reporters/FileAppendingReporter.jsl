@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here( 0 );
@@ -15,9 +15,10 @@ Define Class(
 	
 	filepath = "";
 	
-	_init_ = Method({filepath, write successes},
+	_init_ = Method({filepath, write successes, write skips},
 		this:filepath = filepath;
 		this:write successes = write successes;
+		this:write skips = write skips;
 		Save Text File( filepath, "" );
 	);
 
@@ -63,6 +64,27 @@ Define Class(
 		);
 		1;
 	);
+	
+	add skip = Method( {label, test expr, description, skip description, payload=Empty()},
+		If(this:write skips,
+			shortDescription = If( Length( description ) > 40,
+				Left( description, 30 ) || " ...",
+				description
+			);
+			If(Is Empty(Name Expr(test expr)) & Length(description) == 0,
+				msg = "";
+				msg ||= Eval Insert( "\!NSKIPPED: Entire test (^label^) " );
+				msg ||= Eval Insert( "\!N        Skipped: ^skip description^" );
+			,
+				short description = If( Length( description ) > 40, Left( description, 30 ) || " ...", description );
+				msg = "";
+				msg ||= Eval Insert( "\!NSKIPPED: ^Name Expr(test expr)^ ^short description^ (^label^) " );
+				msg ||= Eval Insert( "\!N        Skipped: ^skip description^\!N       Expected: ^description^" );
+			);
+			Save Text File( filepath, msg, Mode( "Append" ) );
+		);
+		1;
+	);
 );
 
 /*  Function: ut file appending reporter
@@ -73,12 +95,13 @@ Define Class(
     Arguments:
 	  file - filepath for output file
 	  write successes - 1 to write successes to the file, 0 otherwise (default)
+	  write skips - 1 to write skips to the file, 0 otherwise (default)
     
     Example:
     ---JSL---
     ut global reporter = ut file appending reporter( "$DESKTOP/report.txt" );
     ---------
 */
-ut file appending reporter = Function({file, write successes=0},
-	New Object( "UtFileAppendingReporter"( file, write successes ) );
+ut file appending reporter = Function({file, write successes=0, write skips=0},
+	New Object( "UtFileAppendingReporter"( file, write successes, write skips ) );
 );

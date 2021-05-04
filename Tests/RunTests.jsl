@@ -32,6 +32,9 @@ Define Class("UtMockReporter",
 	add success = Method( {label, test expr, description, payload=Empty()},
 		Insert Into(this:calls, Eval Expr(add success(Expr(Name Expr(label)), Expr(Name Expr(test expr)), Expr(Name Expr(description)), Expr(Name Expr(payload)))));
 	);
+	add skip = Method( {label, test expr, description, skip description, payload=Empty()},
+		Insert Into(this:calls, Eval Expr(add skip(Expr(Name Expr(label)), Expr(Name Expr(test expr)), Expr(Name Expr(description)), Expr(Name Expr(skip description)), Expr(Name Expr(payload)))));
+	);
 );
 
 ut mock reporter = Function({}, {obj},

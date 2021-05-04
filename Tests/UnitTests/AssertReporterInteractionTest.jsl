@@ -37,6 +37,13 @@ ut test(Assertion, "CallsAddUnexpectedThrow", Expr(
 	));
 ));
 
+ut test(Assertion, "CallsAddSkip", Expr(
+	reporter << Expect Call(Expr(add skip(ut wild, ut wild, ut wild, ut wild, ut wild)));
+	ut with reporter(reporter, Expr(
+		::ut assert that(Expr(2 + 2), ut skip(4));
+	));
+));
+
 // TODO:
 // - ut assert that works within teardown (used by Mock)
 // - check arguments given to messages

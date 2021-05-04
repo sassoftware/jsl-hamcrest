@@ -1,0 +1,140 @@
+﻿// Copyright © 2021, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+Skip If Tests = ut test case("Skip If Tests")
+	<<Setup(Expr(
+		reporter = ut mock reporter();
+		case = ut test case("case");
+	))
+	<<Teardown(Expr(
+		reporter << Verify Expectations;
+	));
+	
+ut test(Skip If Tests, "Can be explicitly not skipped", Expr(
+	case << Skip If(0);
+	reporter << Expect Call(Expr(add failure(ut wild, ut wild, ut wild, ut wild, ut wild, ut wild)));
+	ut with reporter(reporter, Expr(
+		ut test(case, "name", Expr(
+			ut assert that(Expr(1 + 1), 3)
+		))
+	));
+));
+
+ut test(Skip If Tests, "Can be explicitly skipped", Expr(
+	case << Skip If(1);
+	reporter << Expect Call(Expr(add skip("case ⮚ name ⮚ Skip", Empty(), "", "1", Empty())));
+	ut with reporter(reporter, Expr(
+		ut test(case, "name", Expr(
+			ut assert that(Expr(1 + 1), 3)
+		))
+	));
+));
+
+ut test(Skip If Tests, "Skip If applies to all tests", Expr(
+	case << Skip If(1);
+	reporter << Expect Call(Expr(add skip(ut wild, ut wild, ut wild, ut wild, ut wild)));
+	reporter << Expect Call(Expr(add skip(ut wild, ut wild, ut wild, ut wild, ut wild)));
+	ut with reporter(reporter, Expr(
+		ut test(case, "name", Expr(
+			ut assert that(Expr(1 + 1), 3)
+		));
+		ut test(case, "name2", Expr(
+			ut assert that(Expr(1 + 1), 3)
+		))
+	));
+));
+
+ut test(Skip If Tests, "Evaluates and uses expr for default skip description", Expr(
+	case << Skip If(Expr(1 > 0));
+	reporter << Expect Call(Expr(add skip("case ⮚ name ⮚ Skip", Empty(), "", "1 > 0", Empty())));
+	ut with reporter(reporter, Expr(
+		ut test(case, "name", Expr(
+			ut assert that(Expr(1 + 1), 3)
+		))
+	));
+));
+
+ut test(Skip If Tests, "Accepts custom skip description", Expr(
+	case << Skip If(1, "just because");
+	reporter << Expect Call(Expr(add skip("case ⮚ name ⮚ Skip", Empty(), "", "just because", Empty())));
+	ut with reporter(reporter, Expr(
+		ut test(case, "name", Expr(
+			ut assert that(Expr(1 + 1), 3)
+		))
+	));
+));
+
+ut test(Skip If Tests, "Custom skip description can be empty string", Expr(
+	case << Skip If(1, "");
+	reporter << Expect Call(Expr(add skip("case ⮚ name ⮚ Skip", Empty(), "", "", Empty())));
+	ut with reporter(reporter, Expr(
+		ut test(case, "name", Expr(
+			ut assert that(Expr(1 + 1), 3)
+		))
+	));
+));
+
+ut test(Skip If Tests, "No setup or teardown when skipping", Expr(
+	case << Skip If(1)
+	     << Setup(Expr(::setup run? = 1))
+	     << Teardown(Expr(::teardown run? = 1));
+	::setup run? = ::teardown run? = 0;
+	with noop reporter(Expr(
+		ut test(case, "name", Expr(
+			ut assert that(Expr(1 + 1), 3)
+		))
+	));
+	ut assert that(Expr(::setup run?), 0);
+	ut assert that(Expr(::teardown run?), 0);
+));
+
+ut test(Skip If Tests, "Skip returns success", Expr(
+	case << Skip If(1);
+	rc = with noop reporter(Expr(
+		ut test(case, "name", Expr(
+			ut assert that(Expr(1 + 1), 3)
+		))
+	));
+	ut assert that(Expr(rc), 1);
+));
+
+Skip Tests = ut test case("Skip Tests")
+	<<Setup(Expr(
+		reporter = ut mock reporter();
+	))
+	<<Teardown(Expr(
+		reporter << Verify Expectations;
+	));
+
+ut test(Skip Tests, "Skip returns success", Expr(
+	rc = with noop reporter(Expr(
+		ut assert that(Expr(1 + 1), ut skip(3, "bad"));
+	));
+	ut assert that(Expr(rc), 1);
+));
+
+ut test(Skip Tests, "Not allowed for inner matchers", Expr(
+	ut assert that(Expr(ut n items(ut skip(3, "bad"))), ut throws("Invalid inner matcher UtGenuineSkipMatcher"));
+));
+
+ut test(Skip Tests, "Returns modified match info", Expr(
+	mi = ut skip(3, "bad") << matches(Expr( 1 + 1 ));
+	ut assert that(Expr(mi << is success), 1);
+	ut assert that(Expr(mi:success), 1);
+	ut assert that(Expr(mi:skip), 1);
+	ut assert that(Expr(mi:skip description), "bad");
+));
+
+ut test(Skip Tests, "Forwards for description", Expr(
+	ut assert that(Expr(ut skip(ut greater than(2), "bad") << describe()), "greater than 2");
+));
+
+ut test(Skip Tests, "Default skip description", Expr(
+	mi = ut skip(3) << matches(Expr( 1 + 1 ));
+	ut assert that(Expr(mi:skip description), "unknown reason");
+));
+
+ut test(Skip Tests, "Default skip description can be empty string", Expr(
+	mi = ut skip(3, "") << matches(Expr( 1 + 1 ));
+	ut assert that(Expr(mi:skip description), "");
+));

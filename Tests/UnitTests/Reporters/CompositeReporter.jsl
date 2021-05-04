@@ -33,3 +33,9 @@ ut test(CompositeReporterTests, "Forwards Unexpected Throws", Expr(
 	reporter2 << Expect Call( Expr( add unexpected throw("label", "test expr", "description", "exception", "payload") ) );
 	composite reporter << Add Unexpected Throw("label", "test expr", "description", "exception", "payload");
 ));
+
+ut test(CompositeReporterTests, "Forwards Skips", Expr(
+	reporter1 << Expect Call( Expr( add skip("label", "test expr", "description", "skip description", "payload") ) );
+	reporter2 << Expect Call( Expr( add skip("label", "test expr", "description", "skip description", "payload") ) );
+	composite reporter << Add Skip("label", "test expr", "description", "skip description", "payload");
+));

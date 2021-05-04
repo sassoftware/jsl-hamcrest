@@ -1,4 +1,4 @@
-// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+﻿// Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 Names Default To Here( 0 );
@@ -13,8 +13,10 @@ Names Default To Here( 0 );
 Define Class("UtStreamingLogReporter",
 	Base Class( "UtReporter" ),
 	n assertions = 0;
-	_init_ = Method({},
-		this:n assertions = 0
+	write skips? = 0;
+	_init_ = Method({write skips?},
+		this:n assertions = 0;
+		this:write skips? = write skips?
 	);
 	add expression failure = Method( {label, payload=Empty()},
 		add failure( label, "test expr", "first argument to assertion is an expression", "was not an expression", Empty(), payload );
@@ -34,6 +36,23 @@ Define Class("UtStreamingLogReporter",
 	add success = Method( {label, test expr, description, payload=Empty()},
 		n assertions++;
 	);
+	add skip = Method( {label, test expr, description, skip description, payload=Empty()},
+		n assertions++;
+		If(this:write skips?,
+			If(Is Empty(Name Expr(test expr)) & Length(description) == 0,
+				msg = "";
+				msg ||= Eval Insert( "\!NSKIPPED  Test #^n assertions^: Entire test (^label^) " );
+				msg ||= Eval Insert( "\!N        Skipped: ^skip description^" );
+				Write(msg);
+			,
+				short description = If( Length( description ) > 40, Left( description, 30 ) || " ...", description );
+				msg = "";
+				msg ||= Eval Insert( "\!NSKIPPED  Test #^n assertions^: ^Name Expr(test expr)^ ^short description^ (^label^) " );
+				msg ||= Eval Insert( "\!N        Skipped: ^skip description^\!N       Expected: ^description^" );
+				Write(msg);
+			)
+		);
+	);
 	on run start = Method( {},
 		this:n assertions = 0;
 	);
@@ -45,5 +64,11 @@ Define Class("UtStreamingLogReporter",
 // Function: ut streaming log reporter
 //   Factory for <UtFileAppendingReporter>.
 ut streaming log reporter = Function({},
-	New Object( "UtStreamingLogReporter" );
+	New Object( "UtStreamingLogReporter"(0) );
+);
+
+// Function: ut streaming log reporter with skip
+//   Factory for <UtFileAppendingReporter>.
+ut streaming log reporter with skip = Function({},
+	New Object( "UtStreamingLogReporter"(1) );
 );
