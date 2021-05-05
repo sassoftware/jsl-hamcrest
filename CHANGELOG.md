@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Avoid potential collision with builtin functions in `UtSizeMatcher` (#109, #111)
 - `UtWindowDispatchingReporter` now uses a more reliable key which works for any box within a window (#118)
 - Added `ut parsed` to the Scripting Index (#115)
+- `ut test` decorated assertions no longer report as anonymous functions (#119)
 
 ## [1.2.0]
 

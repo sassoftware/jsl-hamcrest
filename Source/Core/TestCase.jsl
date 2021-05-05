@@ -750,15 +750,13 @@ ut test assertion decorator = Function( {function name, args},
 			Insert Into( inner call, Eval Expr( Name Expr( Expr( Name Expr( arg ) ) ) ) )
 		);
 	);
-	Eval Expr(
-		As Scoped( local, Expr( function name ) ) = Function( Expr( args ),
+	Parse( Eval Insert( "
+		local:^function name^ = Function( ^args^,
 			_utTestNS:n asserts++;
-			Insert Into( _utTestNS:results, 
-				Expr( Name Expr( inner call ) );
-			);
+			Insert Into( _utTestNS:results, ^Name Expr(inner call)^ );
 			_utTestNS:results[N Items( _utTestNS:results )];
-		)
-	)
+		)";
+	) );
 );
 
 /*	Function: ut expand test
