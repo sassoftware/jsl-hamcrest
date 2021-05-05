@@ -109,13 +109,13 @@ Define Class("UtWindowDispatchingReporter",
 		this:by window << Set Default Value(default reporter);
 		this:reporters = Eval List({by window << Get Default Value});
 	);
-	register reporter = Method({win, reporter}, this:by window[win] = reporter );
+	register reporter = Method({win, reporter}, this:by window[win << Get Window ID] = reporter );
 	unregister reporter = Method({win},
-		this:by window << Remove Item( win );
+		this:by window << Remove Item( win << Get Window ID );
 	);
-	get reporter = Method({win}, this:by window[win] );
+	get reporter = Method({win}, this:by window[win << Get Window ID] );
 	on run start = Method( {},
-		this:reporters = Eval List({by window[Current Window()]});
+		this:reporters = Eval List({by window[Current Window() << Get Window ID]});
 		this:reporters << on run start()
 	);
 	on run end = Method( {},
