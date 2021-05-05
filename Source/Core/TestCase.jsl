@@ -751,9 +751,9 @@ ut test assertion decorator = Function( {function name, args},
 		);
 	);
 	Parse( Eval Insert( "
-		local:^function name^ = Function( ^Char(args)^,
+		local:^function name^ = Function( ^args^,
 			_utTestNS:n asserts++;
-			Insert Into( _utTestNS:results, ^Char(Name Expr(inner call))^ );
+			Insert Into( _utTestNS:results, ^Name Expr(inner call)^ );
 			_utTestNS:results[N Items( _utTestNS:results )];
 		)";
 	) );
