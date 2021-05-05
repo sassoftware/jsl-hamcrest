@@ -8,212 +8,212 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Variables"></a><a name="Topic314"></a><div class="CTopic TGroup LJSL first">
+<a name="Variables"></a><a name="Topic277"></a><div class="CTopic TGroup LJSL first">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="ut_matcher_factories"></a><a name="Topic315"></a><div class="CTopic TVariable LJSL">
+<a name="ut_matcher_factories"></a><a name="Topic278"></a><div class="CTopic TVariable LJSL">
  <div class="CTitle">ut matcher factories</div>
  <div class="CBody"><p>List of head expressions for all matcher functions.</p><p>Used by <a href="../../index.html#File:Core/Matchers/EqualTo.jsl:UtExpressionCompositeMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,233);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtExpressionCompositeMatcher</a></p></div>
 </div>
 
-<a name="ut_documented_functions"></a><a name="Topic316"></a><div class="CTopic TVariable LJSL">
+<a name="ut_documented_functions"></a><a name="Topic279"></a><div class="CTopic TVariable LJSL">
  <div class="CTitle">ut documented functions</div>
 </div>
 
-<a name="ut_should_deploy_documented_functions"></a><a name="Topic317"></a><div class="CTopic TVariable LJSL">
+<a name="ut_should_deploy_documented_functions"></a><a name="Topic280"></a><div class="CTopic TVariable LJSL">
  <div class="CTitle">ut should deploy documented functions</div>
  <div class="CBody"><p>Only overwritten if not already set. Default is 1.</p></div>
 </div>
 
-<a name="Functions"></a><a name="Topic318"></a><div class="CTopic TGroup LJSL">
+<a name="Functions"></a><a name="Topic281"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="ut_matcher_factory"></a><a name="Topic319"></a><div class="CTopic TFunction LJSL">
+<a name="ut_matcher_factory"></a><a name="Topic282"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut matcher factory</div>
- <div id="NDPrototype319" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut matcher factory(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">String&nbsp;</td><td class="PName">name,</td><td></td><td class="last"></td></tr><tr><td class="PType first">Function&nbsp;</td><td class="PName">func,</td><td></td><td class="last"></td></tr><tr><td class="PType first">String&nbsp;</td><td class="PName">prototype&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last"><span class="SHString">&quot;&quot;</span>,</td></tr><tr><td class="PType first">String&nbsp;</td><td class="PName">description&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last"><span class="SHString">&quot;&quot;</span>,</td></tr><tr><td class="PType first">List&lt;List&gt;&nbsp;</td><td class="PName">examples&nbsp;</td><td></td><td class="last"></td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype282" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut matcher factory(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">String&nbsp;</td><td class="PName">name,</td><td></td><td class="last"></td></tr><tr><td class="PType first">Function&nbsp;</td><td class="PName">func,</td><td></td><td class="last"></td></tr><tr><td class="PType first">String&nbsp;</td><td class="PName">prototype&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last"><span class="SHString">&quot;&quot;</span>,</td></tr><tr><td class="PType first">String&nbsp;</td><td class="PName">description&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last"><span class="SHString">&quot;&quot;</span>,</td></tr><tr><td class="PType first">List&lt;List&gt;&nbsp;</td><td class="PName">examples&nbsp;</td><td></td><td class="last"></td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Function used to insert their names into the ut matcher factories list.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">name<div class="CDLParameterType">String</div></td><td class="CDLDefinition"><p>string name for the function</p></td></tr></table></div>
 </div>
 
-<a name="ut_define_custom_function"></a><a name="Topic320"></a><div class="CTopic TFunction LJSL">
+<a name="ut_define_custom_function"></a><a name="Topic283"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut define custom function</div>
  <div class="CBody"><p>Define a documented function in the Scripting Index</p></div>
 </div>
 
-<a name="ut_is_a_matcher"></a><a name="Topic321"></a><div class="CTopic TFunction LJSL">
+<a name="ut_is_a_matcher"></a><a name="Topic284"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut is a matcher</div>
  <div class="CBody"><p>This determines (through duck typing) if the given object is likely a matcher.</p><div class="CHeading">Returns</div><p>1 if maybe matcher is (probably) a matcher, 0 otherwise</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">maybe matcher</td><td class="CDLDefinition"><p>any object</p></td></tr></table></div>
 </div>
 
-<a name="ut_ensure_matcher"></a><a name="Topic322"></a><div class="CTopic TFunction LJSL">
+<a name="ut_ensure_matcher"></a><a name="Topic285"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut ensure matcher</div>
  <div class="CBody"><p>Conditionally wraps its argument so that the output is always a matcher. Does nothing if the argument is already a matcher.&nbsp; Wraps with the &lt;Ut Equal To Matcher&gt; otherwise. Often used in matcher factory functions.</p><p>Accepts an optional denylist which disallows certain matchers from being accepted as maybe matcher. This is mainly to prevent matchers that don't make much sense from being used as inner matchers in maatcher factories. Some matchers are denied by default. If you want to allow everything, pass in an explicit {}.&nbsp; This function throws when a denylist matcher is provided.</p><div class="CHeading">Returns</div><p>A matcher (pass-through or simply wrapped)</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">maybe matcher</td><td class="CDLDefinition"><p>any object</p></td></tr><tr><td class="CDLEntry">denylist</td><td class="CDLDefinition"><p>a list of class names</p></td></tr></table></div>
 </div>
 
-<a name="ut_ensure_matcher_list"></a><a name="Topic323"></a><div class="CTopic TFunction LJSL">
+<a name="ut_ensure_matcher_list"></a><a name="Topic286"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut ensure matcher list</div>
- <div id="NDPrototype323" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut ensure matcher list(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">List&lt;<a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,209);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a>&gt;&nbsp;</td><td class="PName last">maybe_matchers&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype286" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut ensure matcher list(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">List&lt;<a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,209);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a>&gt;&nbsp;</td><td class="PName last">maybe_matchers&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Convert a list of expressions to a list of matchers based on their head expressions.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">maybe_matchers<div class="CDLParameterType">List&lt;<a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,209);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a>&gt;</div></td><td class="CDLDefinition"><p>list of expressions</p></td></tr></table></div>
 </div>
 
-<a name="ut_global_lre"></a><a name="Topic324"></a><div class="CTopic TFunction LJSL">
+<a name="ut_global_lre"></a><a name="Topic287"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut global lre</div>
- <div class="CBody"><p>Redefine <a href="../../index.html#File:Core/Utils.jsl:ut_global_lre" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,324);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut global lre</a> to customize how LRE is computed. Default behavior is to always return missing (LRE unsupported).</p><p><a href="../../index.html#File:Core/Utils.jsl:ut_global_lre" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,324);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut global lre</a> is used by the Equal To and Close To matchers to report the LRE value based on actual and expected values.</p></div>
+ <div class="CBody"><p>Redefine <a href="../../index.html#File:Core/Utils.jsl:ut_global_lre" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,287);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut global lre</a> to customize how LRE is computed. Default behavior is to always return missing (LRE unsupported).</p><p><a href="../../index.html#File:Core/Utils.jsl:ut_global_lre" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,287);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut global lre</a> is used by the Equal To and Close To matchers to report the LRE value based on actual and expected values.</p></div>
 </div>
 
-<a name="ut_unregister_matcher_factory"></a><a name="Topic325"></a><div class="CTopic TFunction LJSL">
+<a name="ut_unregister_matcher_factory"></a><a name="Topic288"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut unregister matcher factory</div>
- <div class="CBody"><p>Removes a matcher factory name from <a href="../../index.html#File:Core/Utils.jsl:ut_matcher_factories" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,315);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut matcher factories</a>.</p><p>This should be used when creating your own matcher outside of the Hamcrest package. Unregistering a matcher removes it from consideration in <a href="../../index.html#File:Core/Matchers/EqualTo.jsl:UtExpressionCompositeMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,233);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtExpressionCompositeMatcher</a>.</p></div>
+ <div class="CBody"><p>Removes a matcher factory name from <a href="../../index.html#File:Core/Utils.jsl:ut_matcher_factories" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,278);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut matcher factories</a>.</p><p>This should be used when creating your own matcher outside of the Hamcrest package. Unregistering a matcher removes it from consideration in <a href="../../index.html#File:Core/Matchers/EqualTo.jsl:UtExpressionCompositeMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,233);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtExpressionCompositeMatcher</a>.</p></div>
 </div>
 
-<a name="ut_with_reporter"></a><a name="Topic326"></a><div class="CTopic TFunction LJSL">
+<a name="ut_with_reporter"></a><a name="Topic289"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut with reporter</div>
  <div class="CBody"><p>Temprorarily sets <a href="../../index.html#File:Core/Core.jsl:ut_global_reporter" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,258);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut global reporter</a> to the given reporter and resets it back to its original state, even if the expression threw an error.</p></div>
 </div>
 
-<a name="ut_get_exception_message"></a><a name="Topic327"></a><div class="CTopic TFunction LJSL">
+<a name="ut_get_exception_message"></a><a name="Topic290"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut get exception message</div>
  <div class="CBody"><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">e</td><td class="CDLDefinition"><p>List or string value (from exception_msg global variable set within a Try())</p></td></tr></table><div class="CHeading">Returns</div><p>String representing the different parts of the exception_msg variable.</p></div>
 </div>
 
-<a name="ut_get_exception_expression"></a><a name="Topic328"></a><div class="CTopic TFunction LJSL">
+<a name="ut_get_exception_expression"></a><a name="Topic291"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut get exception expression</div>
  <div class="CBody"><p>Takes the exception_msg variable as an argument and extracts the expression being executed from the list. If the expression cannot be found, it returns Expr( Unknown Expression ).</p></div>
 </div>
 
-<a name="ut_extract_thrown_string"></a><a name="Topic329"></a><div class="CTopic TFunction LJSL">
+<a name="ut_extract_thrown_string"></a><a name="Topic292"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut extract thrown string</div>
  <div class="CBody"><p>Get just the first string portion of the exception_msg. If it is just a string, return that.</p></div>
 </div>
 
-<a name="ut_is_comparable"></a><a name="Topic330"></a><div class="CTopic TFunction LJSL">
+<a name="ut_is_comparable"></a><a name="Topic293"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut is comparable</div>
  <div class="CBody"><p>Returns true when two objects are of the same type.&nbsp; This function considers Integers and Numbers to be of the same type.</p></div>
 </div>
 
-<a name="ut_is_numeric_missing"></a><a name="Topic331"></a><div class="CTopic TFunction LJSL">
+<a name="ut_is_numeric_missing"></a><a name="Topic294"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut is numeric missing</div>
  <div class="CBody"><p>Returns true only if the argument has the value . (dot)</p><p>This is subtly different than just Is Missing().</p></div>
 </div>
 
-<a name="ut_equal_with_missing"></a><a name="Topic332"></a><div class="CTopic TFunction LJSL">
+<a name="ut_equal_with_missing"></a><a name="Topic295"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut equal with missing</div>
- <div class="CBody"><p>Compares two values and returns true if they are equal.</p><p>Considers both values being missing as equal.</p><p>Uses <a href="../../index.html#File:Core/Utils.jsl:ut_is_numeric_missing" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,331);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut is numeric missing</a> to determine missing values</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">a</td><td class="CDLDefinition"><p>value to compare</p></td></tr><tr><td class="CDLEntry">b</td><td class="CDLDefinition"><p>value to compare</p></td></tr></table><div class="CHeading">History</div><table class="CDefinitionList"><tr><td class="CDLEntry">31jul2018/juchil</td><td class="CDLDefinition"><p>updated to use <a href="../../index.html#File:Core/Utils.jsl:ut_is_numeric_missing" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,331);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut is numeric missing</a> to allow for comparing any value.</p></td></tr></table></div>
+ <div class="CBody"><p>Compares two values and returns true if they are equal.</p><p>Considers both values being missing as equal.</p><p>Uses <a href="../../index.html#File:Core/Utils.jsl:ut_is_numeric_missing" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,294);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut is numeric missing</a> to determine missing values</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">a</td><td class="CDLDefinition"><p>value to compare</p></td></tr><tr><td class="CDLEntry">b</td><td class="CDLDefinition"><p>value to compare</p></td></tr></table><div class="CHeading">History</div><table class="CDefinitionList"><tr><td class="CDLEntry">31jul2018/juchil</td><td class="CDLDefinition"><p>updated to use <a href="../../index.html#File:Core/Utils.jsl:ut_is_numeric_missing" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,294);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut is numeric missing</a> to allow for comparing any value.</p></td></tr></table></div>
 </div>
 
-<a name="ut_get_show_string"></a><a name="Topic333"></a><div class="CTopic TFunction LJSL">
+<a name="ut_get_show_string"></a><a name="Topic296"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut get show string</div>
  <div class="CBody"><p>Converts non-string values to character.&nbsp; If the value is a string, double quotes are concatenated to the beginning and end. This is used for showing values in expected and actual results.</p></div>
 </div>
 
-<a name="ut_object_supports_message"></a><a name="Topic334"></a><div class="CTopic TFunction LJSL">
+<a name="ut_object_supports_message"></a><a name="Topic297"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut object supports message</div>
  <div class="CBody"><p>Checks if the given object allows for receiving a given message.</p></div>
 </div>
 
-<a name="ut_detailed_type"></a><a name="Topic335"></a><div class="CTopic TFunction LJSL">
+<a name="ut_detailed_type"></a><a name="Topic298"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut detailed type</div>
  <div class="CBody"><p>Get's the type with extra info where appropriate.</p></div>
 </div>
 
-<a name="ut_host_table_name_str"></a><a name="Topic336"></a><div class="CTopic TFunction LJSL">
+<a name="ut_host_table_name_str"></a><a name="Topic299"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut host table name str</div>
- <div class="CBody"><p>Give it the windows table and get back a host specific data table name. (i.e. it appends &quot;.jmp&quot; on Mac to a given string)</p><p>For a matcher that uses this function, see <a href="../../index.html#File:Matchers/Host.jsl:ut_host_table_name" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,108);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut host table name</a></p></div>
+ <div class="CBody"><p>Give it the windows table and get back a host specific data table name. (i.e. it appends &quot;.jmp&quot; on Mac to a given string)</p><p>For a matcher that uses this function, see <a href="../../index.html#File:Matchers/Host.jsl:ut_host_table_name" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,104);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut host table name</a></p></div>
 </div>
 
-<a name="ut_as_expr"></a><a name="Topic337"></a><div class="CTopic TFunction LJSL">
+<a name="ut_as_expr"></a><a name="Topic300"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut as expr</div>
  <div class="CBody"><p>Converts any value into an expression by wrapping it in Glue().</p><p>Great for when you want to use a literal value as the first arg in <a href="../../index.html#File:Core/Core.jsl:ut_assert_that" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,255);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >ut assert that</a></p></div>
 </div>
 
-<a name="ut_expr_literal"></a><a name="Topic338"></a><div class="CTopic TFunction LJSL">
+<a name="ut_expr_literal"></a><a name="Topic301"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut expr literal</div>
  <div class="CBody"><p>Wraps the given literal value in an expression.</p></div>
 </div>
 
-<a name="ut_new_object"></a><a name="Topic339"></a><div class="CTopic TFunction LJSL">
+<a name="ut_new_object"></a><a name="Topic302"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut new object</div>
- <div id="NDPrototype339" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut <span class="SHKeyword">new</span> object(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">String&nbsp;</td><td class="PName">class_name,</td><td></td><td class="last"></td></tr><tr><td class="PType first">List&nbsp;</td><td class="PName">args&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last">{}</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype302" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut <span class="SHKeyword">new</span> object(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">String&nbsp;</td><td class="PName">class_name,</td><td></td><td class="last"></td></tr><tr><td class="PType first">List&nbsp;</td><td class="PName">args&nbsp;</td><td class="PDefaultValueSeparator">=&nbsp;</td><td class="PDefaultValue last">{}</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Creates a new object with a self reference.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">class_name<div class="CDLParameterType">String</div></td><td class="CDLDefinition"><p>name of the JSL defined class to create</p></td></tr><tr><td class="CDLEntry">args<div class="CDLParameterType">List</div></td><td class="CDLDefinition"><p>arguments passed to the constructor of the class</p></td></tr></table><div class="CHeading">Example</div><pre>Define Class(<span class="SHString">&quot;Foo&quot;</span>,<br />    self = Empty();<br />    _init_ = Method({x}, <span class="SHKeyword">this</span>:x = x);<br />);<br />obj = ut <span class="SHKeyword">new</span> object( <span class="SHString">&quot;Foo&quot;</span>, {<span class="SHNumber">5</span>} );</pre></div>
 </div>
 
-<a name="Variables(2)"></a><a name="Topic340"></a><div class="CTopic TGroup LJSL">
+<a name="Variables(2)"></a><a name="Topic303"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="ut_concat_test_label_sep"></a><a name="Topic341"></a><div class="CTopic TVariable LJSL">
+<a name="ut_concat_test_label_sep"></a><a name="Topic304"></a><div class="CTopic TVariable LJSL">
  <div class="CTitle">ut concat test label sep</div>
 </div>
 
-<a name="Functions(2)"></a><a name="Topic342"></a><div class="CTopic TGroup LJSL">
+<a name="Functions(2)"></a><a name="Topic305"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="ut_concat_test_label"></a><a name="Topic343"></a><div class="CTopic TFunction LJSL">
+<a name="ut_concat_test_label"></a><a name="Topic306"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut concat test label</div>
  <div class="CBody"><p>Concatenates values together for &lt;ut test&gt;</p></div>
 </div>
 
-<a name="ut_merge_expressions"></a><a name="Topic344"></a><div class="CTopic TFunction LJSL">
+<a name="ut_merge_expressions"></a><a name="Topic307"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut merge expressions</div>
  <div class="CBody"><p>Merges all expressions in a given list with a single glue expression.</p></div>
 </div>
 
-<a name="ut_move_to_anonymous_namespace"></a><a name="Topic345"></a><div class="CTopic TFunction LJSL">
+<a name="ut_move_to_anonymous_namespace"></a><a name="Topic308"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut move to anonymous namespace</div>
  <div class="CBody"><p>Takes a namespace and moves all args with values to a new anonymous namespace and removes them from the given namespace.</p></div>
 </div>
 
-<a name="ut_difference_between_lists"></a><a name="Topic346"></a><div class="CTopic TFunction LJSL">
+<a name="ut_difference_between_lists"></a><a name="Topic309"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut difference between lists</div>
  <div class="CBody"><p>Returns items in listB NOT in listA.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">listA</td><td class="CDLDefinition"><p>Potentially smaller list than listB. Probably a subset of listB</p></td></tr><tr><td class="CDLEntry">listB</td><td class="CDLDefinition"><p>List that might have items not in listA.</p></td></tr></table><div class="CHeading">Returns</div><p>Items in listB NOT in listA.</p></div>
 </div>
 
-<a name="ut_get_symbol_information"></a><a name="Topic347"></a><div class="CTopic TFunction LJSL">
+<a name="ut_get_symbol_information"></a><a name="Topic310"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut get symbol information</div>
  <div class="CBody"><div class="CHeading">Returns</div><p>An associative array with information</p><div class="CHeading">Author</div><p>juchil</p><div class="CHeading">History</div><table class="CDefinitionList"><tr><td class="CDLEntry">17may18</td><td class="CDLDefinition"><p>(juchil) Add windows and data tables.</p></td></tr></table></div>
 </div>
 
-<a name="ut_delete_symbols_difference"></a><a name="Topic348"></a><div class="CTopic TFunction LJSL">
+<a name="ut_delete_symbols_difference"></a><a name="Topic311"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut delete symbols difference</div>
  <div class="CBody"><p>Deletes symbols in after list not in before list</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">before</td><td class="CDLDefinition"><p>associative array of symbols/namespaces/classes defined before a test file was run.</p></td></tr><tr><td class="CDLEntry">after</td><td class="CDLDefinition"><p>associative array of symbols/namespaces/classes defined after a test file was run.</p></td></tr></table><div class="CHeading">Author</div><p>juchil</p><div class="CHeading">History</div><table class="CDefinitionList"><tr><td class="CDLEntry">17may18</td><td class="CDLDefinition"><p>(juchil) Add windows and data tables.</p></td></tr></table></div>
 </div>
 
-<a name="Variables(3)"></a><a name="Topic349"></a><div class="CTopic TGroup LJSL">
+<a name="Variables(3)"></a><a name="Topic312"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="ut_lang"></a><a name="Topic350"></a><div class="CTopic TVariable LJSL">
+<a name="ut_lang"></a><a name="Topic313"></a><div class="CTopic TVariable LJSL">
  <div class="CTitle">ut lang</div>
  <div class="CBody"><p>Expression to get the code for the current language (en, de, es, fr, it, ja, ko, zh-CN)</p></div>
 </div>
 
-<a name="Functions(3)"></a><a name="Topic351"></a><div class="CTopic TGroup LJSL">
+<a name="Functions(3)"></a><a name="Topic314"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="ut_localize"></a><a name="Topic352"></a><div class="CTopic TFunction LJSL">
+<a name="ut_localize"></a><a name="Topic315"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut localize</div>
- <div id="NDPrototype352" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut localize(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">AssociativeArray&nbsp;</td><td class="PName last">aa,</td></tr><tr><td class="PType first">String&nbsp;</td><td class="PName last">lang&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div id="NDPrototype315" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut localize(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">AssociativeArray&nbsp;</td><td class="PName last">aa,</td></tr><tr><td class="PType first">String&nbsp;</td><td class="PName last">lang&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
  <div class="CBody"><p>Returns a string from the input associative array based on the current language code</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">aa<div class="CDLParameterType">AssociativeArray</div></td><td class="CDLDefinition"><p>associative array with mappings from language code to value.</p></td></tr><tr><td class="CDLEntry">lang<div class="CDLParameterType">String</div></td><td class="CDLDefinition"><p>language code to get. defaults to current language code.</p></td></tr></table><div class="CHeading">Example</div><pre>ut localize([<span class="SHString">&quot;en&quot;</span> =&gt; <span class="SHString">&quot;Hello&quot;</span>, <span class="SHString">&quot;es&quot;</span> =&gt; <span class="SHString">&quot;Hola&quot;</span>]);</pre></div>
 </div>
 
-<a name="ut_include_jsl_files_recursively"></a><a name="Topic353"></a><div class="CTopic TFunction LJSL">
+<a name="ut_include_jsl_files_recursively"></a><a name="Topic316"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut include jsl files recursively</div>
  <div class="CBody"><p>Looks for files in a folder recursively and uses the Include() function to run them.</p></div>
 </div>
 
-<a name="Variables(4)"></a><a name="Topic354"></a><div class="CTopic TGroup LJSL">
+<a name="Variables(4)"></a><a name="Topic317"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="ut_nullptr"></a><a name="Topic355"></a><div class="CTopic TVariable LJSL">
+<a name="ut_nullptr"></a><a name="Topic318"></a><div class="CTopic TVariable LJSL">
  <div class="CTitle">ut nullptr</div>
  <div class="CBody"><p>Can be used to supress printing anything to the log when returning from a function</p></div>
 </div>
 
-<a name="ut_major_jmp_version"></a><a name="Topic356"></a><div class="CTopic TVariable LJSL last">
+<a name="ut_major_jmp_version"></a><a name="Topic319"></a><div class="CTopic TVariable LJSL last">
  <div class="CTitle">ut major jmp version</div>
 </div>
 
