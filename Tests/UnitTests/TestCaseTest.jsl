@@ -64,3 +64,9 @@ assert rc = with noop reporter( Expr(
 ));
 ut assert that( Expr( assert rc ), 1, "Row unset within test" );
 ut assert that( Expr( Row() ), 201, "Row restored to set" );
+
+Local({},
+	Eval(ut test assertion decorator("ut assert that", {test expr, matcher, label=""}));
+	Try(exception_msg = ""; local:ut assert that());
+	::ut assert that(Expr(exception_msg[1]), ut starts with("local:ut assert that has 3 parameters"));
+);
