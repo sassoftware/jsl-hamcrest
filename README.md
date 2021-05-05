@@ -35,7 +35,11 @@ Check out our [documentation](https://sassoftware.github.io/jsl-hamcrest/#File:M
 
 Open the `JSL-Hamcrest.jmpaddin` file in JMP to install.
 
-### Writing Hamcrest Tests
+### Basic Usage
+
+JSL-Hamcrest has several different pieces that you can choose to use for testing. You can use most of these separately or you can combine them.
+These include assertions (`ut assert that` and matchers), test cases (`ut test`, `ut test case`), mock functions (`ut mock function`), and the
+reporter (`ut global reporter`) that underlies all of this. The most common scenario is a combination of test cases and assertions like:
 
 ```jsl
 formulas test case = ut test case("Formulas")
@@ -43,14 +47,73 @@ formulas test case = ut test case("Formulas")
         dt = Open("$SAMPLE_DATA\Big Class.jmp");
     ))
     << Teardown(Expr(
-        Close(dt, NoSave);
-    ));
+        Close(dt, NoSave); // Unnecessary
+    ))
+    << Skip If(Expr(Day Of Week(Today()) == 4), "It's Wednesday");
 
 ut test(formulas test case, "Advance Row", Expr(
     dt << new column("Test", Formula(Row()));
     ut assert that(Expr(dt:Test << Get Values), (1::40)`);
 ));
+
+ut test(formulas test case, "Char", Expr(
+    dt << new column("Test", Formula(Char(Row())));
+    ut assert that(Expr(dt:Test << Get Values), ut starts with({"1", "2", "3"}));
+));
+
+ut test("Big Class", "Row Count", Expr(
+	dt = Open("$SAMPLE_DATA\Big Class.jmp");
+	ut assert that(Expr(N Rows(dt)), ut greater than(38), "large");
+));
 ```
+
+The `ut test case` allows a `Setup` and `Teardown` expression that are run before and after *each* `ut test`. The `ut test` also ensures that all windows, tables, errors, and symbols get cleaned up so you can focus on the test itself. The `ut assert that` is how you write an actual assertion. The first argument (the test expression) should always be wrapped in `Expr` so we can test errors and report better test failures. The second argument (the expected) can be a value or a `matcher` like `ut starts with`. These are declarative descriptions of what you would like to test which give informative descriptions and failures. You can use `ut assert that` outside of `ut test` if you want.
+
+Mock functions can be used to test callbacks. These look like:
+
+```jsl
+Data Table List Subscription Test = ut test case("Data Table List Subscription")
+    <<Setup(Expr(
+        mock open = ut mock function({dt}, Expr("open"; .));
+        sub name = Subscribe to Data Table List(, OnOpen( Function({dt}, mock open:fn(dt)) ) );
+    ))
+    <<Teardown(Expr(
+        Unsubscribe to Data Table List(sub name, "ALL");
+        ut verify mock(mock open);
+    ));
+
+ut test(Data Table List Subscription Test, "OnOpen/OnClose called for Open", Expr(
+    ut expect call(mock open, { ut name( ut host table name( "Big Class" ) ) } );
+    Open( "$SAMPLE_DATA/Big Class.jmp" );
+));
+```
+
+`ut mock function` defines a instrumented function that you can use as a callback. `ut expect call` adds expectations about how many times that function will
+be called and with what arguments. And `ut verify mock` makes sure the expectations are met.
+
+Finally, there are reporters. Most of the time, you don't need to worry about the reporter since it is handled automatically by the add-in when initialized
+or when a test runner GUI is added to a script editor. However, if you want to do something else, you need to know how to use a reporter. There can only
+be *one* reporter, `ut global reporter`, and it determines what happens when test successes, failures, *etc* are reported from `ut mock function`,
+`ut assert that`, `ut test`, *etc*. Here are three examples showing reporters and how to use them.
+
+```jsl
+// Does nothing
+ut global reporter = ut reporter();
+ut assert that(Expr(1 + 1), 3);
+```
+```jsl
+// Writes to the log as successes, failures, etc come in
+ut global reporter = ut streaming log reporter with skip();
+ut assert that(Expr(1 + 1), 3);
+```
+```jsl
+// Collects into a buffer until you show the report explicitly
+ut global reporter = ut collecting reporter();
+ut assert that(Expr(1 + 1), 3);
+ut global reporter << show report();
+```
+
+Again, most of the time, you don't need to worry about setting `ut global reporter` explicitly as the add-in handles it for you.
 
 ### Using the Hamcrest Test-Runner Add-In
 
