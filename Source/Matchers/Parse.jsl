@@ -107,9 +107,13 @@ Define Class(
 		ut assert that( ut as expr( "x+4" ), ut parsed( Expr( x + 4 ) ) );
 		---------
 */
-ut matcher factory( "ut parsed" );
-ut parsed = Function( {matcher},
-	New Object( UtParseMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
+ut matcher factory( "ut parsed",
+	Expr(Function( {matcher},
+		New Object( UtParseMatcher( ut ensure matcher( Name Expr( matcher ) ) ) );
+	)),
+	"ut parsed( matcher )",
+	"Parses a string then compares it to the inner matcher.",
+	{{"Simple", ut assert value( "x + 4", ut parsed( Expr( x + 4 ) ))}}
 );
 
 /* 

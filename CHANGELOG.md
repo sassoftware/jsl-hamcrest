@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Avoid potential collision with builtin functions in `UtSizeMatcher` (#109, #111)
+- Added `ut parsed` to the Scripting Index (#115)
 
 ## [1.2.0]
 
