@@ -22,7 +22,7 @@ ut test(Skip If Tests, "Can be explicitly not skipped", Expr(
 
 ut test(Skip If Tests, "Can be explicitly skipped", Expr(
 	case << Skip If(1);
-	reporter << Expect Call(Expr(add skip("case ⮚ name ⮚ Skip", Empty(), "", "1", Empty())));
+	reporter << Expect Call(Expr(add skip({"case", "name", "Skip", .}, Empty(), "", "1", Empty())));
 	ut with reporter(reporter, Expr(
 		ut test(case, "name", Expr(
 			ut assert that(Expr(1 + 1), 3)
@@ -46,7 +46,7 @@ ut test(Skip If Tests, "Skip If applies to all tests", Expr(
 
 ut test(Skip If Tests, "Evaluates and uses expr for default skip description", Expr(
 	case << Skip If(Expr(1 > 0));
-	reporter << Expect Call(Expr(add skip("case ⮚ name ⮚ Skip", Empty(), "", "1 > 0", Empty())));
+	reporter << Expect Call(Expr(add skip({"case", "name", "Skip", .}, Empty(), "", "1 > 0", Empty())));
 	ut with reporter(reporter, Expr(
 		ut test(case, "name", Expr(
 			ut assert that(Expr(1 + 1), 3)
@@ -56,7 +56,7 @@ ut test(Skip If Tests, "Evaluates and uses expr for default skip description", E
 
 ut test(Skip If Tests, "Accepts custom skip description", Expr(
 	case << Skip If(1, "just because");
-	reporter << Expect Call(Expr(add skip("case ⮚ name ⮚ Skip", Empty(), "", "just because", Empty())));
+	reporter << Expect Call(Expr(add skip({"case", "name", "Skip", .}, Empty(), "", "just because", Empty())));
 	ut with reporter(reporter, Expr(
 		ut test(case, "name", Expr(
 			ut assert that(Expr(1 + 1), 3)
@@ -66,7 +66,7 @@ ut test(Skip If Tests, "Accepts custom skip description", Expr(
 
 ut test(Skip If Tests, "Custom skip description can be empty string", Expr(
 	case << Skip If(1, "");
-	reporter << Expect Call(Expr(add skip("case ⮚ name ⮚ Skip", Empty(), "", "", Empty())));
+	reporter << Expect Call(Expr(add skip({"case", "name", "Skip", .}, Empty(), "", "", Empty())));
 	ut with reporter(reporter, Expr(
 		ut test(case, "name", Expr(
 			ut assert that(Expr(1 + 1), 3)

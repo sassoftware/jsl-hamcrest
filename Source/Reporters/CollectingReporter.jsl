@@ -105,7 +105,7 @@ Define Class(
 				Char( Name Expr( this:successes[i][2] ) ),
 				Char( this:successes[i][2] )
 			) || " ";
-			Write( "\!n  Label: " || this:successes[i][1] || "\!n" );
+			Write( "\!n  Label: " || ut format test label(this:successes[i][1]) || "\!n" );
 			Write( "  Expected: " || char test expr || this:successes[i][3] || "\!n" );
 		);
 		Write( "\!n-------------- Failures --------------" );
@@ -114,7 +114,7 @@ Define Class(
 				Char( Name Expr( this:failures[i][2] ) ),
 				Char( this:failures[i][2] )
 			) || " ";
-			Write( "\!n  Label: " || this:failures[i][1] || "\!n" );
+			Write( "\!n  Label: " || ut format test label(this:failures[i][1]) || "\!n" );
 			Write( "  Expected: " || char test expr || this:failures[i][3] || "\!n" );
 			Write( "  But: " || this:failures[i][4] || "\!n" );
 		);
@@ -124,7 +124,7 @@ Define Class(
 				Char( Name Expr( this:unexpected throws[i][2] ) ),
 				Char( this:unexpected throws[i][2] )
 			) || " ";
-			Write( "\!n  Label: " || this:unexpected throws[i][1] || "\!n" );
+			Write( "\!n  Label: " || ut format test label(this:unexpected throws[i][1]) || "\!n" );
 			Write( "  Expected: " || char test expr || this:unexpected throws[i][3] || "\!n" );
 			If( Is Empty( this:unexpected throws[i][4] ),
 				Write( "  But: " || "unexpectedly threw nothing\!n" ),
@@ -137,7 +137,7 @@ Define Class(
 				Char( Name Expr( this:skips[i][2] ) ),
 				Char( this:skips[i][2] )
 			) || " ";
-			Write( "\!n  Label: " || this:skips[i][1] || "\!n" );
+			Write( "\!n  Label: " || ut format test label(this:skips[i][1]) || "\!n" );
 			Write( "  Expected: " || char test expr || this:skips[i][3] || "\!n" );
 			Write( "  Skipped: " || this:skips[i][4] || "\!n");
 		);

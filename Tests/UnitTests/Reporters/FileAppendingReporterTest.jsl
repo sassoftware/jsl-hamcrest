@@ -15,17 +15,17 @@ ut test(FileAppendingReporterTests, "CreatesFile", Expr(
 ));
 
 ut test(FileAppendingReporterTests, "AddsFailuresToFile", Expr(
-  reporter << Add Failure("label", "test expr", "description", "mismatch", Empty());
+  reporter << Add Failure({"", "", "label", .}, "test expr", "description", "mismatch", Empty());
   ut assert value(File Size(reporter path), ut greater than(10));
 ));
 
 ut test(FileAppendingReporterTests, "SuccessesNotAddedByDefault", Expr(
-  reporter << Add Success("label", "test expr", "description", Empty());
+  reporter << Add Success({"", "", "label", .}, "test expr", "description", Empty());
   ut assert value(File Size(reporter path), ut less than(10));
 ));
 
 ut test(FileAppendingReporterTests, "AddsSuccessesToFile", Expr(
   reporter = ut file appending reporter(reporter path, write successes=1);
-  reporter << Add Success("label", "test expr", "description", Empty());
+  reporter << Add Success({"", "", "label", .}, "test expr", "description", Empty());
   ut assert value(File Size(reporter path), ut greater than(10));
 ));

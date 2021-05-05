@@ -94,21 +94,11 @@ ut test(Log Benchmark, "Log Bench On Can Use a Matcher And Succeed", Expr(
 ));
 
 ut test(Log Benchmark, "Log Bench On Can Use a Matcher And Fail", Expr(
-	reporter << Expect Call(Expr(add failure(ut wild, ut wild, ut wild, ut wild, ut wild, ut wild)));
+	reporter << Expect Call(Expr(add failure({"case", "name", "Log Benchmark", .}, ut wild, ut wild, ut wild, ut wild, ut wild)));
 	rc = ut with reporter(reporter, Expr(
 		ut test("case", "name", Expr(Write("stuff")), ut log bench(1, ut ignoring whitespace("stu")));
 	));
 	ut assert that(Expr(rc), 0);
-));
-
-ut test(Log Benchmark, "Log Bench On Can Use a Matcher And Fail", Expr(
-	old label gen = Name Expr(ut test log benchmark label);
-	ut test log benchmark label = Function({c, n}, "my " || c || " " || n);
-	reporter << Expect Call(Expr(add failure("my case name", ut wild, ut wild, ut wild, ut wild, ut wild)));
-	rc = ut with reporter(reporter, Expr(
-		ut test("case", "name", Expr(Write("stuff")), ut log bench(1));
-	));
-	ut test log benchmark label = Name Expr(old label gen);
 ));
 
 ut test(Log Benchmark, "Nested tests can independently use log benchmarking #63", Expr(

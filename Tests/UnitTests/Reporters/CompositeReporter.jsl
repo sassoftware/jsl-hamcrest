@@ -11,31 +11,31 @@ CompositeReporterTests = ut test case("CompositeReporter")
 	));
 
 ut test(CompositeReporterTests, "Forwards Successes", Expr(
-	reporter1 << Expect Call( Expr( add success("label", "test expr", "description", "payload") ) );
-	reporter2 << Expect Call( Expr( add success("label", "test expr", "description", "payload") ) );
-	composite reporter << Add Success("label", "test expr", "description", "payload");
+	reporter1 << Expect Call( Expr( add success({"", "", "label", .}, "test expr", "description", "payload") ) );
+	reporter2 << Expect Call( Expr( add success({"", "", "label", .}, "test expr", "description", "payload") ) );
+	composite reporter << Add Success({"", "", "label", .}, "test expr", "description", "payload");
 ));
 
 ut test(CompositeReporterTests, "Forwards Failures", Expr(
-	reporter1 << Expect Call( Expr( add failure("label", "test expr", "description", "mismatch", "lre", "payload") ) );
-	reporter2 << Expect Call( Expr( add failure("label", "test expr", "description", "mismatch", "lre", "payload") ) );
-	composite reporter << Add Failure("label", "test expr", "description", "mismatch", "lre", "payload");
+	reporter1 << Expect Call( Expr( add failure({"", "", "label", .}, "test expr", "description", "mismatch", "lre", "payload") ) );
+	reporter2 << Expect Call( Expr( add failure({"", "", "label", .}, "test expr", "description", "mismatch", "lre", "payload") ) );
+	composite reporter << Add Failure({"", "", "label", .}, "test expr", "description", "mismatch", "lre", "payload");
 ));
 
 ut test(CompositeReporterTests, "Forwards Expression Failures", Expr(
-	reporter1 << Expect Call( Expr( add expression failure("label", "payload") ) );
-	reporter2 << Expect Call( Expr( add expression failure("label", "payload") ) );
-	composite reporter << Add Expression Failure("label", "payload");
+	reporter1 << Expect Call( Expr( add expression failure({"", "", "label", .}, "payload") ) );
+	reporter2 << Expect Call( Expr( add expression failure({"", "", "label", .}, "payload") ) );
+	composite reporter << Add Expression Failure({"", "", "label", .}, "payload");
 ));
 
 ut test(CompositeReporterTests, "Forwards Unexpected Throws", Expr(
-	reporter1 << Expect Call( Expr( add unexpected throw("label", "test expr", "description", "exception", "payload") ) );
-	reporter2 << Expect Call( Expr( add unexpected throw("label", "test expr", "description", "exception", "payload") ) );
-	composite reporter << Add Unexpected Throw("label", "test expr", "description", "exception", "payload");
+	reporter1 << Expect Call( Expr( add unexpected throw({"", "", "label", .}, "test expr", "description", "exception", "payload") ) );
+	reporter2 << Expect Call( Expr( add unexpected throw({"", "", "label", .}, "test expr", "description", "exception", "payload") ) );
+	composite reporter << Add Unexpected Throw({"", "", "label", .}, "test expr", "description", "exception", "payload");
 ));
 
 ut test(CompositeReporterTests, "Forwards Skips", Expr(
-	reporter1 << Expect Call( Expr( add skip("label", "test expr", "description", "skip description", "payload") ) );
-	reporter2 << Expect Call( Expr( add skip("label", "test expr", "description", "skip description", "payload") ) );
-	composite reporter << Add Skip("label", "test expr", "description", "skip description", "payload");
+	reporter1 << Expect Call( Expr( add skip({"", "", "label", .}, "test expr", "description", "skip description", "payload") ) );
+	reporter2 << Expect Call( Expr( add skip({"", "", "label", .}, "test expr", "description", "skip description", "payload") ) );
+	composite reporter << Add Skip({"", "", "label", .}, "test expr", "description", "skip description", "payload");
 ));
