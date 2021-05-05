@@ -19,6 +19,10 @@ All notable changes to this project will be documented in this file.
 - Convenience `ut throws` helper functions now use `ut localize` to assert using the current languages error message.
 - `UtJunitXMLReporter` reports file and classname attributes for testcases and treats throws differently from failures.
 - The `ut skip` matcher now issues a `skip` rather than a `success`. The `ut skip succeeding` matcher has the old behavior.
+- The `label` is now explicitly given to the reporter a four-element list rather than having to split on `ut concat test label sep`.
+  These are `{case name, test name, assertion label, assertion id}`. The `ut concat test label` function has been removed and
+  replaced by a combination of `ut form test label`, `ut format test label`, and `ut fwd test label`. A quick rewrite of the `label`
+  argument in your `UtReporter` messages like `label = ut format test label(label)` will get back to the old behavior. (#59)
 
 ### Fixed
 

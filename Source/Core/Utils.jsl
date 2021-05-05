@@ -556,18 +556,37 @@ ut new object = Function({class name, args={}}, {obj},
 // Variable: ut concat test label sep
 ut concat test label sep = "⮚";
 
-/*	Function: ut concat test label
+/*	Function: ut format test label
 	 		Concatenates values together for <ut test>
 */
-ut concat test label = Function({test case name, test name, label="", n asserts=.},
+ut format test label = Function({label},
 	{labelList},
 	labelList = {};
-	Insert Into( labelList, test case name );
-	Insert Into( labelList, test name );
-	If( label != "",  Insert Into( labelList, label ) );
-	If( !Is Missing( n asserts ), Insert Into( labelList, Char( n asserts ) ) );
-	
+	If( label[1] != "", Insert Into( labelList, label[1] ) );
+	If( label[2] != "", Insert Into( labelList, label[2] ) );
+	If( label[3] != "", Insert Into( labelList, label[3] ) );
+	If( !Is Missing( label[4] ), Insert Into( labelList, Char( label[4] ) ) );
+
 	Concat Items( local:labelList, " " || ut concat test label sep || " " );
+);
+
+/*	Function: ut form test label
+	 		Creates label list for `<UtReporter>`
+*/
+ut form test label = Function({test case name, test name, label="", n asserts=.},
+        Eval List({test case name, test name, label, n asserts})
+);
+
+/*	Function: ut fwd test label
+	 		Creates {"", "", label, .} or forwards label list.
+	 		To be used in registered assertions when sending labels
+	 		to the reporter.
+*/
+ut fwd test label = Function({label},
+	If(Is List(Name Expr(label)),
+		label,
+		Eval List({"", "", Name Expr(label), .})
+	);
 );
 
 /*	Function: ut merge expressions

@@ -25,7 +25,7 @@ Define Class("UtStreamingLogReporter",
 		n assertions++;
 		short description = If( Length( description ) > 40, Left( description, 30 ) || " ...", description );
 		failure = "";
-		failure ||= Eval Insert( "\!NFAILURE  Test #^n assertions^: ^Name Expr(test expr)^ ^short description^ (^label^) " );
+		failure ||= Eval Insert( "\!NFAILURE  Test #^n assertions^: ^Name Expr(test expr)^ ^short description^ (^ut format test label(label)^) " );
 		failure ||= Eval Insert( "\!N         Actual: ^mismatch^\!N       Expected: ^description^" );
 		If( !Is Empty( LRE ), failure ||= Eval Insert( "\!N            LRE: ^LRE^" ));
 		Write(failure);
@@ -41,13 +41,13 @@ Define Class("UtStreamingLogReporter",
 		If(this:write skips?,
 			If(Is Empty(Name Expr(test expr)) & Length(description) == 0,
 				msg = "";
-				msg ||= Eval Insert( "\!NSKIPPED  Test #^n assertions^: Entire test (^label^) " );
+				msg ||= Eval Insert( "\!NSKIPPED  Test #^n assertions^: Entire test (^ut format test label(label)^) " );
 				msg ||= Eval Insert( "\!N        Skipped: ^skip description^" );
 				Write(msg);
 			,
 				short description = If( Length( description ) > 40, Left( description, 30 ) || " ...", description );
 				msg = "";
-				msg ||= Eval Insert( "\!NSKIPPED  Test #^n assertions^: ^Name Expr(test expr)^ ^short description^ (^label^) " );
+				msg ||= Eval Insert( "\!NSKIPPED  Test #^n assertions^: ^Name Expr(test expr)^ ^short description^ (^ut format test label(label)^) " );
 				msg ||= Eval Insert( "\!N        Skipped: ^skip description^\!N       Expected: ^description^" );
 				Write(msg);
 			)

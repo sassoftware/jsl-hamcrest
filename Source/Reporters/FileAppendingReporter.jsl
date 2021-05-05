@@ -35,7 +35,7 @@ Define Class(
 		);
 		
 		failure = "";
-		failure ||= Eval Insert( "\!NFAILURE: ^Name Expr(test expr)^ ^shortDescription^ (^label^) " );
+		failure ||= Eval Insert( "\!NFAILURE: ^Name Expr(test expr)^ ^shortDescription^ (^ut format test label(label)^) " );
 		failure ||= Eval Insert( "\!N         Actual: ^mismatch^\!N       Expected: ^description^" );
 		
 		If( !IsEmpty( LRE ),
@@ -59,7 +59,7 @@ Define Class(
 		);
 
 		If(this:write successes,
-			success = Eval Insert( "\!NSUCCESS: ^Name Expr(test expr)^ ^shortDescription^ (^label^)" );
+			success = Eval Insert( "\!NSUCCESS: ^Name Expr(test expr)^ ^shortDescription^ (^ut format test label(label)^)" );
 			Save Text File( filepath, success, Mode( "Append" ) );
 		);
 		1;
@@ -73,12 +73,12 @@ Define Class(
 			);
 			If(Is Empty(Name Expr(test expr)) & Length(description) == 0,
 				msg = "";
-				msg ||= Eval Insert( "\!NSKIPPED: Entire test (^label^) " );
+				msg ||= Eval Insert( "\!NSKIPPED: Entire test (^ut format test label(label)^) " );
 				msg ||= Eval Insert( "\!N        Skipped: ^skip description^" );
 			,
 				short description = If( Length( description ) > 40, Left( description, 30 ) || " ...", description );
 				msg = "";
-				msg ||= Eval Insert( "\!NSKIPPED: ^Name Expr(test expr)^ ^short description^ (^label^) " );
+				msg ||= Eval Insert( "\!NSKIPPED: ^Name Expr(test expr)^ ^short description^ (^ut format test label(label)^) " );
 				msg ||= Eval Insert( "\!N        Skipped: ^skip description^\!N       Expected: ^description^" );
 			);
 			Save Text File( filepath, msg, Mode( "Append" ) );

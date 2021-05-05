@@ -53,7 +53,7 @@ ut define documented function(
 	Expr(Function( {test expr, matcher, label = ""},
 		// Move args to anonymous namespace to avoid collision
 		local:_utAssertThatNS = ut move to anonymous namespace( Namespace( "local" ) );
-		
+
 		// Ensure that test expr is an expression
 		// This is done more for safety than for necessity.
 		//
@@ -66,7 +66,7 @@ ut define documented function(
 		// call to ut assert that.
 
 		If( !Is Expr( Name Expr( _utAssertThatNS:test expr ) ),
-			ut global reporter:add expression failure( Name Expr( _utAssertThatNS:label ) );
+			ut global reporter:add expression failure( ut fwd test label( Name Expr( _utAssertThatNS:label ) ) );
 			Return( 0 );
 		);
 		
@@ -92,7 +92,7 @@ ut define documented function(
 			If( !(match info << Is Success()),
 				If( Is Empty( thrown exception ),
 					ut global reporter:add failure(
-						Name Expr( _utAssertThatNS:label ),
+						ut fwd test label( Name Expr( _utAssertThatNS:label ) ),
 						Name Expr( _utAssertThatNS:test expr ),
 						_utAssertThatNS:matcher << Describe(),
 						match info << Get Mismatch(),
@@ -101,7 +101,7 @@ ut define documented function(
 					0;
 				,
 					ut global reporter:add unexpected throw(
-						Name Expr( _utAssertThatNS:label ),
+						ut fwd test label( Name Expr( _utAssertThatNS:label ) ),
 						Name Expr( _utAssertThatNS:test expr ),
 						_utAssertThatNS:matcher << Describe(),
 						thrown exception
@@ -112,7 +112,7 @@ ut define documented function(
 				Try(match info:skip, 0)
 			,
 				ut global reporter:add skip( 
-					Name Expr( _utAssertThatNS:label ), 
+					ut fwd test label( Name Expr( _utAssertThatNS:label ) ),
 					Name Expr( _utAssertThatNS:test expr ),
 					_utAssertThatNS:matcher << Describe(),
 					match info:skip description
@@ -121,7 +121,7 @@ ut define documented function(
 			,
 				// Else
 				ut global reporter:add success( 
-					Name Expr( _utAssertThatNS:label ), 
+					ut fwd test label( Name Expr( _utAssertThatNS:label ) ),
 					Name Expr( _utAssertThatNS:test expr ),
 					_utAssertThatNS:matcher << Describe()
 				);

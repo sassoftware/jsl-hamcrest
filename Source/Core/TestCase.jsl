@@ -373,7 +373,7 @@ Define Class(
 		the label.
 */
 ut test log benchmark label = Function({case name, test name},
-	Eval Insert( "^ut concat test label( case name, test name, \!"Log Benchmark\!" )^" )
+	ut form test label( case name, test name, "Log Benchmark" )
 );
 
 /* 
@@ -477,7 +477,7 @@ ut define documented function(
 			,
 				Names Default to Here( 0 );
 				ut global reporter << Add Unexpected Throw( 
-					ut concat test label(
+					ut form test label(
 						_utTestNS:test case << Get Test Case Name(),
 						_utTestNS:test name,
 						"Setup"
@@ -497,7 +497,7 @@ ut define documented function(
 				Names Default to Here( 0 );
 			,
 				Names Default to Here( 0 );
-				_utTestNS:temp label = ut concat test label(
+				_utTestNS:temp label = ut form test label(
 					_utTestNS:test case << Get Test Case Name(),
 					_utTestNS:test name,
 					"Test"
@@ -519,7 +519,7 @@ ut define documented function(
 			,
 				Names Default to Here( 0 );
 				ut global reporter << Add Unexpected Throw( 
-					ut concat test label(
+					ut form test label(
 						_utTestNS:test case << Get Test Case Name(),
 						_utTestNS:test name,
 						"Teardown"
@@ -540,7 +540,7 @@ ut define documented function(
 		,
 			Names Default to Here( 0 );
 			ut global reporter << Add Unexpected Throw( 
-				ut concat test label(
+				ut form test label(
 					_utTestNS:test case << Get Test Case Name(),
 					_utTestNS:test name,
 					"Skip If"
@@ -554,7 +554,7 @@ ut define documented function(
 			
 		If(!Is Number(Name Expr(_utTestNS:skip?)) | Is Missing(_utTestNS:skip?),
 			ut global reporter << Add Unexpected Throw( 
-				ut concat test label(
+				ut form test label(
 					_utTestNS:test case << Get Test Case Name(),
 					_utTestNS:test name,
 					"Skip If"
@@ -567,7 +567,7 @@ ut define documented function(
 		
 		If( _utTestNS:skip?,
 			ut global reporter << Add Skip( 
-				ut concat test label(
+				ut form test label(
 					_utTestNS:test case << Get Test Case Name(),
 					_utTestNS:test name,
 					"Skip"
@@ -692,9 +692,11 @@ ut test registered assertions = {};
 
 		Allows <ut test> to decorate registered assertions. All 
 		arguments will be passed verbatim except for a label 
-		argument, which will be transformed by <ut test> using
-		<ut concat test label> with the test case name, test 
-		name, and number of assertions.
+		argument, which will be augmented by <ut test> using
+		<ut form test label> with the test case name, test 
+		name, and number of assertions. Your function should
+		use <ut fwd test label> with your given label before
+		sending to the reporter.
 
 		The given args will be the signature of the decorator
 		function. This should match the signature of your
@@ -739,7 +741,7 @@ ut test assertion decorator = Function( {function name, args},
 		If( Name Expr( arg ) == Expr( label ),
 			Insert Into( inner call,
 				Expr(
-					ut concat test label(
+					ut form test label(
 						_utTestNS:test case << Get Test Case Name(), 
 						_utTestNS:test name,
 						Name Expr( label ),

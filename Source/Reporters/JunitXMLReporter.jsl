@@ -342,8 +342,10 @@ Define Class(
   //  and the test will be the given label or "Anonymous_Test_Name"
 
   parse_label = Method({label},
+    // TODO: Can be refactored to avoid list -> string -> list conversion
+    label = ut format test label(label);
     list_label = words(label, ::ut concat test label sep);
-
+	
     // set to anonymous test name if missing
     If(label == "",
       list_label = {"Anonymous_Test_Name"};

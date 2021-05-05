@@ -229,7 +229,7 @@ Define Class("UtDetailsTreeReporter",
 		this:on run start();
 	);
 	update node = Method({node, event type, label, payload},
-		Insert Into(payload, label, 1);
+		Insert Into(payload, ut format test label(label), 1);
 		Insert Into(payload, event type, 1);
 		node << Set Data(Insert(node << Get Data, Eval List({payload})));
 		update node icon(node);	
@@ -248,7 +248,12 @@ Define Class("UtDetailsTreeReporter",
 		                      -1, ut icon("skip-32px")));
 		If(final type == 0,	this:box << Collapse(node),	this:box << Expand(node));
 	);
-	process test case event = Method({event type, full label, case label, test label, assertion label, assertion id, payload},
+	process test case event = Method({event type, label, payload},
+		case label = label[1];
+		test label = label[2];
+		assertion label = label[3];
+		assertion id = label[4];
+
 		local cases = this:cases;
 		tests = ut get or create(Expr(local cases), case label, Eval(Eval Expr(Function({case label}, {case, tests},
 			case = ut make new node(case label);
@@ -265,26 +270,20 @@ Define Class("UtDetailsTreeReporter",
 		));
 		local cases[case label] = tests;
 		this:cases = local cases;
-		this:update node(test, event type, full label, payload);
-		this:update node(case, event type, full label, payload);
+		this:update node(test, event type, label, payload);
+		this:update node(case, event type, label, payload);
 	);
 	process free event = Method({event type, label, payload},
 		case = this:cases << Get Default Value();
-		test = ut make new node(If(Length(label), label, "[Unlabeled]"));
+		test = ut make new node(If(Length(label[3]), label[3], "[Unlabeled]"));
 		case << Append(test);
 		this:update node(test, event type, label, payload);
 		this:update node(case, event type, label, payload);
 	);
 	process event = Method({event type, label, payload},
-		details = If(Length(label), Words(label, ::ut concat test label sep), {""});
-		If(
-			Length(details) == 1, // Label (optional)
-				this:process free event(event type, label, payload),
-			Length(details) == 3, // Test Case, Test, Assertion Id
-				this:process test case event(event type, label, details[1], details[2], "", details[3], payload),
-			Length(details) == 4, // Test Case, Test, Label, Assertion Id
-				this:process test case event(event type, label, details[1], details[2], details[3], details[4], payload),
-			Throw(Eval Insert("Ill-formed label: ^label^"))
+		If(Length(label[1]),
+			this:process test case event(event type, label, payload),
+			this:process free event(event type, label, payload)
 		)
 	);
 	add expression failure = Method( {label, payload=Empty()},
