@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("JSLClass:UtEveryMatcher","UtEveryMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtEveryMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[138,0,0,"UtEveryMatcher"]]);
+NDFramePage.OnPageTitleLoaded("JSLClass:UtEveryMatcher","UtEveryMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtEveryMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[128,0,0,"UtEveryMatcher"]]);
