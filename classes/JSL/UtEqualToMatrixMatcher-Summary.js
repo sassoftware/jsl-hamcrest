@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("JSLClass:UtEqualToMatrixMatcher","UtEqualToMatrixMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtEqualToMatrixMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[227,0,0,"UtEqualToMatrixMatcher"]]);
+NDFramePage.OnPageTitleLoaded("JSLClass:UtEqualToMatrixMatcher","UtEqualToMatrixMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtEqualToMatrixMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[78,0,0,"UtEqualToMatrixMatcher"]]);
