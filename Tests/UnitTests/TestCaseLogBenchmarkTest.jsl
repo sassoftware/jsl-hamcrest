@@ -4,9 +4,16 @@
 Log Benchmark = ut test case("Log Benchmark")
 	<<Setup(Expr(
 		reporter = ut mock reporter();
+		
+		old label gen = Name Expr(ut test log benchmark label);
+		ut test log benchmark label = Function({case name, test name},
+			ut form test label( case name, test name, "Log Benchmark" )
+		);
 	))
 	<<Teardown(Expr(
 		reporter << Verify Expectations;
+		
+		ut test log benchmark label = Name Expr(old label gen);
 	));
 
 ut test(Log Benchmark, "Log Bench Default Does Not Capture Log", Expr(
