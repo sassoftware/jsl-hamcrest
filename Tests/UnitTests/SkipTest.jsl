@@ -138,3 +138,10 @@ ut test(Skip Tests, "Default skip description can be empty string", Expr(
 	mi = ut skip(3, "") << matches(Expr( 1 + 1 ));
 	ut assert that(Expr(mi:skip description), "");
 ));
+
+// Bug introduced by ut skip handling
+ut test("Assert That", "Doesn't clobber exception_msg", Expr(
+	Try(Sin("a"));
+	ut assert that( Expr( 1 + 1 ), 2 ); // clobbers by Try(match info:skip, 0)
+	ut assert that( Expr( exception_msg[1] ), "Cannot convert argument to a number [or matrix]" );
+));

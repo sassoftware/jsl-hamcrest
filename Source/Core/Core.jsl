@@ -109,7 +109,7 @@ ut define documented function(
 					0;
 				);
 			,
-				Try(match info:skip, 0)
+				If(match info << Contains("skip"), match info:skip, 0)
 			,
 				ut global reporter:add skip( 
 					ut fwd test label( Name Expr( _utAssertThatNS:label ) ),
