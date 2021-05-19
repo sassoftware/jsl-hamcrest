@@ -38,7 +38,7 @@ ut test("Mock Function", "List allowed as body", Expr(
 
 ut test("Mock Function", "First argument isn't validated until call", Expr(
 	mock = ut mock function(., Expr(1 + 1));
-	ut assert that(Expr(mock:fn), ut throws("argument should be list"));
+	ut assert that(Expr(mock:fn), ut throws(ut anything()));
 ));
 
 ut test("Mock Function", "Local block works", Expr(
