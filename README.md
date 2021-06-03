@@ -94,7 +94,7 @@ be called and with what arguments. And `ut verify mock` makes sure the expectati
 Finally, there are reporters. Most of the time, you don't need to worry about the reporter since it is handled automatically by the add-in when initialized
 or when a test runner GUI is added to a script editor. However, if you want to do something else, you need to know how to use a reporter. There can only
 be *one* reporter, `ut global reporter`, and it determines what happens when test successes, failures, *etc* are reported from `ut mock function`,
-`ut assert that`, `ut test`, *etc*. Here are three examples showing reporters and how to use them.
+`ut assert that`, `ut test`, *etc*. Here are examples showing reporters and how to use them.
 
 ```jsl
 // Does nothing
@@ -111,6 +111,12 @@ ut assert that(Expr(1 + 1), 3);
 ut global reporter = ut collecting reporter();
 ut assert that(Expr(1 + 1), 3);
 ut global reporter << show report();
+```
+```jsl
+// Saves test results as rows in a JMP data table
+ut global reporter = ut data table reporter();
+ut test("Addition", "Addition works", Expr( ut assert that(Expr(1 + 1), 3, "woops") ) );
+ut global reporter << New Data View;
 ```
 
 Again, most of the time, you don't need to worry about setting `ut global reporter` explicitly as the add-in handles it for you.

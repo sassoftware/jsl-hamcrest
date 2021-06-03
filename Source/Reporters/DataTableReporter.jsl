@@ -1,0 +1,140 @@
+﻿// SPDX-License-Identifier: Apache-2.0
+
+Names Default To Here( 0 );
+
+/*
+	Class: UtDataTableReporter
+		---Prototype---
+		class UtDataTableReporter inherits UtReporter
+		---------------
+		Saves results from tests as rows in a JMP table
+*/
+Define Class(
+	"UtDataTableReporter",
+	Base Class( "UtReporter" ),
+	
+	//Table to store results
+	dt = .;
+	
+	_init_ = Method({}, 
+		this:dt = New Table( "Test Results",
+			visibility("private"),
+			Add Rows( 0 ),
+			New Script(
+				"Summary",
+				Tabulate(
+					Show Control Panel( 0 ),
+					Add Table( Row Table( Grouping Columns( :result ) ) )
+				)
+			),
+			New Column( "DateTime",        Numeric,    "Continuous", Format( "m/d/y h:m:s", 23, 0 ),
+				Input Format( "m/d/y h:m:s", 0 ), Set Values([]) ),
+			New Column( "label",           Expression, "None",    Set Values({}) ),
+			New Column( "Case Name",       Character,  "Nominal", Formula( Eval List( :label )[1] ) ),
+			New Column( "Test Name",       Character,  "Nominal", Formula( Eval List( :label )[2] ) ),
+			New Column( "Assertion Label", Character,  "Nominal", Formula( Eval List( :label )[3] ) ),
+			New Column( "Assertion ID",    Numeric,    "Nominal", Formula( Eval List( :label )[4] ) ),
+			New Column( "test expr",       Expression, "None",    Set Values({}) ),
+			New Column( "description",     Character,  "Nominal", Set Values({}) ),
+			New Column( "lre",             Expression, "None",    Set Values({}) ),
+			New Column( "payload",         Expression, "None",    Set Values({}) ),
+			New Column( "result",          Character,  "Nominal", Set Values({}) )
+		);
+		1;
+	);
+
+	// Function: Table
+	// Returns a reference to the results data table
+	Get Table Reference = function = Method( {}, this:dt );
+	
+	// Function: Table Data View
+	// Returns a reference to a new view of the data table
+	New Data View = function = Method( {},
+		this:dt << New Data View;
+	);
+	
+	// Function: add expression failure
+	add expression failure = Method( {label, payload=Empty()},
+		rw = { 
+			DateTime = today(),
+			label= label,
+			test expr = "is and expression",
+			description = "was not an expression",
+			lre = Empty(),
+			payload = Name Expr( payload ),
+			result = "expression failure"
+		};
+		this:dt << Add Rows( rw );
+	);
+
+	// Function: add failure
+	add failure = Method( { label, test expr, description, mismatch, lre, payload=Empty() },	
+		rw = { 
+			DateTime = today(),
+			label= label,
+			test expr = Expr( Expr( Name Expr( test expr ) ) ),
+			description = description,
+			lre = Expr( Expr( Name Expr( l ) ) ),
+			payload = Name Expr( payload ),
+			result = "failure"
+		};
+		this:dt << Add Rows( rw );
+		wait(0);
+	);
+	
+	// Function: add unexpected throw
+	add unexpected throw = Method( {label, test expr, description, exception, payload=Empty()},
+		rw = { 
+			DateTime = today(),
+			label= label,
+			test expr = Expr( Expr( Name Expr( test expr ) ) ),
+			description = "Threw \!"" || exception || "\!"",
+			lre = Empty(),
+			payload = Name Expr( payload ),
+			result = "unexpected throw"
+		};
+		this:dt << Add Rows( rw );
+	);
+	
+	// Function: add success
+	add success = Method( {label, test expr, description, payload=Empty()},
+		rw = { 
+			DateTime = today(),
+			label= label,
+			test expr = Expr( Expr( Name Expr( test expr ) ) ),
+			description = description,
+			lre = Empty(),
+			payload = Name Expr( payload ),
+			result = "success"
+		};
+		this:dt << Add Rows( rw );
+	);
+	
+	// Function: N successes
+	N successes = Method( {},
+		n items( this:dt << get rows where(:result =="success") );
+	);
+	
+	// Function: N failures
+	N failures = Method( {},
+		n items( this:dt << get rows where(:result =="failure") );
+	);
+	
+	// Function: N unexpected throws
+	N unexpected throws = Method( {},
+		n items( this:dt << get rows where(:result =="unexpected throw") );
+	);
+	
+	// Function: N total failures
+	//
+	// Combination of failures and unexpected throws
+	N total failures = Method( {},
+		this:N failures  +  this:N unexpected throws 
+	);
+);
+
+// Function: ut data table reporter
+//   Factory for <UtDataTableReporter>.
+ut data table reporter = Function({},
+	New Object( "UtDataTableReporter" );
+);
