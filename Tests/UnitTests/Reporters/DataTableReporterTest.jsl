@@ -11,54 +11,50 @@ ut test(DataTableReporterTests, "FactoryFunction", Expr(
 
 ut test(DataTableReporterTests, "Failure has 1 row", Expr(
   reporter << Add Failure({"", "", "label", .}, "test expr", "description", "mismatch", Empty());
-  ut assert value(reporter << N successes,0);
-  ut assert value(reporter << N failures,1);
-  ut assert value(reporter << N unexpected throws,0);
-  ut assert value(reporter << N total failures,1);
+  ut assert value(reporter << N successes,0,"Success Check");
+  ut assert value(reporter << N skips,0,"Skip Check");
+  ut assert value(reporter << N failures,1,"Failure Check");
+  ut assert value(reporter << N unexpected throws,0,"Unexpected Throws Check");
+  ut assert value(reporter << N total failures,1,"Total Failures Check");
 ));
 
 ut test(DataTableReporterTests, "2 Unexpected Throw has 2 rows", Expr(
   reporter << Add Unexpected Throw({"", "", "label", .}, "test expr", "description", "mismatch", Empty());
   reporter << Add Unexpected Throw({"", "", "label", .}, "test expr", "description", "mismatch", Empty());
-  ut assert value(reporter << N successes,0);
-  ut assert value(reporter << N failures,0);
-  ut assert value(reporter << N unexpected throws,2);
-  ut assert value(reporter << N total failures,2);
+  ut assert value(reporter << N successes,0,"Success Check");
+  ut assert value(reporter << N skips,0,"Skip Check");
+  ut assert value(reporter << N failures,0,"Failure Check");
+  ut assert value(reporter << N unexpected throws,2,"Unexpected Throws Check");
+  ut assert value(reporter << N total failures,2,"Total Failures Check");
 ));
 
 ut test(DataTableReporterTests, "Success has 1 row", Expr(
   reporter << Add Success({"", "", "label", .}, "test expr", "description", Empty());
-  ut assert value(reporter << N successes,1);
-  ut assert value(reporter << N failures,0);
-  ut assert value(reporter << N unexpected throws,0);
-  ut assert value(reporter << N total failures,0);
+  ut assert value(reporter << N successes,1,"Success Check");
+  ut assert value(reporter << N skips,0,"Skip Check");
+  ut assert value(reporter << N failures,0,"Failure Check");
+  ut assert value(reporter << N unexpected throws,0,"Unexpected Throws Check");
+  ut assert value(reporter << N total failures,0,"Total Failures Check");
 ));
 
-// I don't know how to write this test.
-// Defining reporter2 outside of the ut test functions alleviates errors like below when trying to get
-// a table reference or make a new data view, but they still fail when called using ut include jsl files recursively
-//
-// error:
-// {"The member variable \!"function\!" defined in class \!"UtDataTableReporter\!" cannot be accessed from the function \!"ut include jsl files recursively\!""(1, 2)}
+ut test(DataTableReporterTests, "Skip has 1 row", Expr(
+  reporter << Add Skip({"", "", "label", .}, "test expr", "description", "skip description", "payload");
+  ut assert value(reporter << N successes,0,"Success Check");
+  ut assert value(reporter << N skips,1,"Skip Check");
+  ut assert value(reporter << N failures,0,"Failure Check");
+  ut assert value(reporter << N unexpected throws,0,"Unexpected Throws Check");
+  ut assert value(reporter << N total failures,0,"Total Failures Check");
+));
 
-reporter2 = ut data table reporter();
-dtref = reporter2 << Get Table Reference;
-columncount = length( dtref << Get Column Names("string") );
+ut test(DataTableReporterTests, "Returns reference", Expr(
+	dtref = reporter << Get Table Reference;
+	columncount = length( dtref << Get Column Names("string") );
+	ut assert value(columncount , ut greater than( 4 ));
+));
   
-DataTableReporterTests2 = ut test case("DataTableReporter2");
-  
-ut test(DataTableReporterTests2, "Returns reference", Expr(
-  ut assert value(columncount , ut greater than( 4 ));
+ut test(DataTableReporterTests, "Table visibility", Expr(
+	dtref = reporter << Get Table Reference;
+	ut assert value(dtref << has data view(), 0, "Invisible by default");
+	dtref = reporter << New Data View;
+	ut assert value(dtref << has data view(), 1, "Visible when requested");
 ));
-
-ut test(DataTableReporterTests2, "Table is invisible by default", Expr(
-  ut assert value(dtref << has data view(), 0);
-));
-
-dtview = reporter2 << New Data View;
-
-ut test(DataTableReporterTests2, "Table is visible when requested", Expr(
-  ut assert value(dtref << has data view(), 1);
-));
-
-Try( dtref << Close Window );

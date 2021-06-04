@@ -36,7 +36,9 @@ Define Class(
 			New Column( "Assertion ID",    Numeric,    "Nominal", Formula( Eval List( :label )[4] ) ),
 			New Column( "test expr",       Expression, "None",    Set Values({}) ),
 			New Column( "description",     Character,  "Nominal", Set Values({}) ),
+			New Column( "skipdescription", Character,  "Nominal", Set Values({}) ),
 			New Column( "lre",             Expression, "None",    Set Values({}) ),
+			New Column( "mismatch",        Expression, "None",    Set Values({}) ),
 			New Column( "payload",         Expression, "None",    Set Values({}) ),
 			New Column( "result",          Character,  "Nominal", Set Values({}) )
 		);
@@ -45,11 +47,11 @@ Define Class(
 
 	// Function: Table
 	// Returns a reference to the results data table
-	Get Table Reference = function = Method( {}, this:dt );
+	Get Table Reference = Method( {}, this:dt );
 	
 	// Function: Table Data View
 	// Returns a reference to a new view of the data table
-	New Data View = function = Method( {},
+	New Data View = Method( {},
 		this:dt << New Data View;
 	);
 	
@@ -58,9 +60,11 @@ Define Class(
 		rw = { 
 			DateTime = today(),
 			label= label,
-			test expr = "is and expression",
+			test expr = "is an expression",
 			description = "was not an expression",
-			lre = Empty(),
+			lre = .,
+			mismatch = .,
+			skip description = .,
 			payload = Name Expr( payload ),
 			result = "expression failure"
 		};
@@ -72,14 +76,15 @@ Define Class(
 		rw = { 
 			DateTime = today(),
 			label= label,
-			test expr = Expr( Expr( Name Expr( test expr ) ) ),
+			test expr = Name Expr( test expr ),
 			description = description,
-			lre = Expr( Expr( Name Expr( l ) ) ),
+			lre = lre,
+			mismatch = mismatch,
+			skip description = .,
 			payload = Name Expr( payload ),
 			result = "failure"
 		};
 		this:dt << Add Rows( rw );
-		wait(0);
 	);
 	
 	// Function: add unexpected throw
@@ -87,9 +92,11 @@ Define Class(
 		rw = { 
 			DateTime = today(),
 			label= label,
-			test expr = Expr( Expr( Name Expr( test expr ) ) ),
+			test expr = Name Expr( test expr ),
 			description = "Threw \!"" || exception || "\!"",
-			lre = Empty(),
+			lre = .,
+			mismatch = .,
+			skip description = .,
 			payload = Name Expr( payload ),
 			result = "unexpected throw"
 		};
@@ -101,11 +108,28 @@ Define Class(
 		rw = { 
 			DateTime = today(),
 			label= label,
-			test expr = Expr( Expr( Name Expr( test expr ) ) ),
+			test expr = Name Expr( test expr ),
 			description = description,
-			lre = Empty(),
+			lre = .,
+			mismatch = .,
+			skip description = .,
 			payload = Name Expr( payload ),
 			result = "success"
+		};
+		this:dt << Add Rows( rw );
+	);
+	
+	add skip = Method( {label, test expr, description, skip description, payload=Empty()},
+		rw = { 
+			DateTime = today(),
+			label= label,
+			test expr = Name Expr( test expr ),
+			description = description,
+			lre = .,
+			mismatch = .,
+			skip description = skip description,
+			payload = Name Expr( payload ),
+			result = "skip"
 		};
 		this:dt << Add Rows( rw );
 	);
@@ -113,6 +137,11 @@ Define Class(
 	// Function: N successes
 	N successes = Method( {},
 		n items( this:dt << get rows where(:result =="success") );
+	);
+	
+	// Function: N successes
+	N skips = Method( {},
+		n items( this:dt << get rows where(:result =="skip") );
 	);
 	
 	// Function: N failures

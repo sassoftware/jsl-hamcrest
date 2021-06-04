@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- New data table reporter
+- New `ut data table reporter()`
 
 ### Changed
 
