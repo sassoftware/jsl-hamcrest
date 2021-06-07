@@ -38,7 +38,7 @@ Define Class(
 			New Column( "description",     Character,  "Nominal", Set Values({}) ),
 			New Column( "skipdescription", Character,  "Nominal", Set Values({}) ),
 			New Column( "lre",             Expression, "None",    Set Values({}) ),
-			New Column( "mismatch",        Expression, "None",    Set Values({}) ),
+			New Column( "mismatch",        Character,  "Nominal", Set Values({}) ),
 			New Column( "payload",         Expression, "None",    Set Values({}) ),
 			New Column( "result",          Character,  "Nominal", Set Values({}) )
 		);
@@ -63,8 +63,8 @@ Define Class(
 			test expr = "is an expression",
 			description = "was not an expression",
 			lre = .,
-			mismatch = .,
-			skip description = .,
+			mismatch = "",
+			skip description = "",
 			payload = Name Expr( payload ),
 			result = "expression failure"
 		};
@@ -80,7 +80,7 @@ Define Class(
 			description = description,
 			lre = lre,
 			mismatch = mismatch,
-			skip description = .,
+			skip description = "",
 			payload = Name Expr( payload ),
 			result = "failure"
 		};
@@ -95,8 +95,8 @@ Define Class(
 			test expr = Name Expr( test expr ),
 			description = "Threw \!"" || exception || "\!"",
 			lre = .,
-			mismatch = .,
-			skip description = .,
+			mismatch = "",
+			skip description = "",
 			payload = Name Expr( payload ),
 			result = "unexpected throw"
 		};
@@ -111,8 +111,8 @@ Define Class(
 			test expr = Name Expr( test expr ),
 			description = description,
 			lre = .,
-			mismatch = .,
-			skip description = .,
+			mismatch = "",
+			skip description = "",
 			payload = Name Expr( payload ),
 			result = "success"
 		};
@@ -126,7 +126,7 @@ Define Class(
 			test expr = Name Expr( test expr ),
 			description = description,
 			lre = .,
-			mismatch = .,
+			mismatch = "",
 			skip description = skip description,
 			payload = Name Expr( payload ),
 			result = "skip"
