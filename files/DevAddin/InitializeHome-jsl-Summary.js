@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("File:DevAddin/InitializeHome.jsl","InitializeHome.jsl");NDSummary.OnSummaryLoaded("File:DevAddin/InitializeHome.jsl",[["JSL","JSL"]],[["Sections","Section"]],[[203,0,0,"Globals","Globals"]]);
+NDFramePage.OnPageTitleLoaded("File:DevAddin/InitializeHome.jsl","InitializeHome.jsl");NDSummary.OnSummaryLoaded("File:DevAddin/InitializeHome.jsl",[["JSL","JSL"]],[["Sections","Section"]],[[41,0,0,"Globals","Globals"]]);
