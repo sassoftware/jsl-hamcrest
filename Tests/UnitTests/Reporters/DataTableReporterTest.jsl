@@ -1,0 +1,60 @@
+Names default to here(0);
+
+DataTableReporterTests = ut test case("DataTableReporter") 
+  << Setup(Expr(
+    reporter = ut data table reporter();
+  ));
+  
+ut test(DataTableReporterTests, "FactoryFunction", Expr(
+  ut assert value(reporter, ut instance of("UtDataTableReporter"));
+));
+
+ut test(DataTableReporterTests, "Failure has 1 row", Expr(
+  reporter << Add Failure({"", "", "label", .}, "test expr", "description", "mismatch", Empty());
+  ut assert value(reporter << N successes,0,"Success Check");
+  ut assert value(reporter << N skips,0,"Skip Check");
+  ut assert value(reporter << N failures,1,"Failure Check");
+  ut assert value(reporter << N unexpected throws,0,"Unexpected Throws Check");
+  ut assert value(reporter << N total failures,1,"Total Failures Check");
+));
+
+ut test(DataTableReporterTests, "2 Unexpected Throw has 2 rows", Expr(
+  reporter << Add Unexpected Throw({"", "", "label", .}, "test expr", "description", "mismatch", Empty());
+  reporter << Add Unexpected Throw({"", "", "label", .}, "test expr", "description", "mismatch", Empty());
+  ut assert value(reporter << N successes,0,"Success Check");
+  ut assert value(reporter << N skips,0,"Skip Check");
+  ut assert value(reporter << N failures,0,"Failure Check");
+  ut assert value(reporter << N unexpected throws,2,"Unexpected Throws Check");
+  ut assert value(reporter << N total failures,2,"Total Failures Check");
+));
+
+ut test(DataTableReporterTests, "Success has 1 row", Expr(
+  reporter << Add Success({"", "", "label", .}, "test expr", "description", Empty());
+  ut assert value(reporter << N successes,1,"Success Check");
+  ut assert value(reporter << N skips,0,"Skip Check");
+  ut assert value(reporter << N failures,0,"Failure Check");
+  ut assert value(reporter << N unexpected throws,0,"Unexpected Throws Check");
+  ut assert value(reporter << N total failures,0,"Total Failures Check");
+));
+
+ut test(DataTableReporterTests, "Skip has 1 row", Expr(
+  reporter << Add Skip({"", "", "label", .}, "test expr", "description", "skip description", "payload");
+  ut assert value(reporter << N successes,0,"Success Check");
+  ut assert value(reporter << N skips,1,"Skip Check");
+  ut assert value(reporter << N failures,0,"Failure Check");
+  ut assert value(reporter << N unexpected throws,0,"Unexpected Throws Check");
+  ut assert value(reporter << N total failures,0,"Total Failures Check");
+));
+
+ut test(DataTableReporterTests, "Returns reference", Expr(
+	dtref = reporter << Get Table Reference;
+	columncount = length( dtref << Get Column Names("string") );
+	ut assert value(columncount , ut greater than( 4 ));
+));
+  
+ut test(DataTableReporterTests, "Table visibility", Expr(
+	dtref = reporter << Get Table Reference;
+	ut assert value(dtref << has data view(), 0, "Invisible by default");
+	dtref = reporter << New Data View;
+	ut assert value(dtref << has data view(), 1, "Visible when requested");
+));
