@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+- `ut expect call` and `ut verify mock` examples now run correctly.
 - `ut assert that` no longer clobbers `exception_msg` (started with skipped tests feature)
 
 ## [2.0.0]

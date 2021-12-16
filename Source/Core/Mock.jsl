@@ -186,7 +186,7 @@ ut define documented function(
 	Name Expr(ut expect call),
 	"ut expect call( mock, {arg1 matcher, arg2 matcher, ...} )",
 	"Defines expectations for a mock function. Must be called before the actual call to the mock.",
-	{{"Simple", mock = ut mock function(Function({x}, .)); ut expect call(mock, {ut greater than(6)}); mock:fn(5)}}
+	{{"Simple", mock = ut mock function({x}, Expr(.)); ut expect call(mock, {ut greater than(6)}); mock:fn(5)}}
 );
 
 
@@ -216,5 +216,5 @@ ut define documented function(
 	Name Expr(ut verify mock),
 	"ut verify mock( mock )",
 	"Tests that a mock function has been called the expected number of times. Should be called after other testing is complete.",
-	{{"Simple", mock = ut mock function({}, Expr(.)); mock:fn(5); ut verify mock(mock)}}
+	{{"Simple", mock = ut mock function({x}, Expr(.)); mock:fn(5); ut verify mock(mock)}}
 );
