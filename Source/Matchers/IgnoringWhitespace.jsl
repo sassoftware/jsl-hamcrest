@@ -21,7 +21,7 @@ Define Class(
 		inner:matches( Collapse Whitespace( test expr ) );
 	);
 	describe = Method( {},
-		"ignoring whitespace " || this:inner:describe();
+		"ignoring whitespace " || (this:inner << describe());
 	);
 );
 

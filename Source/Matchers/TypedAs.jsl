@@ -19,14 +19,14 @@ Define Class(
 	);
 	matches = Method( {test expr},
 		actual = test expr;
-		match info = this:inner:matches( Type( Name expr( actual ) ) );
+		match info = this:inner << matches( Type( Name expr( actual ) ) );
 		If( !match info:success,
 			match info:mismatch = "Type( " || ut get show string( Name Expr( actual ) ) || " ) " || match info:mismatch;
 		);
 		match info;
 	);
 	describe = Method( {},
-		"typed as " ||  this:inner:describe()
+		"typed as " || (this:inner << describe())
 	);
 );
 

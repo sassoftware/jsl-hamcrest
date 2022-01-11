@@ -19,17 +19,17 @@ Define Class(
 		this:inner = inner
 	);
 	matches = Method( {test expr},
-		obj = this:inner:matches( Name Expr( test expr ) );
+		obj = this:inner << matches( Name Expr( test expr ) );
 		obj:success = !obj:success;
 		If( !obj:success,
 			// obj does not have all info we need, so we just use the 
 			// inner description for now...
-			obj:mismatch = "was " || this:inner:describe()
+			obj:mismatch = "was " || (this:inner << describe())
 		);
 		obj;
 	);
 	describe = Method( {},
-		"not " || this:inner:describe()
+		"not " || (this:inner << describe())
 	);
 );
 

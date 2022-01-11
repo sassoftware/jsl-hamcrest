@@ -19,7 +19,7 @@ Define Class(
 		this:inner = inner;
 	);
 	matches = Method( {test expr},		
-		this:inner:matches( Char( test expr ) );
+		this:inner << matches( Char( test expr ) );
 	);
 	describe = Method( {},
 		"as char " || inner:describe();

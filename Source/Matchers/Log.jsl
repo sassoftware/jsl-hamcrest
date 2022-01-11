@@ -19,10 +19,10 @@ Define Class(
 		this:inner = inner
 	);
 	matches = Method( {test expr},
-		this:inner:matches( Log Capture( test expr ) )
+		this:inner << matches( Log Capture( test expr ) )
 	);
 	describe = Method( {},
-		"log output " || this:inner:describe()
+		"log output " || (this:inner << describe())
 	);
 );
 

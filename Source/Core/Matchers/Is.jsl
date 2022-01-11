@@ -20,10 +20,10 @@ Define Class(
 		this:inner = inner
 	);
 	matches = Method( {test expr},
-		this:inner:matches( Name Expr( test expr ) )
+		this:inner << matches( Name Expr( test expr ) )
 	);
 	describe = Method( {},
-		this:inner:describe()
+		this:inner << describe()
 	);
 );
 

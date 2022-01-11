@@ -22,13 +22,13 @@ Define Class(
 	);
 	matches = Method( {test expr},
 		If( Host Is( this:host ), 
-			this:inner:matches( Name Expr( test expr ) ),
+			this:inner << matches( Name Expr( test expr ) ),
 			::ut match info success()
 		);
 	);
 	describe = Method( {},
 		If( Host Is( this:host ), 
-			"on " || this:host || " " || this:inner:describe(),
+			"on " || this:host || " " || (this:inner << describe()),
 			"not on " || this:host || " so skipping test"
 		);
 	);
