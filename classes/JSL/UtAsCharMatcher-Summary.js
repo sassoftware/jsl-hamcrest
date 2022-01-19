@@ -1,1 +1,1 @@
-NDFramePage.OnPageTitleLoaded("JSLClass:UtAsCharMatcher","UtAsCharMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtAsCharMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[321,0,0,"UtAsCharMatcher"]]);
+NDFramePage.OnPageTitleLoaded("JSLClass:UtAsCharMatcher","UtAsCharMatcher");NDSummary.OnSummaryLoaded("JSLClass:UtAsCharMatcher",[["JSL","JSL"]],[["Classes","Class"]],[[108,0,0,"UtAsCharMatcher"]]);

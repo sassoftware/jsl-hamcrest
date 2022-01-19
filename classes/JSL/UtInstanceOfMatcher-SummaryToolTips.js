@@ -1,1 +1,1 @@
-NDSummary.OnToolTipsLoaded("JSLClass:UtInstanceOfMatcher",{406:"<div class=\"NDToolTip TClass LJSL\"><div class=\"NDClassPrototype\" id=\"NDClassPrototype406\"><div class=\"CPEntry TClass Current\"><div class=\"CPName\">UtInstanceOfMatcher</div></div></div></div>"});
+NDSummary.OnToolTipsLoaded("JSLClass:UtInstanceOfMatcher",{27:"<div class=\"NDToolTip TClass LJSL\"><div class=\"NDClassPrototype\" id=\"NDClassPrototype27\"><div class=\"CPEntry TClass Current\"><div class=\"CPName\">UtInstanceOfMatcher</div></div></div></div>"});
