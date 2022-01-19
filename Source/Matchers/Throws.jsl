@@ -21,11 +21,11 @@ Define Class(
 	matches = Method( {test expr},
 		Try(
 			Glue( test expr, ::ut match info failure( "did not throw" ) ),
-			this:inner:matches( ut extract thrown string( exception_msg ) )
+			this:inner << matches( ut extract thrown string( exception_msg ) )
 		);
 	);
 	describe = Method( {},
-		"throws " || this:inner:describe()
+		"throws " || (this:inner << describe())
 	);
 );
 

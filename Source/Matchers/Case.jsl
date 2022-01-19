@@ -24,7 +24,7 @@ Define Class(
 	);
 	matches = Method( {test expr},
 		actual = test expr;
-		this:inner:matches( this:transform function( Name Expr( actual ) ) );
+		this:inner << matches( this:transform function( Name Expr( actual ) ) );
 	);
 	describe = Method( {},
 		"as " || this:transform description || " " || inner:describe();

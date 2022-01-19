@@ -22,10 +22,10 @@ Define Class(
 		start = hp time();
 		test expr;
 		end = hp time();
-		this:inner:matches( (end - start) / 1000000 );
+		this:inner << matches( (end - start) / 1000000 );
 	);
 	describe = Method( {},
-		"elapsed time " || this:inner:describe() || " seconds"
+		"elapsed time " || (this:inner << describe()) || " seconds"
 	);
 );
 
