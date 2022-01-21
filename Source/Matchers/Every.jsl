@@ -46,7 +46,7 @@ Define Class(
 		);
 	);
 	describe = Method( {},
-		"every item " || this:inner << describe();
+		"every item " || (this:inner << describe());
 	);
 );
 
