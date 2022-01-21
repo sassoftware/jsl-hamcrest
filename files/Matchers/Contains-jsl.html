@@ -8,35 +8,35 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="UtContainsMatcher"></a><a name="Topic48"></a><div class="CTopic TClass LJSL first">
+<a name="UtContainsMatcher"></a><a name="Topic44"></a><div class="CTopic TClass LJSL first">
  <div class="CTitle">UtContainsMatcher</div>
- <div class="NDClassPrototype HasParents" id="NDClassPrototype48"><a class="CPEntry Parent TClass" href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,232);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">UtMatcher</div></a><div class="CPEntry TClass Current"><div class="CPName">UtContainsMatcher</div></div></div>
+ <div class="NDClassPrototype HasParents" id="NDClassPrototype44"><a class="CPEntry Parent TClass" href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,232);" onmouseout="NDContentPage.OnLinkMouseOut(event);" ><div class="CPName">UtMatcher</div></a><div class="CPEntry TClass Current"><div class="CPName">UtContainsMatcher</div></div></div>
  <div class="CBody"><p>Operates only on string or list values (not on matchers).</p></div>
 </div>
 
-<a name="UtContainsItemMatcher"></a><a name="Topic49"></a><div class="CTopic TClass LJSL">
+<a name="UtContainsItemMatcher"></a><a name="Topic45"></a><div class="CTopic TClass LJSL">
  <div class="CTitle">UtContainsItemMatcher</div>
  <div class="CBody"><p>Operates only on list values (not on matchers).</p></div>
 </div>
 
-<a name="Globals"></a><a name="Topic50"></a><div class="CTopic TSection LJSL">
+<a name="Globals"></a><a name="Topic46"></a><div class="CTopic TSection LJSL">
  <div class="CTitle">Globals</div>
 </div>
 
-<a name="Functions"></a><a name="Topic51"></a><div class="CTopic TGroup LJSL">
+<a name="Functions"></a><a name="Topic47"></a><div class="CTopic TGroup LJSL">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="ut_contains"></a><a name="Topic52"></a><div class="CTopic TFunction LJSL">
+<a name="ut_contains"></a><a name="Topic48"></a><div class="CTopic TFunction LJSL">
  <div class="CTitle">ut contains</div>
- <div id="NDPrototype52" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut contains(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">object&nbsp;</td><td class="PName last">value&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Uses built-in Contains() function to check if the actual value contains the expected value.</p><p>Factory function for <a href="../../index.html#File:Matchers/Contains.jsl:UtContainsMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,48);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtContainsMatcher</a>.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">value<div class="CDLParameterType">object</div></td><td class="CDLDefinition"><p>should be string if actual is string, otherwise can be any object (not matchers)</p></td></tr></table><div class="CHeading">Examples</div><pre>ut assert that( Expr( {1, 2, 3} ), ut contains( 3 ) );<br />ut assert that( Expr( &quot;Test&quot; || &quot;string&quot; ), ut contains( &quot;string&quot; ) );</pre></div>
+ <div id="NDPrototype48" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut contains(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first">object&nbsp;</td><td class="PName last">value&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Uses built-in Contains() function to check if the actual value contains the expected value.</p><p>Factory function for <a href="../../index.html#File:Matchers/Contains.jsl:UtContainsMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,44);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtContainsMatcher</a>.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">value<div class="CDLParameterType">object</div></td><td class="CDLDefinition"><p>should be string if actual is string, otherwise can be any object (not matchers)</p></td></tr></table><div class="CHeading">Examples</div><pre>ut assert that( Expr( {1, 2, 3} ), ut contains( 3 ) );<br />ut assert that( Expr( &quot;Test&quot; || &quot;string&quot; ), ut contains( &quot;string&quot; ) );</pre></div>
 </div>
 
-<a name="ut_contains_item"></a><a name="Topic53"></a><div class="CTopic TFunction LJSL last">
+<a name="ut_contains_item"></a><a name="Topic49"></a><div class="CTopic TFunction LJSL last">
  <div class="CTitle">ut contains item</div>
- <div id="NDPrototype53" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut contains item(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,232);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a>&nbsp;</td><td class="PName last">matcher&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
- <div class="CBody"><p>Checks if the actual value contains the expected value.&nbsp; Expected value can be an inner matcher if the actual result is a list.</p><p>Factory function for <a href="../../index.html#File:Matchers/Contains.jsl:UtContainsMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,48);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtContainsMatcher</a>.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">matcher<div class="CDLParameterType"><a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,232);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a></div></td><td class="CDLDefinition"><p>any object</p></td></tr></table><div class="CHeading">Examples</div><pre>ut assert that( Expr( {a( 1 ), b( 2 ), c( 3 )} ), ut contains item( Expr( b( ut wild() ) ) ) );</pre></div>
+ <div id="NDPrototype49" class="NDPrototype WideForm CStyle"><table><tr><td class="PBeforeParameters">ut contains item(</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PType first"><a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,232);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a>&nbsp;</td><td class="PName last">matcher&nbsp;</td></tr></table></td><td class="PAfterParameters">)</td></tr></table></div>
+ <div class="CBody"><p>Checks if the actual value contains the expected value.&nbsp; Expected value can be an inner matcher if the actual result is a list.</p><p>Factory function for <a href="../../index.html#File:Matchers/Contains.jsl:UtContainsMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,44);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtContainsMatcher</a>.</p><div class="CHeading">Arguments</div><table class="CDefinitionList"><tr><td class="CDLEntry">matcher<div class="CDLParameterType"><a href="../../index.html#File:Core/Matchers/Matcher.jsl:UtMatcher" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,232);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >UtMatcher</a></div></td><td class="CDLDefinition"><p>any object</p></td></tr></table><div class="CHeading">Examples</div><pre>ut assert that( Expr( {a( 1 ), b( 2 ), c( 3 )} ), ut contains item( Expr( b( ut wild() ) ) ) );</pre></div>
 </div>
 
 </body></html>
