@@ -26,13 +26,17 @@ Define Class(
 	matches = Method( {test expr},
 		actual = Eval( test expr );
 		success = this:comparison function( actual, this:value );
-		If( 
+		IfMz( 
 			Is Missing( success ),
 				mismatch = "was " || Char( actual );
 				::ut match info failure( mismatch );
 		,
 			success == 1,
 				::ut match info success();
+		,
+			Is Matrix( success ),
+				mismatch = "was non-scalar " || Char( actual );
+				::ut match info failure( mismatch );
 		,
 				mismatch = "was " || Char( actual );
 				::ut match info failure( mismatch );
