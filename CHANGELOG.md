@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Use a more uniform `Method` call style of `this:inner << describe` rather than `this:inner:describe` to prevent a memory leak.
 - `ut expect call` and `ut verify mock` examples now run correctly.
 - `ut assert that` no longer clobbers `exception_msg` (started with skipped tests feature)
+- Comparison matchers like `ut less than or equal to` now issue a specific failure for non-scalar comparisons (#135)
 
 ## [2.0.0]
 
